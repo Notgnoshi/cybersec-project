@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # The site index, a landing page from which everything else is discoverable.
+    "landingpage.apps.LandingpageConfig",
 ]
 
 MIDDLEWARE = [
