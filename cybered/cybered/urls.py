@@ -14,5 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import include, path
+from django.apps import apps
+from shared.src.cyberedappconfig import CyberEdAppConfig
 
 urlpatterns = [path("", include("landingpage.urls"), name="landingpage")]
+
+for app_cfg in apps.get_app_configs():
+    if isinstance(app_cfg, CyberEdAppConfig):
+        urlpatterns.append(
+            path(
+                app_cfg.cybered_module_base_link,
+                include(app_cfg.name + ".urls"),
+                name="cyberedmodule_" + app_cfg.name,
+            )
+        )
