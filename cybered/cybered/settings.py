@@ -19,14 +19,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "5h^tgrioq&37a#hvh_s4_j7bnx-@ses463sn@kj%c_mn7z$41r"
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = "5h^tgrioq&37a#hvh_s4_j7bnx-@ses463sn@kj%c_mn7z$41r"
+
+# When not in debug mode, attempt to get the secret key
+# from file
+RELEASE_KEY_FILE = "/etc/django/secret"
 ALLOWED_HOSTS = []
 
+if not DEBUG:
+    from .src.release_settings import *
+
+    ALLOWED_HOSTS = get_allowed_hosts()
+
+    try:
+        SECRET_KEY = read_key_file(RELEASE_KEY_FILE)
+    except OSError as e:
+        print("WARNING: Unable to open key file - ", e)
 
 # Application definition
 
