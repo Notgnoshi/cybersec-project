@@ -1,35 +1,39 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, FormView
-from django.urls import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import FormView, TemplateView
 
-from .forms import TextBoxForm
 from .apps import HashingConfig
+from .forms import TextBoxForm
 from .src.hash_functions import *
 
-# Custom scoping function to prevent name collisions with other apps
-# in session dict and be able to reverse-lookup sibling pages
+
 def scoped(text):
+    """Prevent name collisions with other apps in the session.
+
+    Enable reverse lookup of sibling pages.
+    """
     return HashingConfig.name + ":" + text
 
 
 class HashingMainPageView(TemplateView):
+    """The main page for the hasing module."""
+
     template_name = "hashing/hashing_begin.html"
 
 
 class HashingExamplesPageView(FormView):
+    """Page listing several example hash functions."""
+
     template_name = "hashing/hashing_examples.html"
     form_class = TextBoxForm
     success_url = ""
 
     def get_success_url(self):
-        """Override of get_success_url so that the url conf files
-        are all loaded and reverse() can be called"""
+        """Load url conf files so that reverse() can be called."""
         return reverse(scoped("hash_examples_result"))
 
     def form_valid(self, form):
-        """Called when valid form data has been POSTed."""
-
+        """Add validated form data to the user session."""
         print("Form data posted!")
 
         # Passing data between views is done with a session; which is
@@ -40,13 +44,16 @@ class HashingExamplesPageView(FormView):
 
 
 class HashingExamplesResultPageView(TemplateView):
+    """Display the results of the example hashes."""
+
     template_name = "hashing/hashing_examples_result.html"
 
     def dispatch(self, request, *args, **kwargs):
-        """Verifies that there's input text to process
-        before we try to render the page. This can only happen
-        if we start clearing the session data, or users enter the url
-        for this page directly without a session"""
+        """Verify that there is input text to process before rendering the page.
+
+        This can only happen if we start clearing the session data at some point, or
+        if a user enters the url for this page directly without a preexisting session.
+        """
         given_text = ""
         if scoped("example_hash_text") in self.request.session:
             given_text = self.request.session[scoped("example_hash_text")]
@@ -58,6 +65,7 @@ class HashingExamplesResultPageView(TemplateView):
         )
 
     def get_context_data(self, **kwargs):
+        """Compute the hashes of the submitted text and add the results to the page context."""
         context = super().get_context_data(**kwargs)
 
         # Need to make sure that the user went through the
@@ -70,14 +78,14 @@ class HashingExamplesResultPageView(TemplateView):
         context["input_text"] = given_text
 
         hash_results = []
-        for fun, text in (
+        for func, text in (
             (get_MD5_digest, "MD5"),
             (get_SHA1_digest, "SHA1"),
             (get_SHA2_digest, "SHA2"),
             (get_SHA3_digest, "SHA3"),
         ):
             result = {}
-            result["digest"] = fun(given_text)
+            result["digest"] = func(given_text)
             result["name"] = text
             hash_results.append(result)
 

@@ -1,6 +1,7 @@
-from django.urls import include, path
+from django.urls import path
+
 from .apps import HashingConfig
-from .views import HashingMainPageView, HashingExamplesPageView, HashingExamplesResultPageView
+from .views import HashingExamplesPageView, HashingExamplesResultPageView, HashingMainPageView
 
 app_name = HashingConfig.name
 urlpatterns = [
