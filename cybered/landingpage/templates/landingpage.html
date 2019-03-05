@@ -8,12 +8,16 @@
 <div class="page-content">
 <div class="wrap">
     <h1>Available Modules</h1>
-    <ul class="list-group">
+    <p class="lead">Here's a description of the available modules and their collective purpose.</p>
+    <div class="list-group">
     {% for module in modules %}
-        <!-- TODO: Add module description to the list item, and settle on bootstrap classes. -->
-        <li class="list-group-item"><a href="{{ module.link }}" >{{ module.name }}</a></li>
+        <div class="list-group-item">
+            <!-- TODO: Style these appropriately. -->
+            <div class="module_link"><a href="{{ module.link }}" >{{ module.name }}</a></div>
+            <div class="module_description">{{ module.description }}</div>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
 </div>
 </div>
 
