@@ -26,7 +26,8 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Hash"/>
+        <a class="btn btn-secondary" href="{% url 'hashing:hashing_begin' %}">Prev</a>
+        <input class="btn btn-primary" type="submit" value="Hash"/>
     </form>
 </div>
 </div>

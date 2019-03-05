@@ -40,14 +40,11 @@ Outstanding TODO items
   * Find a good way to paginate more automatically
 
     This could possibly be done via a template, bubblegum, and voodoo.
-  * Preferably paginate with normal links and not GET requests
-
-    CSS to style the links as buttons (Bootstrap should have this capability easily)
   * What about pagination using page numbers rather than URLs with meaning?
 * (med priority) Get hashing module content nailed down
   * Produce an outline with desired outcomes
   * Address each outcome pointwise
-* (low priority) Bootstrapify the HTML and CSS
+* (low priority) Finish Bootstrapifying
 * (low priority) Add a header/nav bar to go back to the landing page.
   * It should at least link back to the landing page
   * Should it also go to the first module page?

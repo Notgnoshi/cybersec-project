@@ -3,20 +3,21 @@
 {% include "includes/head.html" %}
 
 <body>
-    {% include "includes/header.html" %}
+{% include "includes/header.html" %}
 
-    <div class="page-content">
-        <div class="wrap">
-            <h1>Available Modules</h1>
-            {% for module in cybered_module_list %}
-            <form action={{ module.link }} method="get">
-                <input type="submit" value={{ module.name }} name="Submit" id={{ module.buttonid }} />
-            </form>
-            {% endfor %}
-        </div>
-    </div>
+<div class="page-content">
+<div class="wrap">
+    <h1>Available Modules</h1>
+    <ul class="list-group">
+    {% for module in cybered_module_list %}
+        <!-- TODO: Add module description to the list item, and settle on bootstrap classes. -->
+        <li class="list-group-item"><a href="{{ module.link }}" >{{ module.name }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+</div>
 
-    {% include "includes/footer.html" %}
+{% include "includes/footer.html" %}
 </body>
 
 </html>

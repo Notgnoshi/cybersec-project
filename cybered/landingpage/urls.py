@@ -1,4 +1,5 @@
-from django.urls import include, path
+from django.urls import path
 from .views import LandingpageView
 
-urlpatterns = [path("", LandingpageView.as_view(), name="landingpage")]
+app_name = "landingpage"
+urlpatterns = [path("", LandingpageView.as_view(), name="index")]

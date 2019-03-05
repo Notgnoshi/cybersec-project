@@ -36,9 +36,8 @@
         {% endfor %}
     </table>
 
-    <form action={% url 'hashing:hash_examples' %} method="get">
-        <input type="submit" value="Hash Something Else" name="Submit" id="prevpage_button"/>
-    </form>
+    <a class="btn btn-primary" href="{% url 'hashing:hash_examples' %}">Hash Something Else</a>
+    <a class="btn btn-secondary disabled" href="#">Next</a>
 </div>
 </div>
 {% include "includes/footer.html" %}
