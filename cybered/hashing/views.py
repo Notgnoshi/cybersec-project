@@ -18,19 +18,19 @@ def scoped(text):
 class HashingMainPageView(TemplateView):
     """The main page for the hasing module."""
 
-    template_name = "hashing/hashing_begin.html"
+    template_name = "hashing/begin.html"
 
 
 class HashingExamplesPageView(FormView):
     """Page listing several example hash functions."""
 
-    template_name = "hashing/hashing_examples.html"
+    template_name = "hashing/examples_form.html"
     form_class = TextBoxForm
     success_url = ""
 
     def get_success_url(self):
         """Load url conf files so that reverse() can be called."""
-        return reverse(scoped("hash_examples_result"))
+        return reverse(scoped("examples_results"))
 
     def form_valid(self, form):
         """Add validated form data to the user session."""
@@ -46,7 +46,7 @@ class HashingExamplesPageView(FormView):
 class HashingExamplesResultPageView(TemplateView):
     """Display the results of the example hashes."""
 
-    template_name = "hashing/hashing_examples_result.html"
+    template_name = "hashing/examples_results.html"
 
     def dispatch(self, request, *args, **kwargs):
         """Verify that there is input text to process before rendering the page.
@@ -61,7 +61,7 @@ class HashingExamplesResultPageView(TemplateView):
         return (
             super().dispatch(request, *args, **kwargs)
             if given_text
-            else redirect(reverse(scoped("hash_examples")))
+            else redirect(reverse(scoped("examples_form")))
         )
 
     def get_context_data(self, **kwargs):

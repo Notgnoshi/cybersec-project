@@ -6,10 +6,10 @@ from .views import HashingExamplesPageView, HashingExamplesResultPageView, Hashi
 app_name = HashingConfig.name
 urlpatterns = [
     path(
-        HashingConfig.module_start_link, HashingMainPageView.as_view(), name="hashing_begin"
+        HashingConfig.module_start_link, HashingMainPageView.as_view(), name="begin"
     ),
-    path("hash_examples", HashingExamplesPageView.as_view(), name="hash_examples"),
+    path("examples-input", HashingExamplesPageView.as_view(), name="examples_form"),
     path(
-        "hash_examples_result", HashingExamplesResultPageView.as_view(), name="hash_examples_result"
+        "examples-results", HashingExamplesResultPageView.as_view(), name="examples_results"
     ),
 ]
