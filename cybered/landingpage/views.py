@@ -9,19 +9,18 @@ class LandingpageView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        cybered_module_list = []
-        for app_cfg in apps.get_app_configs():
-            if isinstance(app_cfg, CyberEdAppConfig):
-                this_module = {}
-                this_module["link"] = (
-                    app_cfg.cybered_module_base_link + app_cfg.cybered_module_start_link
-                )
-                this_module["buttonid"] = "frm1_submit_" + app_cfg.name
-                this_module["name"] = app_cfg.cybered_module_name
+        modules = []
+        for app_config in apps.get_app_configs():
+            if isinstance(app_config, CyberEdAppConfig):
+                module = {}
+                # TODO: Use a namespaced/reversed/other buzzword and avoid building these links by hand.
+                module["link"] = app_config.module_base_link + app_config.module_start_link
+                module["name"] = app_config.module_name
+                module["description"] = app_config.module_description
 
-                cybered_module_list.append(this_module)
+                modules.append(module)
 
-        print("Loading landing page with modules", cybered_module_list)
-        context["cybered_module_list"] = cybered_module_list
+        print("Loading landing page with modules", modules)
+        context["modules"] = modules
 
         return context

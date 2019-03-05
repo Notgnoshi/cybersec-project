@@ -9,7 +9,7 @@
 <div class="wrap">
     <h1>Available Modules</h1>
     <ul class="list-group">
-    {% for module in cybered_module_list %}
+    {% for module in modules %}
         <!-- TODO: Add module description to the list item, and settle on bootstrap classes. -->
         <li class="list-group-item"><a href="{{ module.link }}" >{{ module.name }}</a></li>
     {% endfor %}

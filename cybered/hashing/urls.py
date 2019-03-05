@@ -6,7 +6,7 @@ from .views import HashingExamplesPageView, HashingExamplesResultPageView, Hashi
 app_name = HashingConfig.name
 urlpatterns = [
     path(
-        HashingConfig.cybered_module_start_link, HashingMainPageView.as_view(), name="hashing_begin"
+        HashingConfig.module_start_link, HashingMainPageView.as_view(), name="hashing_begin"
     ),
     path("hash_examples", HashingExamplesPageView.as_view(), name="hash_examples"),
     path(

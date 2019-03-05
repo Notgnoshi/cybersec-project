@@ -19,12 +19,12 @@ from shared.src.cyberedappconfig import CyberEdAppConfig
 
 urlpatterns = [path("", include("landingpage.urls"), name="landingpage")]
 
-for app_cfg in apps.get_app_configs():
-    if isinstance(app_cfg, CyberEdAppConfig):
+for app_config in apps.get_app_configs():
+    if isinstance(app_config, CyberEdAppConfig):
         urlpatterns.append(
             path(
-                app_cfg.cybered_module_base_link,
-                include(app_cfg.name + ".urls"),
-                name="cyberedmodule_" + app_cfg.name,
+                app_config.module_base_link,
+                include(app_config.name + ".urls"),
+                name="cyberedmodule_" + app_config.name,
             )
         )
