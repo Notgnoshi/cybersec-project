@@ -3,42 +3,43 @@
 {% include "includes/head.html" %}
 
 <body>
-{% include "includes/header.html" %}
-<div class="container">
-    <h1>Hashing</h1>
-    <h2>Example Hashes</h2>
+    {% include "includes/header.html" %}
+    <div class="container">
+        <h1>Hashing</h1>
+        <h2>Example Hashes</h2>
 
-    <p>In the table below, you can see some different message digests of the text you entered. Can
-        you tell what the original text was just by looking at the digests? Go back to the previous
-        page with the button below and try putting in some other text.
-    </p>
-    <p>Try somthing with just one letter different; then try some really long text and some really
-        short text. Do the hash functions exhibited follow the properties of a good hash function?
-    </p>
-    <p>When you're done experimenting with hash functions, click the next button to move on to...
-        [insert next thing here]
-    </p>
+        <p>In the table below, you can see some different message digests of the text you entered. Can
+            you tell what the original text was just by looking at the digests? Go back to the previous
+            page with the button below and try putting in some other text.
+        </p>
+        <p>Try somthing with just one letter different; then try some really long text and some really
+            short text. Do the hash functions exhibited follow the properties of a good hash function?
+        </p>
+        <p>When you're done experimenting with hash functions, click the next button to move on to...
+            [insert next thing here]
+        </p>
 
-    <h3>Computed Message Digests</h3>
-    <p>The following table lists the computed message digests for the text you entered:</p>
-    <pre>{{ input_text }}</pre>
-    <table>
-        <tr>
-            <th>Hash Algorithm</th>
-            <th>Message Digest</th>
-        </tr>
-        {% for result in hash_results %}
-        <tr>
-            <td align="center">{{ result.name }}</td>
-            <td align="center">{{ result.digest }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <a class="btn btn-primary" href="{% url 'hashing:examples_form' %}">Hash Something Else</a>
-    <a class="btn btn-secondary disabled" href="#">Next</a>
-</div>
-{% include "includes/footer.html" %}
+        <h3>Computed Message Digests</h3>
+        <p>The following table lists the computed message digests for the text you entered:</p>
+        <pre>{{ input_text }}</pre>
+        <table>
+            <tr>
+                <th>Hash Algorithm</th>
+                <th>Message Digest</th>
+            </tr>
+            {% for result in hash_results %}
+            <tr>
+                <td align="center">{{ result.name }}</td>
+                <td align="center">{{ result.digest }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="container mt-3">
+        <a class="btn btn-primary" href="{% url 'hashing:examples_form' %}">Hash Something Else</a>
+        <a class="btn btn-secondary disabled" href="#">Next</a>
+    </div>
+    {% include "includes/footer.html" %}
 </body>
 
 </html>
