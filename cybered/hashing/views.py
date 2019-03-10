@@ -15,13 +15,36 @@ def scoped(text):
     return HashingConfig.name + ":" + text
 
 
-class HashingMainPageView(TemplateView):
+class HashingTemplateView(TemplateView):
+    """Base for simple template views in the module
+    which does nothing more than set the module name for
+    the header"""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["module_name"] = HashingConfig.module_name
+        return context
+
+
+class HashingFormView(FormView):
+    """Base for simple form views in the module
+    which does nothing more than set the module name for
+    the header"""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["module_name"] = HashingConfig.module_name
+        return context
+
+
+class HashingMainPageView(HashingTemplateView):
     """The main page for the hasing module."""
 
     template_name = "hashing/begin.html"
 
 
 class HashingExamplesPageView(FormView):
+class HashingExamplesPageView(HashingFormView):
     """Page listing several example hash functions."""
 
     template_name = "hashing/examples_form.html"
@@ -43,7 +66,7 @@ class HashingExamplesPageView(FormView):
         return super().form_valid(form)
 
 
-class HashingExamplesResultPageView(TemplateView):
+class HashingExamplesResultPageView(HashingTemplateView):
     """Display the results of the example hashes."""
 
     template_name = "hashing/examples_results.html"
