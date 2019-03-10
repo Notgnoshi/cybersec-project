@@ -17,4 +17,6 @@ urlpatterns = [
         HashingKeyedExamplesResultPageView.as_view(),
         name="keyed_examples_results",
     ),
+    path("conclusions", HashingConclusionPageView.as_view(), name="conclusion"),
+    path("tools", HashingToolsPageView.as_view(), name="tools"),
 ]

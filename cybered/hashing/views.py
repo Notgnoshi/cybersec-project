@@ -45,13 +45,13 @@ class HashingFormView(FormView):
 
 
 class HashingMainPageView(HashingTemplateView):
-    """The main page for the hasing module."""
+    """The main page for the hashing module."""
 
     template_name = "hashing/begin.html"
 
 
 class HashingMotivationPageView(HashingTemplateView):
-    """The main page for the hasing module."""
+    """The main page for the hashing module."""
 
     template_name = "hashing/motivation.html"
 
@@ -199,5 +199,67 @@ class HashingKeyedExamplesResultPageView(HashingTemplateView):
             hash_results.append(result)
 
         context["hash_results"] = hash_results
+
+        return context
+
+
+class HashingConclusionPageView(HashingTemplateView):
+    """The conclusion page for the hashing module."""
+
+    template_name = "hashing/conclusion.html"
+
+
+class HashingToolsPageView(HashingFormView):
+    """The Tools page for the hashing module."""
+
+    template_name = "hashing/tools.html"
+    form_class = TextBoxWithOptionalPasswordForm
+    success_url = ""
+
+    def get_success_url(self):
+        """Load url conf files so that reverse() can be called."""
+        return reverse(scoped("tools"))
+
+    def form_valid(self, form):
+        """Add validated form data to the user session."""
+
+        # Passing data between views is done with a session; which is
+        # created implicitly for each separate connection (not sure when/if they time out)
+        self.request.session[scoped("tools_hash_text")] = form.cleaned_data["text"]
+        self.request.session[scoped("tools_hash_key")] = form.cleaned_data["secret_key"]
+
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        """Compute the hashes of the submitted text and add the results to the page context."""
+        context = super().get_context_data(**kwargs)
+
+        given_text = ""
+        if scoped("tools_hash_text") in self.request.session:
+            given_text = self.request.session[scoped("tools_hash_text")]
+
+        given_key = ""
+        if scoped("tools_hash_key") in self.request.session:
+            given_key = self.request.session[scoped("tools_hash_key")]
+
+        context["input_text"] = given_text
+
+        if given_text:
+            if given_key:
+                context["input_key"] = given_key
+                context["keyed_text"] = add_key(given_text, given_key)
+
+            hash_results = []
+            for func, text in DIGEST_FUNCS:
+                result = {}
+                result["digest"] = func(given_text)
+                result["name"] = text
+
+                if given_key:
+                    result["keyed_digest"] = func(given_text, given_key)
+
+                hash_results.append(result)
+
+            context["hash_results"] = hash_results
 
         return context
