@@ -42,7 +42,15 @@
     <div class="container mt-3">
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <div class="form-group">
+                {{ form.secret_key.label_tag }}
+                {{ form.secret_key }}
+            </div>
+            <div class="form-group">
+                {{ form.text.label_tag }}
+                {{ form.text }}
+            </div>
             <a class="btn btn-secondary" href="{% url 'hashing:examples_results' %}">Prev</a>
             <input class="btn btn-primary" type="submit" value="Hash" />
         </form>
