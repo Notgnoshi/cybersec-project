@@ -5,34 +5,27 @@
 <body>
     {% include "includes/header.html" %}
     <div class="container">
-        <h2>Introduction</h2>
+        <h3>Introduction</h3>
 
         <p>Hashing is the process of taking some data and creating a condensed representation of that
             data which is semi-unique to that specific data. This condensed representation is called the
-            'hash' of the data, and in cyber-security contexts, it is often called the 'message digest'.
+            <b>hash</b> of the data, and in cyber-security contexts, it is often called the <b>message digest</b>.
             This module will explore some of the commonly-used hashing methods, and demonstrate the
             usages of message digests for security.
         </p>
 
-        <h2>What is a Hash Function?</h2>
-
-        <p>Hash functions are one-way functions, which means you can always get the same digest from a
-            specific input, but you can never start with the digest and figure out the original input.
-        </p>
-        <p>Because hash functions are used to condense data, it is possible for multiple messages
-            to result in the same digest. This is perfectly fine, as long as that is very difficult to
-            cause.
-        </p>
-        <p>In addition to being one-way, a good hash function will exhibit the following properties:</p>
+        <h3>Module Goals</h3>
         <ul>
-            <li>It generates hashes that are the same size, regardless of the input data</li>
-            <li>There is not a distinguishable pattern to how it converts input to a digest</li>
-            <li>It is difficult to find inputs that produce the same digest</li>
+            <li>Motivate the usage of message digests</li>
+            <li>Describe what a hash function is</li>
+            <li>Show examples of well-known hash functions</li>
+            <li>Demonstrate usage of message digests</li>
+            <li>Demonstrate attacks on a simple hash function</li>
         </ul>
     </div>
     <div class="container mt-3">
         <a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
-        <a href="{% url 'hashing:examples_form' %}" class="btn btn-primary">Next</a>
+        <a href="{% url 'hashing:motivation' %}" class="btn btn-primary">Next</a>
     </div>
     {% include "includes/footer.html" %}
 </body>

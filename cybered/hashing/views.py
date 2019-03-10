@@ -43,7 +43,12 @@ class HashingMainPageView(HashingTemplateView):
     template_name = "hashing/begin.html"
 
 
-class HashingExamplesPageView(FormView):
+class HashingMotivationPageView(HashingTemplateView):
+    """The main page for the hasing module."""
+
+    template_name = "hashing/motivation.html"
+
+
 class HashingExamplesPageView(HashingFormView):
     """Page listing several example hash functions."""
 

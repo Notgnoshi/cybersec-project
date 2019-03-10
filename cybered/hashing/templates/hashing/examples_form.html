@@ -6,7 +6,7 @@
     {% include "includes/header.html" %}
 
     <div class="container">
-        <h2>Example Hashes</h2>
+        <h3>Example Hashes</h3>
 
         <p>One of the most widely known hash algorithms is the MD5 sum; or Message Digest 5. It was
             developed in 1992 as a successor the MD4 algorithm. Although it is now considered unsecure,
@@ -26,7 +26,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <a class="btn btn-secondary" href="{% url 'hashing:begin' %}">Prev</a>
+            <a class="btn btn-secondary" href="{% url 'hashing:motivation' %}">Prev</a>
             <input class="btn btn-primary" type="submit" value="Hash" />
         </form>
     </div>

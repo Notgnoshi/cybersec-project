@@ -1,10 +1,11 @@
 from django.urls import path
 
 from .apps import HashingConfig
-from .views import HashingExamplesPageView, HashingExamplesResultPageView, HashingMainPageView
+from .views import *
 
 app_name = HashingConfig.name
 urlpatterns = [
+    path("motivation", HashingMotivationPageView.as_view(), name="motivation"),
     path(
         HashingConfig.module_start_link, HashingMainPageView.as_view(), name="begin"
     ),
