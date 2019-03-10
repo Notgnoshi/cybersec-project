@@ -1,0 +1,53 @@
+<!doctype HTML>
+<html>
+{% include "includes/head.html" %}
+
+<body>
+    {% include "includes/header.html" %}
+
+    <div class="container">
+        <h3>Keyed Hashes</h3>
+
+        <p>
+            In our first example, Alice had to write down her message digest and give it to Bob.
+            As a reminder, that digest was
+
+            <pre>5578833a0c6cb26394a1414140718cab</pre>
+
+            This is kind of random, and it would be easy to get it wrong, don't you think? What if Alice
+            sends long messages like this to Bob all the time? Then every time she has a new message, she
+            has to write down the message digest, meet Bob, and give him the digest.
+        </p>
+        <p>
+            Instead of doing this process for every single message Alice wants to send, Alice and Bob
+            can use something called a <b>keyed hash</b>. Alice and Bob can meet up, and come up with
+            a <b>secret key</b>, or password, that only they know. Instead of using this key to encrypt
+            the messages (because they are too long), they can use this password to make keyed digests.
+        </p>
+        <p>
+            Making a keyed digest is very simple. Instead of just creating a digest from her original message,
+            Alice combines the message with her secret key first. Bob also knows the secret key, so when he gets the
+            message, he combines it with the secret key, and then generates the digest, and checks if it's the same,
+            just
+            like before. The difference here is that Alice is allowed to send the message digest along with the message.
+            Even if Chuck intercepts the message and changes it, he doesn't know the secret key, so he can't figure out
+            what the new message digest should be, and he can't trick Bob!
+        </p>
+        <h3>Example Keyed Hashes</h3>
+        <p>
+            Enter some text below, along with a secret key, and we'll show you
+            how the key gets added to the message and how that changes the message digest.
+        </p>
+    </div>
+    <div class="container mt-3">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <a class="btn btn-secondary" href="{% url 'hashing:examples_results' %}">Prev</a>
+            <input class="btn btn-primary" type="submit" value="Hash" />
+        </form>
+    </div>
+    {% include "includes/footer.html" %}
+</body>
+
+</html>

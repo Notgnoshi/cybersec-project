@@ -1,0 +1,75 @@
+<!doctype HTML>
+<html>
+{% include "includes/head.html" %}
+
+<body>
+    {% include "includes/header.html" %}
+    <div class="container">
+        <h3>Keyed Hashes</h3>
+
+        <p>
+            Below, you can see how we combined the text you entered with the password you entered.
+            We calculated the message digest for the text both with and without the password;
+            as you can see, adding the key changes the digest a lot.
+        </p>
+
+        <h4>Computed Message Digests</h4>
+        <p>The following table lists the computed message digests for the text you entered:</p>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Original Text</h5>
+                <div style="max-height: 100px; overflow-y: auto;">
+                    {{ input_text }}
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Password</h5>
+                <div style="max-height: 100px; overflow-y: auto;">
+                    {{ input_key }}
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Combined Text and Password</h5>
+                <div style="max-height: 100px; overflow-y: auto;">
+                    {{ keyed_text }}
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hash Algorithm</th>
+                        <th>Un-Keyed Digest</th>
+                        <th>Keyed Digest</th>
+                    </tr>
+                </thead>
+                {% for result in hash_results %}
+                <tr>
+                    <td>{{ result.name }}</td>
+                    <td>{{ result.digest }}</td>
+                    <td>{{ result.keyed_digest }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <h3>HMAC</h3>
+        <p>
+            In our example, we combined the password with the text by just adding it to the beginning and end
+            of the message. In order for keyed hashes to work, both the sender and receiver have to agree on
+            how to add the key to the message; most secure communication that relies on message digests today uses
+            a standard protocol called HMAC.
+        </p>
+    </div>
+    <div class="container mt-3">
+        <a class="btn btn-success" href="{% url 'hashing:keyed_examples_form' %}">Hash Something Else</a>
+        <a class="btn btn-primary disabled" href="#">Next</a>
+    </div>
+    {% include "includes/footer.html" %}
+</body>
+
+</html>
