@@ -13,7 +13,8 @@ class LandingpageView(generic.TemplateView):
         for app_config in apps.get_app_configs():
             if isinstance(app_config, CyberEdAppConfig):
                 module = {}
-                # TODO: Use a namespaced/reversed/other buzzword and avoid building these links by hand.
+
+                # TODO: Prevent collisions in module_base_link
                 module["link"] = app_config.module_base_link + app_config.module_start_link
                 module["name"] = app_config.module_name
                 module["description"] = app_config.module_description

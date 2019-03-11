@@ -20,7 +20,8 @@
                 </li>
                 <li>Alice could encrypt the message, and then tell Bob the secret key for the encryption, but that would
                     take a long time because it is a long message.</li>
-                <li>Alice could generate a message digest for her message, and tell that to Bob in person. Bob can use
+                <li>Alice could generate a <b>message digest</b> for her message, and tell that to Bob in person. Bob
+                    can use
                     the digest to make sure he receives the correct message.
                 </li>
             </ul>
@@ -28,6 +29,8 @@
 
         <h3>Message Digests</h3>
         <p>
+            What Alice needs is a way to verify <b>data integrity</b>. Data integrity means being able to trust
+            that data is correct and that no one has changed it if the owner did not want them to.
             A <b>message digest</b> is a short piece of information that is used to characterize or describe a large
             piece of information. For example, Alice might use a <b>hash function</b> to generate the following
             digest to describe her long message:
@@ -42,9 +45,9 @@
 
         <h3>Hash Functions</h3>
         <p>
-            Hash functions take a message and produce a message digest from it. There are many ways that a
-            hash function can do this, but the most important feature of a hash function is that it is a one-way
-            function, which means you can always get the same digest from a
+            <b>Hash functions</b> take a message and produce a message digest from it. There are many ways that a
+            hash function can do this, but the most important feature of a hash function is that it is a <b>one-way
+                function</b>, which means you can always get the same digest from a
             specific input, but you can never start with the digest and figure out the original input.
         </p>
         <p>
@@ -80,7 +83,9 @@
             </ul>
             In order to get these properties, hash functions do things like always produce a hash
             that is the same size, regardless of the size of the message, or making a completely
-            different digest for messages that are almost exactly the same.
+            different digest for messages that are almost exactly the same. These properties can be summed up as
+            <b>confusion</b>, making the relationship between the message and the digest as complicated as possible, and
+            <b>diffusion</b>, preventing patterns in the message from showing in the digest.
         </p>
     </div>
 
