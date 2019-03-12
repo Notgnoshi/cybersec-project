@@ -1,86 +1,79 @@
 <!doctype HTML>
 <html>
 {% include "includes/head.html" %}
+<h3>Tools</h3>
 
-<body>
-    {% include "includes/header.html" %}
-    <div class="container">
-        <h3>Tools</h3>
+<p>
+    Enter a message and press the 'Hash' button to see the message digests for the message.
+    If you enter a password, then you will also see the keyed digests.
+</p>
 
-        <p>
-            Enter a message and press the 'Hash' button to see the message digests for the message.
-            If you enter a password, then you will also see the keyed digests.
-        </p>
-
-        {% if input_text %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Original Text</h5>
-                <div style="max-height: 100px; overflow-y: auto;">
-                    {{ input_text }}
-                </div>
-            </div>
-            {% if input_key %}
-            <div class="card-body">
-                <h5 class="card-title">Password</h5>
-                <div style="max-height: 100px; overflow-y: auto;">
-                    {{ input_key }}
-                </div>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">Combined Text and Password</h5>
-                <div style="max-height: 100px; overflow-y: auto;">
-                    {{ keyed_text }}
-                </div>
-            </div>
-            {% endif %}
+{% if input_text %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Original Text</h5>
+        <div style="max-height: 100px; overflow-y: auto;">
+            {{ input_text }}
         </div>
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Hash Algorithm</th>
-                        {% if input_key %}
-                        <th>Un-Keyed Digest</th>
-                        <th>Keyed Digest</th>
-                        {% else %}
-                        <th>Digest</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                {% for result in hash_results %}
-                <tr>
-                    <td>{{ result.name }}</td>
-                    <td>{{ result.digest }}</td>
-                    {% if input_key %}
-                    <td>{{ result.keyed_digest }}</td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </table>
+    </div>
+    {% if input_key %}
+    <div class="card-body">
+        <h5 class="card-title">Password</h5>
+        <div style="max-height: 100px; overflow-y: auto;">
+            {{ input_key }}
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Combined Text and Password</h5>
+        <div style="max-height: 100px; overflow-y: auto;">
+            {{ keyed_text }}
         </div>
     </div>
     {% endif %}
+</div>
 
-    <div class="container mt-3">
-        <form method="post">
-            {% csrf_token %}
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hash Algorithm</th>
+                {% if input_key %}
+                <th>Un-Keyed Digest</th>
+                <th>Keyed Digest</th>
+                {% else %}
+                <th>Digest</th>
+                {% endif %}
+            </tr>
+        </thead>
+        {% for result in hash_results %}
+        <tr>
+            <td>{{ result.name }}</td>
+            <td>{{ result.digest }}</td>
+            {% if input_key %}
+            <td>{{ result.keyed_digest }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
-            <div class="form-group">
-                {{ form.secret_key.label_tag }}
-                {{ form.secret_key }}
-            </div>
-            <div class="form-group">
-                {{ form.text.label_tag }}
-                {{ form.text }}
-            </div>
-            <a class="btn btn-secondary" href="{% url 'hashing:conclusion' %}">Prev</a>
-            <input class="btn btn-success" type="submit" value="Hash" />
-        </form>
-    </div>
+{% endif %}
 
-    {% include "includes/footer.html" %}
-</body>
+<div class="container mt-3">
+    <form method="post">
+        {% csrf_token %}
 
-</html>
+        <div class="form-group">
+            {{ form.secret_key.label_tag }}
+            {{ form.secret_key }}
+        </div>
+        <div class="form-group">
+            {{ form.text.label_tag }}
+            {{ form.text }}
+        </div>
+        <a class="btn btn-secondary" href="{% url 'hashing:conclusion' %}">Prev</a>
+        <input class="btn btn-success" type="submit" value="Hash" />
+    </form>
+</div>
+</div>
+{% include "includes/footer.html" %}

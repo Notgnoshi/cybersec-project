@@ -2,24 +2,17 @@
 <html lang="en">
 {% include "includes/head.html" %}
 
-<body>
-{% include "includes/header.html" %}
-
-<div class="container">
-    <h1>Available Modules</h1>
-    <p class="lead">Here's a description of the available modules and their collective purpose.</p>
-    <div class="list-group">
+<h1>Available Modules</h1>
+<p class="lead">Here's a description of the available modules and their collective purpose.</p>
+<div class="list-group">
     {% for module in modules %}
-        <div class="list-group-item">
-            <!-- TODO: Style these appropriately. -->
-            <div class="module_link"><a href="{{ module.link }}" >{{ module.name }}</a></div>
-            <div class="module_description">{{ module.description }}</div>
-        </div>
-    {% endfor %}
+    <div class="list-group-item">
+        <!-- TODO: Style these appropriately. -->
+        <div class="module_link"><a href="{{ module.link }}">{{ module.name }}</a></div>
+        <div class="module_description">{{ module.description }}</div>
     </div>
+    {% endfor %}
+</div>
 </div>
 
 {% include "includes/footer.html" %}
-</body>
-
-</html>

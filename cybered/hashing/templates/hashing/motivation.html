@@ -2,98 +2,108 @@
 <html>
 {% include "includes/head.html" %}
 
-<body>
-    {% include "includes/header.html" %}
-    <div class="container">
+<h3>An Example</h3>
+<p>
+    Alice wants to send a long, complicated email to Bob. She does not care if other people
+    see the message, but
+    it is <i>very</i>
+    important that Bob receives the message <i>exactly</i> the same as she sends it. Chuck
+    does not like Bob,
+    and he
+    tries to intercept the message and change it so that Bob gets the wrong message! What
+    are some ways that
+    Alice and Bob
+    might try to make sure Bob gets the correct message?
+    <ul>
+        <li>Alice could tell Bob the message in-person, but that would be hard because it is
+            a long message.
+        </li>
+        <li>Alice could encrypt the message, and then tell Bob the secret key for the
+            encryption, but that would
+            take a long time because it is a long message.</li>
+        <li>Alice could generate a <b>message digest</b> for her message, and tell that to
+            Bob in person. Bob
+            can use
+            the digest to make sure he receives the correct message.
+        </li>
+    </ul>
+</p>
 
-        <h3>An Example</h3>
-        <p>
-            Alice wants to send a long, complicated email to Bob. She does not care if other people see the message, but
-            it is <i>very</i>
-            important that Bob receives the message <i>exactly</i> the same as she sends it. Chuck does not like Bob,
-            and he
-            tries to intercept the message and change it so that Bob gets the wrong message! What are some ways that
-            Alice and Bob
-            might try to make sure Bob gets the correct message?
-            <ul>
-                <li>Alice could tell Bob the message in-person, but that would be hard because it is a long message.
-                </li>
-                <li>Alice could encrypt the message, and then tell Bob the secret key for the encryption, but that would
-                    take a long time because it is a long message.</li>
-                <li>Alice could generate a <b>message digest</b> for her message, and tell that to Bob in person. Bob
-                    can use
-                    the digest to make sure he receives the correct message.
-                </li>
-            </ul>
-        </p>
+<h3>Message Digests</h3>
+<p>
+    What Alice needs is a way to verify <b>data integrity</b>. Data integrity means being
+    able to trust
+    that data is correct and that no one has changed it if the owner did not want them to.
+    A <b>message digest</b> is a short piece of information that is used to characterize or
+    describe a large
+    piece of information. For example, Alice might use a <b>hash function</b> to generate
+    the following
+    digest to describe her long message:
 
-        <h3>Message Digests</h3>
-        <p>
-            What Alice needs is a way to verify <b>data integrity</b>. Data integrity means being able to trust
-            that data is correct and that no one has changed it if the owner did not want them to.
-            A <b>message digest</b> is a short piece of information that is used to characterize or describe a large
-            piece of information. For example, Alice might use a <b>hash function</b> to generate the following
-            digest to describe her long message:
+    <pre>5578833a0c6cb26394a1414140718cab</pre>
 
-            <pre>5578833a0c6cb26394a1414140718cab</pre>
+    Instead of having to tell Bob the whole message in-person, she can just tell him that
+    short piece of
+    information. Then, when Bob gets Alice's message, he can use the same hash function to
+    generate a message
+    digest. If the message digest that Bob gets is the same as the one Alice gave him, then
+    it is <i>very</i>
+    likely that he received the correct message!
+</p>
 
-            Instead of having to tell Bob the whole message in-person, she can just tell him that short piece of
-            information. Then, when Bob gets Alice's message, he can use the same hash function to generate a message
-            digest. If the message digest that Bob gets is the same as the one Alice gave him, then it is <i>very</i>
-            likely that he received the correct message!
-        </p>
+<h3>Hash Functions</h3>
+<p>
+    <b>Hash functions</b> take a message and produce a message digest from it. There are
+    many ways that a
+    hash function can do this, but the most important feature of a hash function is that it
+    is a <b>one-way
+        function</b>, which means you can always get the same digest from a
+    specific input, but you can never start with the digest and figure out the original
+    input.
+</p>
+<p>
+    A very simple hash function might convert every letter to a number, and then add them
+    all up.
+    Lets say that A=1, B=2, C=3...
+    <ul>
+        <li>cat = 3 + 1 + 20 = 24</li>
+        <li>dog = 4 + 15 + 7 = 26</li>
+    </ul>
+</p>
+<p>
+    Because hash functions are used to condense data, it is possible for multiple messages
+    to result in the same digest. This is called a <b>collision</b> and there's nothing
+    wrong
+    with it, as long as that is very difficult to do on purpose. If Chuck is able to make
+    a new message with the same digest as Alice's, then he can send that to Bob, and Bob
+    will think it is the real message!
+</p>
+<p>
+    Is our hash function above a good hash function according to this rule?
+    No, it's not! We can come up with many words that have the same digest. The easiest
+    way is to re-arrange the letters of the message.
+    <ul>
+        <li>dog = 4 + 15 + 7 = 26</li>
+        <li>god = 7 + 15 + 4 = 26</li>
+    </ul>
+</p>
 
-        <h3>Hash Functions</h3>
-        <p>
-            <b>Hash functions</b> take a message and produce a message digest from it. There are many ways that a
-            hash function can do this, but the most important feature of a hash function is that it is a <b>one-way
-                function</b>, which means you can always get the same digest from a
-            specific input, but you can never start with the digest and figure out the original input.
-        </p>
-        <p>
-            A very simple hash function might convert every letter to a number, and then add them all up.
-            Lets say that A=1, B=2, C=3...
-            <ul>
-                <li>cat = 3 + 1 + 20 = 24</li>
-                <li>dog = 4 + 15 + 7 = 26</li>
-            </ul>
-        </p>
-        <p>
-            Because hash functions are used to condense data, it is possible for multiple messages
-            to result in the same digest. This is called a <b>collision</b> and there's nothing wrong
-            with it, as long as that is very difficult to do on purpose. If Chuck is able to make
-            a new message with the same digest as Alice's, then he can send that to Bob, and Bob
-            will think it is the real message!
-        </p>
-        <p>
-            Is our hash function above a good hash function according to this rule?
-            No, it's not! We can come up with many words that have the same digest. The easiest
-            way is to re-arrange the letters of the message.
-            <ul>
-                <li>dog = 4 + 15 + 7 = 26</li>
-                <li>god = 7 + 15 + 4 = 26</li>
-            </ul>
-        </p>
-
-        <p> Modern hash functions can be very complicated because they need to make digests with two
-            specific properties:
-            <ul>
-                <li>It must be impossible to use the digest to figure out the original message</li>
-                <li>It must be hard to make a different message that has the same digest</li>
-            </ul>
-            In order to get these properties, hash functions do things like always produce a hash
-            that is the same size, regardless of the size of the message, or making a completely
-            different digest for messages that are almost exactly the same. These properties can be summed up as
-            <b>confusion</b>, making the relationship between the message and the digest as complicated as possible, and
-            <b>diffusion</b>, preventing patterns in the message from showing in the digest.
-        </p>
-    </div>
-
-    <div class="container mt-3">
-        <a href="{% url 'hashing:begin' %}" class="btn btn-secondary">Prev</a>
-        <a href="{% url 'hashing:examples_form' %}" class="btn btn-primary">Next</a>
-    </div>
-    {% include "includes/footer.html" %}
-</body>
-
-</html>
+<p> Modern hash functions can be very complicated because they need to make digests with two
+    specific properties:
+    <ul>
+        <li>It must be impossible to use the digest to figure out the original message</li>
+        <li>It must be hard to make a different message that has the same digest</li>
+    </ul>
+    In order to get these properties, hash functions do things like always produce a hash
+    that is the same size, regardless of the size of the message, or making a completely
+    different digest for messages that are almost exactly the same. These properties can be
+    summed up as
+    <b>confusion</b>, making the relationship between the message and the digest as
+    complicated as possible, and
+    <b>diffusion</b>, preventing patterns in the message from showing in the digest.
+</p>
+<div class="container mt-3">
+    <a href="{% url 'hashing:begin' %}" class="btn btn-secondary">Prev</a>
+    <a href="{% url 'hashing:examples_form' %}" class="btn btn-primary">Next</a>
+</div>
+{% include "includes/footer.html" %}

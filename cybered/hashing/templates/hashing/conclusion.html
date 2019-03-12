@@ -1,53 +1,57 @@
 <!doctype HTML>
 <html>
 {% include "includes/head.html" %}
+<h3>Conclusion</h3>
 
-<body>
-    {% include "includes/header.html" %}
-    <div class="container">
-        <h3>Conclusion</h3>
-
-        <p>
-            You've completed the CyberEd module on hashing! Let's take a look at the key points covered
-            in this module:
-            <ul>
-                <li> <b>Message digests</b> are used most often to verify <b>data integrity</b></li>
-                <li> <b>Hash functions</b> are used to make message digests, which characterize an input text</li>
-                <li> Hash functions are <b>one-way functions</b>, which means you cannot convert a digest back to the
-                    original message </li>
-                <li> Small changes in the input produce large changes in the output; this is called <b>confusion</b>
-                </li>
-                <li> Patterns in the input do not make patterns in the output; this is called <b>diffusion</b></li>
-                <li> Variable-length inputs produce fixed-length hashes</li>
-                <li> It's hard to produce a <b>collision</b></li>
-            </ul>
-        </p>
-        <p>
-            We started by motivating the need for message
-            digests with a story about Alice, Bob, and Chuck, and then learned about what a message digest is,
-            how a hash function makes one, and what makes a hash function good.
-        </p>
-        <p>
-            After going over the basics, you used a tool to generate message digests for any messages you wanted.
-            If you tested a bunch of different messages, you saw how each hash algorithm generated a digest that
-            was always the same size, and you also saw that even if your message was almost identical to a different
-            message, the digest was completely different.
-        </p>
-        <p>
-            Finally, you saw how keyed hashing could be used to add a password to your message digest, making
-            it incredibly difficult for someone to fake, even if they had the message you sent and the digest
-            you sent with it.
-        </p>
-        <p>
-            Go to the next page to play with hash functions and keyed hashes some more, or head back to the CyberEd
-            homepage with the button at the bottom of the page to pick a new topic!
-        </p>
-    </div>
-    <div class="container mt-3">
-        <a href="{% url 'hashing:keyed_examples_results' %}" class="btn btn-secondary">Prev</a>
-        <a href="{% url 'hashing:tools' %}" class="btn btn-primary">Next</a>
-    </div>
-    {% include "includes/footer.html" %}
-</body>
-
-</html>
+<p>
+    You've completed the CyberEd module on hashing! Let's take a look at the key points
+    covered
+    in this module:
+    <ul>
+        <li> <b>Message digests</b> are used most often to verify <b>data integrity</b></li>
+        <li> <b>Hash functions</b> are used to make message digests, which characterize an
+            input text</li>
+        <li> Hash functions are <b>one-way functions</b>, which means you cannot convert a
+            digest back to the
+            original message </li>
+        <li> Small changes in the input produce large changes in the output; this is called
+            <b>confusion</b>
+        </li>
+        <li> Patterns in the input do not make patterns in the output; this is called
+            <b>diffusion</b></li>
+        <li> Variable-length inputs produce fixed-length hashes</li>
+        <li> It's hard to produce a <b>collision</b></li>
+    </ul>
+</p>
+<p>
+    We started by motivating the need for message
+    digests with a story about Alice, Bob, and Chuck, and then learned about what a message
+    digest is,
+    how a hash function makes one, and what makes a hash function good.
+</p>
+<p>
+    After going over the basics, you used a tool to generate message digests for any
+    messages you wanted.
+    If you tested a bunch of different messages, you saw how each hash algorithm generated a
+    digest that
+    was always the same size, and you also saw that even if your message was almost
+    identical to a different
+    message, the digest was completely different.
+</p>
+<p>
+    Finally, you saw how keyed hashing could be used to add a password to your message
+    digest, making
+    it incredibly difficult for someone to fake, even if they had the message you sent and
+    the digest
+    you sent with it.
+</p>
+<p>
+    Go to the next page to play with hash functions and keyed hashes some more, or head back
+    to the CyberEd
+    homepage with the button at the bottom of the page to pick a new topic!
+</p>
+<div class="container mt-3">
+    <a href="{% url 'hashing:keyed_examples_results' %}" class="btn btn-secondary">Prev</a>
+    <a href="{% url 'hashing:tools' %}" class="btn btn-primary">Next</a>
+</div>
+{% include "includes/footer.html" %}

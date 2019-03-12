@@ -1,38 +1,29 @@
 <!doctype HTML>
 <html>
 {% include "includes/head.html" %}
+<h3>Example Hashes</h3>
 
-<body>
-    {% include "includes/header.html" %}
-
-    <div class="container">
-        <h3>Example Hashes</h3>
-
-        <p>One of the most widely known hash algorithms is the MD5 sum; or Message Digest 5. It was
-            developed in 1992 as a successor the MD4 algorithm. Although it is now considered unsecure,
-            it is still used in a lot of applications because it is 'good enough' or because switching
-            would require a large effort.
-        </p>
-        <p>Another well-known series of hash algorithms are the SHA series; SHA0, SHA1, SHA2, and SHA3
-            have all been developed as increasingly secure standards of hashing. As computers become
-            faster, algorithms like the SHA series become less secure; at this point, SHA0 and SHA1 are
-            no longer acceptable, and SHA2 is close to becoming obselete.
-        </p>
-        <p>Enter some text in the box below and click the 'Hash' button to obtain digests for your
-            text using these algorithms.
-        </p>
-    </div>
-    <div class="container mt-3">
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.text }}
-            </div>
-            <a class="btn btn-secondary" href="{% url 'hashing:motivation' %}">Prev</a>
-            <input class="btn btn-primary" type="submit" value="Hash" />
-        </form>
-    </div>
-    {% include "includes/footer.html" %}
-</body>
-
-</html>
+<p>One of the most widely known hash algorithms is the MD5 sum; or Message Digest 5. It was
+    developed in 1992 as a successor the MD4 algorithm. Although it is now considered
+    unsecure, it is still used in a lot of applications because it is 'good enough' or
+    because switching would require a large effort.
+</p>
+<p>Another well-known series of hash algorithms are the SHA series; SHA0, SHA1, SHA2, and
+    SHA3 have all been developed as increasingly secure standards of hashing. As computers
+    become faster, algorithms like the SHA series become less secure; at this point, SHA0
+    and SHA1 are no longer acceptable, and SHA2 is close to becoming obselete.
+</p>
+<p>Enter some text in the box below and click the 'Hash' button to obtain digests for your
+    text using these algorithms.
+</p>
+<div class="container mt-3">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.text }}
+        </div>
+        <a class="btn btn-secondary" href="{% url 'hashing:motivation' %}">Prev</a>
+        <input class="btn btn-primary" type="submit" value="Hash" />
+    </form>
+</div>
+{% include "includes/footer.html" %}

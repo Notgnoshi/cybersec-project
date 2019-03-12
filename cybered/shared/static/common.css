@@ -1,1 +1,5 @@
 @import "./spacing.css";
+
+body {
+    min-height: 100vh;
+}
