@@ -22,23 +22,31 @@ def scoped(text):
     return HashingConfig.name + ":" + text
 
 
+# TODO: There might be a way to hoist these base classes out of the individual modules, but note
+# that the implementation requires the module's name. Further, if a View class uses multiple
+# inheritance (e.g., both HashingPageView and TemplateView), the method resolution order seems to
+# avoid calling this base class's get_context_data() method in favor of the generic TemplateView's.
 class HashingTemplateView(TemplateView):
-    """Base for simple template views in the module
-    which does nothing more than set the module name for
-    the header"""
+    """Base template view that adds the module name to the view's context.
+
+    If present, the module name is displayed in the header of each page in the module.
+    """
 
     def get_context_data(self, **kwargs):
+        """Add this module's name to the view's context."""
         context = super().get_context_data(**kwargs)
         context["module_name"] = HashingConfig.module_name
         return context
 
 
 class HashingFormView(FormView):
-    """Base for simple form views in the module
-    which does nothing more than set the module name for
-    the header"""
+    """Base form view that adds the module name to the view's context.
+
+    If present, the module name is displayed in the header of each page in the module.
+    """
 
     def get_context_data(self, **kwargs):
+        """Add this module's name to the view's context."""
         context = super().get_context_data(**kwargs)
         context["module_name"] = HashingConfig.module_name
         return context
@@ -51,7 +59,7 @@ class HashingMainPageView(HashingTemplateView):
 
 
 class HashingMotivationPageView(HashingTemplateView):
-    """The main page for the hashing module."""
+    """The motivation page for the hashing module."""
 
     template_name = "hashing/motivation.html"
 
@@ -69,8 +77,6 @@ class HashingExamplesPageView(HashingFormView):
 
     def form_valid(self, form):
         """Add validated form data to the user session."""
-        print("Form data posted!")
-
         # Passing data between views is done with a session; which is
         # created implicitly for each separate connection (not sure when/if they time out)
         self.request.session[scoped("example_hash_text")] = form.cleaned_data["text"]
@@ -125,7 +131,7 @@ class HashingExamplesResultPageView(HashingTemplateView):
 
 
 class HashingKeyedExamplesPageView(HashingFormView):
-    """Page listing several example hash functions."""
+    """Page explaining keyed hash functions."""
 
     template_name = "hashing/keyed_hashes_form.html"
     form_class = TextBoxWithPasswordForm
@@ -137,7 +143,6 @@ class HashingKeyedExamplesPageView(HashingFormView):
 
     def form_valid(self, form):
         """Add validated form data to the user session."""
-
         # Passing data between views is done with a session; which is
         # created implicitly for each separate connection (not sure when/if they time out)
         self.request.session[scoped("example_keyed_hash_text")] = form.cleaned_data["text"]
@@ -222,7 +227,6 @@ class HashingToolsPageView(HashingFormView):
 
     def form_valid(self, form):
         """Add validated form data to the user session."""
-
         # Passing data between views is done with a session; which is
         # created implicitly for each separate connection (not sure when/if they time out)
         self.request.session[scoped("tools_hash_text")] = form.cleaned_data["text"]

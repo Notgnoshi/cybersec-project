@@ -4,9 +4,24 @@ from shared.src.cyberedappconfig import CyberEdAppConfig
 
 
 class LandingpageView(generic.TemplateView):
+    """The landing page view.
+
+    This view searches through the apps in this Django project for AppConfig's that are derived
+    from the CyberEdAppConfig abstract base class, defining an educational module. If such a module
+    is found, it is added to the list of links on the landing page.
+
+    Each module chooses their own base URL, so we must be careful in the unlikely even of a URL
+    collision.
+    """
+
     template_name = "landingpage.html"
 
     def get_context_data(self, **kwargs):
+        """Add any apps derived from the CyberEdAppConfig base class to this page's context.
+
+        Add a list of modules to the context, and for each module, add the module's base link, name,
+        and description.
+        """
         context = super().get_context_data(**kwargs)
 
         modules = []

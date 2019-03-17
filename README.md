@@ -44,8 +44,6 @@ Outstanding TODO items
 * (med priority) Get hashing module content nailed down
   * Produce an outline with desired outcomes
   * Address each outcome pointwise
+* (low priority) Add Gen Cyber Camp branding
 * (low priority) Finish Bootstrapifying
-* (low priority) Add a header/nav bar to go back to the landing page.
-  * It should at least link back to the landing page
-  * Should it also go to the first module page?
 * (low priority) Make the site deployable with an Apache server
