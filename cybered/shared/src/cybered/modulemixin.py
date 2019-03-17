@@ -1,9 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from django.apps import AppConfig
-
-
-class CyberEdAppConfig(AppConfig, metaclass=ABCMeta):
+class ModuleMixin(metaclass=ABCMeta):
     """An educational module for the CyberEd website.
 
     An educational module is a linear sequence of pages. A page might contain instructional
@@ -11,13 +8,18 @@ class CyberEdAppConfig(AppConfig, metaclass=ABCMeta):
     recommended that each module implement at least one standalone interactive tool that a student
     can repeatedly (ab)use without preventing them from moving on with the instructional content.
 
-    The information in this AppConfig is used to automatically discover new modules and add them
+    The information in this ModuleMixin is used to automatically discover new modules and add them
     to the landing page. Each derived application must define a module name, base link, start link,
-    and description, in addition to whatever definitions AppConfig requires.
+    and description. Dervied classes will likely want to inherit from django.apps.AppConfig so that they
+    can be a full-fledged django app.
+
+    Module Mixins also contain a scope() function which can be use along with the django app_name
+    variable and the ModuleMixin.name property to reverse project urls.
+
+    See the modules included in this project for examples of how to use app_name, ModuleMix, AppConfig
+    and the django reverse() function together.
     """
 
-    # NOTE: This attribute is required by the AppConfig base class, but we redundantly require it
-    # here in order to provide documentation specific to the CyberEd project.
     @property
     @abstractmethod
     def name(self):
@@ -26,6 +28,10 @@ class CyberEdAppConfig(AppConfig, metaclass=ABCMeta):
         This is the name of the *Python module*, containing the Django application, which implements
         an educational module. This is *not* the same as the `module_name`, which is the natural
         language, long English name of the module that will be displayed on the website.
+
+        A 'name' property is also required by django AppConfig objects; including it here makes
+        it easy for new module developers to create a django app that is also a cybered module
+        by inheriting from the ModuleMixing before the django AppConfig type
         """
 
     @property
@@ -67,3 +73,11 @@ class CyberEdAppConfig(AppConfig, metaclass=ABCMeta):
         This is a description of the topic(s) the implemented module teaches, as well as a mention
         of any prerequisites.
         """
+
+    @classmethod
+    def scope(this_class, sub_object):
+        """Returns the scoped name that django will use
+        if app_name is set to this_class.name in the urls.py
+        file when the site is loaded.
+        """
+        return this_class.name + ":" + sub_object

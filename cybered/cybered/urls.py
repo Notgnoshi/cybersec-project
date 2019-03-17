@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.apps import apps
-from shared.src.cyberedappconfig import CyberEdAppConfig
+from shared.src import cybered
 
 urlpatterns = [path("", include("landingpage.urls"), name="landingpage")]
 
 for app_config in apps.get_app_configs():
-    if isinstance(app_config, CyberEdAppConfig):
+    if isinstance(app_config, cybered.ModuleMixin):
         urlpatterns.append(
             path(
                 app_config.module_base_link,
