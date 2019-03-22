@@ -1,5 +1,7 @@
-from .base import FormView, TemplateView
+from django.views.generic import TemplateView
+
+from .mixin import PasswordsMixin
 
 
-class PasswordsBeginView(TemplateView):
+class PasswordsBeginView(PasswordsMixin, TemplateView):
     template_name = "passwords/begin.html"

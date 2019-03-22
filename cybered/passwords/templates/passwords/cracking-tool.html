@@ -1,0 +1,14 @@
+{% include "includes/head.html" %}
+<h2>Password Cracking Tool</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.text.label_tag }}
+        {{ form.text }}
+    </div>
+    <a href="{% url 'passwords:cracking' %}" class="btn btn-secondary">Prev</a>
+    <input class="btn btn-success" type="submit" value="Submit" />
+    <!-- TODO: Should the next button be outlined to emphasize we want them to play around as much as they want before moving on? -->
+    <a href="{% url 'passwords:strength' %}" class="btn btn-outline-primary">Next</a>
+</form>
+{% include "includes/footer.html" %}

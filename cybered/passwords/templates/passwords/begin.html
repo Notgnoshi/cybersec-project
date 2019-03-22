@@ -1,70 +1,58 @@
-<!doctype HTML>
-<html>
 {% include "includes/head.html" %}
+<h2>Introduction</h2>
+<p>When a user is attempting to access some service, for example a website, their computer, or a mobile
+    application, they often must gain <b>authorization</b> before using that service. Authentication is
+    performed in two steps. First, the user must <b>identify</b> themselves. Second, they must <b>verify</b>
+    that they are, in fact, the user they claim to be.</p>
 
-<body class="d-flex flex-column">
-    {% include "includes/header.html" %}
-    <div class="container flex-grow">
-        <h3>Introduction</h3>
-        <p>When a user is attempting to access some service, for example a website, their computer, or a mobile
-            application, they often must gain <b>authorization</b> before using that service. Authentication is
-            performed in two steps. First, the user must <b>identify</b> themselves. Second, they must <b>verify</b>
-            that they are, in fact, the user they claim to be.</p>
+<p>Allowing a user to log in only once they have provided the correct <b>password</b> is one extremely common
+    method for performing this verification, but there are many others. In this module we will discuss how
+    passwords are used, what makes some passwords stronger than other passwords, and how attackers might attempt
+    to <b>crack</b> a password.</p>
 
-        <p>Allowing a user to log in only once they have provided the correct <b>password</b> is one extremely common
-            method for performing this verification, but there are many others. In this module we will discuss how
-            passwords are used, what makes some passwords stronger than other passwords, and how attackers might attempt
-            to <b>crack</b> a password.</p>
+<h2>Module Goals</h2>
+<ul>
+    <li>Understand how a password used to verify a user's identity</li>
+    <li>Demonstrate several strategies for cracking passwords</li>
+    <li>Examine how to prevent each strategy</li>
+</ul>
 
-        <h3>Module Goals</h3>
-        <ul>
-            <li>Understand how a password used to verify a user's identity</li>
-            <li>Demonstrate several strategies for cracking passwords</li>
-            <li>Examine how to prevent each strategy</li>
-        </ul>
+<div class=text-danger>
+    <h2>Module Notes (to be removed)</h2>
+    It is likely this module will implement several tools.
+    <ul>
+        <li>Choose a password and compare the hash of whatever is inputted to the hash of the chosen password?
+        </li>
+        <li>Analyze (with graphs) how long it will take to crack a password</li>
+        <li>Analyze the password entropy</li>
+        <li>Dictionary attack (would work best with AJAX so I can display passwords currently being attempted)
+        </li>
+    </ul>
+    <p>Passwords are hashed as a damage control measure. People commonly use the same password for multiple
+        services. If (when) a database is compromised, we want to limit the attacker's access to other services
+        used by the same user.</p>
 
-        <div class=text-danger>
-            <h3>Module Notes (to be removed)</h3>
-            It is likely this module will implement several tools.
-            <ul>
-                <li>Choose a password and compare the hash of whatever is inputted to the hash of the chosen password?
-                </li>
-                <li>Analyze (with graphs) how long it will take to crack a password</li>
-                <li>Analyze the password entropy</li>
-                <li>Dictionary attack (would work best with AJAX so I can display passwords currently being attempted)
-                </li>
-            </ul>
-            <p>Passwords are hashed as a damage control measure. People commonly use the same password for multiple
-                services. If (when) a database is compromised, we want to limit the attacker's access to other services
-                used by the same user.</p>
+    <p>In addition, the service webmaster or database administrator should not be able to view a user's
+        passwords.
+        Storing the hash makes it impossible to find a user's password.</p>
 
-            <p>In addition, the service webmaster or database administrator should not be able to view a user's
-                passwords.
-                Storing the hash makes it impossible to find a user's password.</p>
+    <p>Think about how to implement a dictionary attack in a way that prevents high schoolers from DDOSing the
+        school server. Find a way to make the attempted passwords scroll past as they are attempted.</p>
 
-            <p>Think about how to implement a dictionary attack in a way that prevents high schoolers from DDOSing the
-                school server. Find a way to make the attempted passwords scroll past as they are attempted.</p>
+    <p>Find the "Correct Horse Battery Staple" XKCD comic, and look up how to properly cite XKCD comics. Use the
+        comic after to idea of entropy has been introduced. Discuss how the character pool increases the amount
+        of entropy. Discuss how the length of the password increases the amount of entropy <em>much</em> more
+        than the character pool.</p>
 
-            <p>Find the "Correct Horse Battery Staple" XKCD comic, and look up how to properly cite XKCD comics. Use the
-                comic after to idea of entropy has been introduced. Discuss how the character pool increases the amount
-                of entropy. Discuss how the length of the password increases the amount of entropy <em>much</em> more
-                than the character pool.</p>
+    <p>Have a password strength calculator, that updates the strength meter as you type. This might be easiest
+        to implement in JavaScript.</p>
 
-            <p>Have a password strength calculator, that updates the strength meter as you type. This might be easiest
-                to implement in JavaScript.</p>
-
-            <p>However, just storing the hash is not enough. We must salt the password before hashing
-                for several reasons. First, it renders lookup tables much more difficult to use. Second, if (when) an
-                attacker gains access to a password database, they will not be able to tell if two different users
-                happen to use the same password. Further, storing the salted hashes makes it impossible to simply
-                transmit the hash of a password to another service used by the same user with the same password.</p>
-        </div>
-        <div class="container mt-3">
-            <a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
-            {% comment %} <a href="{% url 'passwords:page2' %}" class="btn btn-primary">Next</a> {% endcomment %}
-        </div>
-    </div>
-    {% include "includes/footer.html" %}
-</body>
-
-</html>
+    <p>However, just storing the hash is not enough. We must salt the password before hashing
+        for several reasons. First, it renders lookup tables much more difficult to use. Second, if (when) an
+        attacker gains access to a password database, they will not be able to tell if two different users
+        happen to use the same password. Further, storing the salted hashes makes it impossible to simply
+        transmit the hash of a password to another service used by the same user with the same password.</p>
+</div>
+<a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
+<a href="{% url 'passwords:verification' %}" class="btn btn-primary">Next</a>
+{% include "includes/footer.html" %}
