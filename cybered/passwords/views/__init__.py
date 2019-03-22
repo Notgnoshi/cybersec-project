@@ -1,1 +1,1 @@
-from .page1 import PasswordsPage1View
+from .begin import PasswordsBeginView
