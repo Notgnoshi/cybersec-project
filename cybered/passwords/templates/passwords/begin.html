@@ -19,8 +19,8 @@
         <h3>Module Goals</h3>
         <ul>
             <li>Understand how a password used to verify a user's identity</li>
-            <li>Examine what makes a password strong</li>
             <li>Demonstrate several strategies for cracking passwords</li>
+            <li>Examine how to prevent each strategy</li>
         </ul>
 
         <div class=text-danger>
@@ -42,11 +42,8 @@
                 passwords.
                 Storing the hash makes it impossible to find a user's password.</p>
 
-            <p>However, just storing the hash is not enough. We must salt the password before hashing
-                for several reasons. First, it renders lookup tables much more difficult to use. Second, if (when) an
-                attacker gains access to a password database, they will not be able to tell if two different users
-                happen to use the same password. Further, storing the salted hashes makes it impossible to simply
-                transmit the hash of a password to another service used by the same user with the same password.</p>
+            <p>Think about how to implement a dictionary attack in a way that prevents high schoolers from DDOSing the
+                school server. Find a way to make the attempted passwords scroll past as they are attempted.</p>
 
             <p>Find the "Correct Horse Battery Staple" XKCD comic, and look up how to properly cite XKCD comics. Use the
                 comic after to idea of entropy has been introduced. Discuss how the character pool increases the amount
@@ -56,8 +53,11 @@
             <p>Have a password strength calculator, that updates the strength meter as you type. This might be easiest
                 to implement in JavaScript.</p>
 
-            <p>Think about how to implement a dictionary attack in a way that prevents high schoolers from DDOSing the
-                school server. Find a way to make the attempted passwords scroll past as they are attempted.</p>
+            <p>However, just storing the hash is not enough. We must salt the password before hashing
+                for several reasons. First, it renders lookup tables much more difficult to use. Second, if (when) an
+                attacker gains access to a password database, they will not be able to tell if two different users
+                happen to use the same password. Further, storing the salted hashes makes it impossible to simply
+                transmit the hash of a password to another service used by the same user with the same password.</p>
         </div>
         <div class="container mt-3">
             <a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
