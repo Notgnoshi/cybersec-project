@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # Modules
     "hashing.apps.HashingConfig",
     "steganography.apps.SteganographyConfig",
+    "passwords.apps.PasswordsConfig",
 ]
 
 MIDDLEWARE = [
