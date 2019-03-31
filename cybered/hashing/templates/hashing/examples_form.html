@@ -1,5 +1,3 @@
-<!doctype HTML>
-<html>
 {% include "includes/head.html" %}
 <h3>Example Hashes</h3>
 
@@ -16,14 +14,12 @@
 <p>Enter some text in the box below and click the 'Hash' button to obtain digests for your
     text using these algorithms.
 </p>
-<div class="container mt-3">
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ form.text }}
-        </div>
-        <a class="btn btn-secondary" href="{% url 'hashing:motivation' %}">Prev</a>
-        <input class="btn btn-primary" type="submit" value="Hash" />
-    </form>
-</div>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.text }}
+    </div>
+    <a class="btn btn-secondary" href="{% url 'hashing:motivation' %}">Prev</a>
+    <input class="btn btn-primary" type="submit" value="Hash" />
+</form>
 {% include "includes/footer.html" %}

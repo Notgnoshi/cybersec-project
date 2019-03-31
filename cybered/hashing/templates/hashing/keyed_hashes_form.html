@@ -1,7 +1,4 @@
-<!doctype HTML>
-<html>
 {% include "includes/head.html" %}
-
 <h3>Keyed Hashes</h3>
 
 <p>
@@ -39,20 +36,18 @@
     Enter some text below, along with a secret key, and we'll show you
     how the key gets added to the message and how that changes the message digest.
 </p>
-<div class="container mt-3">
-    <form method="post">
-        {% csrf_token %}
+<form method="post">
+    {% csrf_token %}
 
-        <div class="form-group">
-            {{ form.secret_key.label_tag }}
-            {{ form.secret_key }}
-        </div>
-        <div class="form-group">
-            {{ form.text.label_tag }}
-            {{ form.text }}
-        </div>
-        <a class="btn btn-secondary" href="{% url 'hashing:examples_results' %}">Prev</a>
-        <input class="btn btn-primary" type="submit" value="Hash" />
-    </form>
-</div>
+    <div class="form-group">
+        {{ form.secret_key.label_tag }}
+        {{ form.secret_key }}
+    </div>
+    <div class="form-group">
+        {{ form.text.label_tag }}
+        {{ form.text }}
+    </div>
+    <a class="btn btn-secondary" href="{% url 'hashing:examples_results' %}">Prev</a>
+    <input class="btn btn-primary" type="submit" value="Hash" />
+</form>
 {% include "includes/footer.html" %}

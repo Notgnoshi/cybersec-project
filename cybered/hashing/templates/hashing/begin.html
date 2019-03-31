@@ -1,8 +1,5 @@
-<!doctype HTML>
-<html>
 {% include "includes/head.html" %}
 <h3>Introduction</h3>
-
 <p>
     <b>Hashing</b> is the process of taking some data and creating a condensed representation
     of that data which is semi-unique to that specific data. This condensed representation
@@ -18,8 +15,6 @@
     <li>Show examples of well-known hash functions</li>
     <li>Demonstrate usage of message digests</li>
 </ul>
-<div class="container mt-3">
-    <a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
-    <a href="{% url 'hashing:motivation' %}" class="btn btn-primary">Next</a>
-</div>
+<a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
+<a href="{% url 'hashing:motivation' %}" class="btn btn-primary">Next</a>
 {% include "includes/footer.html" %}

@@ -1,7 +1,4 @@
-<!doctype HTML>
-<html>
 {% include "includes/head.html" %}
-
 <h3>An Example</h3>
 <p>
     Alice wants to send a long, complicated email to Bob. She does not care if other people
@@ -102,8 +99,6 @@
     complicated as possible, and
     <b>diffusion</b>, preventing patterns in the message from showing in the digest.
 </p>
-<div class="container mt-3">
-    <a href="{% url 'hashing:begin' %}" class="btn btn-secondary">Prev</a>
-    <a href="{% url 'hashing:examples_form' %}" class="btn btn-primary">Next</a>
-</div>
+<a href="{% url 'hashing:begin' %}" class="btn btn-secondary">Prev</a>
+<a href="{% url 'hashing:examples_form' %}" class="btn btn-primary">Next</a>
 {% include "includes/footer.html" %}
