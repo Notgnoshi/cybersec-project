@@ -115,8 +115,6 @@ Add the following HTML code to the `page1.html` file. The shared head.html and f
 will set up the handle the `<body>` and `</body>` tags, as well as the page header, and the outermost div.
 
 ```html
-<!doctype HTML>
-<html>
 {% include "includes/head.html" %}
     <p>Hello World.</p>
 
@@ -130,6 +128,33 @@ will set up the handle the `<body>` and `</body>` tags, as well as the page head
 Finally, edit `cybered/cybered/settings.py` so that the `INSTALLED_APPS` list contains `"example.apps.ExampleConfig"`.
 This will install the application in the CyberEd project, and cause a link to the application's first
 page to appear on the landing page.
+
+## Advanced Techniques
+You may want to modify the header or footer for some reason; it is not recommended to do this other than for including new CSS sheets, but the header and footer blocks can be included in pieces to allow full customizability.
+
+### Including new CSS
+1. If you're going to add custom CSS, there needs to be a `static` directory within your app. Add new CSS pages to your app in the folder `[app]/static/[app]/`. The folder stucture includes the app name twice just like the `templates` directory in order to avoid name collisions
+2. Rather than just using `{% include "includes/head.html" %}` to open your html page, you need to be a bit more verbose.
+```html
+{% load static %}
+{% include "includes/html_start.html" %}
+
+<head>
+    {% include "includes/head/content.html" %}
+
+    <!-- Add links for your own css here -->
+    <link href="link/to/online/stylesheet" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{% static '[app]/[new_stylesheet].css' %}">
+</head>
+
+{% include "includes/page/page_start.html" %}
+
+<!-- Rest of your page -->
+
+{% include "includes/footer.html" %}
+```
+   
 
 ---
 
