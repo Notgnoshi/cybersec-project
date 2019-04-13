@@ -1,43 +1,49 @@
 {% include "includes/head.html" %}
 
 <h3>Introduction</h3>
-<p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales, ante sed vestibulum tempor, massa mauris
-    malesuada neque, sit amet eleifend massa enim eget enim. Aliquam lobortis semper nibh, a eleifend purus molestie a.
-    Praesent eros ex, condimentum non hendrerit nec, hendrerit ac augue. Vestibulum malesuada nisl eget arcu rutrum, et
-    consequat velit viverra. Vivamus vitae massa et tellus fringilla vulputate eget non magna. Orci varius natoque
-    penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras ut consectetur libero, ut iaculis eros.
 
-    Pellentesque ultrices laoreet ipsum et tincidunt. Vestibulum vestibulum cursus lobortis. Aliquam purus mauris,
-    iaculis sit amet malesuada vel, tempor viverra sapien. Integer consectetur justo id magna dapibus, et pretium nunc
-    maximus. Aliquam commodo velit ornare tortor lacinia suscipit. Nam ornare sem quis egestas finibus. Mauris vehicula
-    ante at lorem elementum, at lacinia metus faucibus. Vestibulum et vestibulum mi, in mattis odio. Sed ligula purus,
-    egestas sed placerat quis, laoreet sed leo. Maecenas justo tortor, fringilla sed molestie scelerisque, eleifend eu
-    diam. Proin condimentum, neque ac sagittis vestibulum, quam urna finibus dui, non placerat lacus risus ullamcorper
-    urna. Integer in malesuada urna, quis tincidunt mauris. Quisque placerat ante nibh, auctor consectetur purus
-    consequat in.
+<div class='card p-3'>
+    <div class='card-body'>
+        <p class="card-text"> <b>Steganography</b> (/ˌstɛɡəˈnɒɡrəfi/ STEG-ə-NOG-rə-fee) is the practice of concealing a
+            file, message, image, or video within another file, message, image, or video. The word steganography
+            combines the Greek words <i>steganos</i> (στεγανός), meaning "covered, concealed, or protected", and
+            <i>graphein</i>
+            (γράφειν) meaning "writing".
+        </p>
+        <p class='card-text text-right'>
+            --Wikipedia
+        </p>
+    </div>
+</div>
 
-    Nunc eros urna, iaculis ac risus eu, porta placerat libero. Pellentesque et elit in diam porttitor porta a vitae
-    orci. Donec elementum hendrerit urna, ut auctor purus ornare ut. Aliquam vitae pharetra libero. Quisque vitae mi nec
-    lacus dictum ullamcorper. Nam molestie finibus lacus, vel accumsan elit ultricies nec. Orci varius natoque penatibus
-    et magnis dis parturient montes, nascetur ridiculus mus. Duis facilisis risus nec nunc elementum finibus. Proin
-    cursus tortor at erat interdum gravida. Ut nec velit in orci luctus laoreet vel sit amet arcu. Vestibulum vitae
-    faucibus tortor. Sed semper auctor orci eget tincidunt. Curabitur lobortis accumsan tempor. Nam at enim felis.
+<div class='mt-2'>
+    <p>
+        As the definition states, <b>steganography</b> is, in its simplest form, the art and science of hiding data
+        inside of other data.
+        See if you can find the hidden message in the following text:
+    </p>
+    <p class='p-3'>
+        <i>this is a very long sentence with a lot of words in it. You might find that it is confusing, because it just
+            talks circles, but you are being bamboozled! if you Look carefully, you'll notice that there's a lot of Nice
+            details in the message, and even some hidden information. Today you are learning about basic steganography,
+            but who knows what surprises tomorrow will bring.</i>
+    </p>
+    <p>
+        If you take only the words with capital letters, you can see the hidden message: <i>You Look Nice Today</i>.
+    </p>
+    <p>
+        This is a very simplistic example of steganography, you may have seen it before in the plot of a book or movie,
+        or maybe you've
+        even used it yourself! This lesson module is going to teach you about some of the techniques used to hide data
+        steganographically
+        in images. Specfically, it will discuss and demonstrate the following methods and concepts
+        <ul>
+            <li>Image headers and metadata</li>
+            <li>Image deltas</li>
+            <li>Image bit-planes</li>
+        </ul>
+    </p>
+</div>
 
-    Integer sed accumsan risus. Vestibulum semper mi a condimentum elementum. Maecenas sed odio est. Vestibulum egestas
-    nulla nec lorem pulvinar, in aliquet turpis eleifend. Quisque quis ligula nunc. Curabitur pharetra, neque non
-    placerat interdum, purus turpis aliquet orci, vel maximus erat augue eget urna. Aliquam ut magna sed lectus
-    ullamcorper auctor. Proin vel consequat est, mollis dictum magna. Ut sodales tellus ac quam dictum, eu tristique
-    massa blandit. Nulla ut turpis eu elit eleifend feugiat non vel nisi. Nulla efficitur sem ut tellus aliquam, eu
-    ultricies metus imperdiet. Nunc elementum, lacus non blandit dignissim, orci felis tincidunt nibh, eget consequat
-    erat leo vitae tellus. Aliquam efficitur eleifend lacinia. Nullam porttitor ipsum dictum ante tristique ultricies.
-    Etiam bibendum a est ut lobortis.
-
-    Donec dui ligula, bibendum vitae sagittis sed, tempus in urna. Proin tristique commodo lorem ac venenatis. Aenean et
-    diam sodales mauris faucibus maximus eu nec ipsum. Curabitur in tellus tincidunt justo pellentesque eleifend. Proin
-    porttitor fermentum sagittis. Sed in nibh magna. In sapien augue, tempus vel justo quis, ultricies consectetur
-    nulla. Pellentesque sodales ut nulla eu egestas. Proin eget dictum est. Duis vitae ultricies ante. Vivamus
-    condimentum, mauris eu faucibus pellentesque, eros ipsum placerat velit, nec ultrices purus nulla semper purus.
-</p>
 
 {% include "includes/footer.html" %}
