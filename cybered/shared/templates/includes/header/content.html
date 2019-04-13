@@ -9,9 +9,22 @@
             <img src="{% static 'MLogo_Blue.svg' %}" alt="" class="branding img-fluid">
         </div>
     </div>
-    {% if module_name %}
+    {% url 'landingpage:index' as landing_index %}
+    {% if module_name or request.get_full_path != landing_index %}
     <hr />
-    <h2>{{ module_name }} </h2>
+    <div class="row">
+        {% if module_name %}
+        <div class="col">
+            <h2>{{ module_name }}</h2>
+        </div>
+        {% endif %}
+        {% if request.get_full_path != landing_index %}
+        <div class="text-right col">
+            <a href="{% url 'landingpage:index' %}" class="btn btn-outline-primary">Return to
+                Modules Selection</a>
+        </div>
+        {% endif %}
+    </div>
     <p class="py-1"></p>
     {% endif %}
 </div>
