@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "landingpage.apps.LandingpageConfig",
     # Modules
     "hashing.apps.HashingConfig",
+    "steganography.apps.SteganographyConfig",
 ]
 
 MIDDLEWARE = [
