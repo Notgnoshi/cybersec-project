@@ -4,6 +4,20 @@ body {
     min-height: 100vh;
 }
 
+body > div.container {
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%), url(GenCyber_logo_transparent_small.png);
+    background-position: center center;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-size: 65% auto;
+}
+
+img.branding {
+    height: 200px;
+    width: 100%;
+}
+
 .icon {
     display: inline-block;
     height: 1.2rem;
