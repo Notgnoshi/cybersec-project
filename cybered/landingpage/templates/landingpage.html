@@ -1,12 +1,18 @@
 {% include "includes/head.html" %}
 <h1>Available Modules</h1>
-<p class="lead">Here's a description of the available modules and their collective purpose.</p>
+<p class="lead">This page lists the learning modules available on the site, choose one to learn more about that topic
+</p>
 <div class="list-group">
     {% for module in modules %}
-    <div class="list-group-item">
-        <!-- TODO: Style these appropriately. -->
-        <div class="module_link"><a href="{{ module.link }}">{{ module.name }}</a></div>
-        <div class="module_description">{{ module.description }}</div>
+
+    <div class="card my-1 bg-transparent">
+        <div class="card-body">
+            <h5 class="card-title">{{ module.name }}</h5>
+            <p class="card-text">{{ module.description }}</p>
+        </div>
+        <h5 class="card-footer">
+            <a href="{{ module.link }}" class="btn btn-primary">Go to module</a>
+        </h5>
     </div>
     {% endfor %}
 </div>
