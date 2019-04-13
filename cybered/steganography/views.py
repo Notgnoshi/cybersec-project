@@ -7,11 +7,26 @@ from .apps import SteganographyModule
 from shared.src import cybered
 
 
-class SteganographyMixin(SteganographyModule, cybered.PageMixin):
+class SteganographyMixin(SteganographyModule, cybered.PaginatedMixin, cybered.PageMixin):
     pass
 
 
 class SteganographyMainPageView(SteganographyMixin, TemplateView):
     """The main page for the steganography module."""
 
-    template_name = "steganography/begin.html"
+    pass
+
+
+class SteganographyImageMetadataPageView(SteganographyMixin, TemplateView):
+    pass
+
+
+
+
+class SteganographyImageDeltasPageView(SteganographyMixin, TemplateView):
+    pass
+
+
+class SteganographyImageBitPlanesPageView(SteganographyMixin, TemplateView):
+    pass
+

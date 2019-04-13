@@ -1,6 +1,15 @@
 from shared.src import cybered
 
 
+class SteganographyPageManager(cybered.PageManager):
+    page_list = (
+        ("begin", "begin", "steganography/begin.html"),
+        ("image_metadata", "image-metadata", "steganography/image_metadata.html"),
+        ("image_deltas", "image-deltas", "steganography/image_deltas.html"),
+        ("image_bitplanes", "image-bitplanes", "steganography/image_bitplanes.html"),
+    )
+
+
 class SteganographyModule(cybered.ModuleMixin):
     """The cybered module configuration for the steganography module."""
 

@@ -56,10 +56,11 @@ class PaginatedMixin:
     show_disabled_pages = True
     """Set false in inherited type to omit disabled buttons instead of graying them out"""
 
-    def get_context_data(self, disabled_pages=[], **kwargs):
+    def get_context_data(self, disabled_pages=None, **kwargs):
         """ Gets page context data with pagination information included. Indicate any page indexes
         in disabled_pages to disable clicking those page's buttons """
 
+        disabled_pages = disabled_pages or []
         context = super().get_context_data(**kwargs)
 
         page_manager = self.kwargs["page_manager"]
@@ -118,4 +119,3 @@ def get_paginated_urls(view_list, page_manager, app_name=""):
         raise NoPagesFoundError() from ae
     except TypeError as te:
         raise NonPaginatedViewError() from te
-
