@@ -11,4 +11,3 @@ def list_index(l, i):
 @register.filter
 def subtract(a, b):
     return a - b
-
