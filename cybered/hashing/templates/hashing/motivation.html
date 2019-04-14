@@ -99,6 +99,7 @@
     complicated as possible, and
     <b>diffusion</b>, preventing patterns in the message from showing in the digest.
 </p>
-<a href="{% url 'hashing:begin' %}" class="btn btn-secondary">Prev</a>
-<a href="{% url 'hashing:examples_form' %}" class="btn btn-primary">Next</a>
+
+{% include "includes/paginator.html" %}
+
 {% include "includes/footer.html" %}

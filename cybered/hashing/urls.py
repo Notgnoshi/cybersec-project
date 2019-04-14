@@ -1,22 +1,22 @@
 from django.urls import path
+from shared.src import cybered
 
+from .src.hashing import HashingPageManager
 from .apps import HashingConfig
 from .views import *
 
 app_name = HashingConfig.name
-urlpatterns = [
-    path(HashingConfig.module_start_link, HashingMainPageView.as_view(), name="begin"),
-    path("motivation", HashingMotivationPageView.as_view(), name="motivation"),
-    path("examples-input", HashingExamplesPageView.as_view(), name="examples_form"),
-    path("examples-results", HashingExamplesResultPageView.as_view(), name="examples_results"),
-    path(
-        "keyed-examples-input", HashingKeyedExamplesPageView.as_view(), name="keyed_examples_form"
-    ),
-    path(
-        "keyed-examples-results",
-        HashingKeyedExamplesResultPageView.as_view(),
-        name="keyed_examples_results",
-    ),
-    path("conclusions", HashingConclusionPageView.as_view(), name="conclusion"),
-    path("tools", HashingToolsPageView.as_view(), name="tools"),
-]
+urlpatterns = cybered.get_paginated_urls(
+    [
+        HashingMainPageView,
+        HashingMotivationPageView,
+        HashingExamplesPageView,
+        HashingExamplesResultPageView,
+        HashingKeyedExamplesPageView,
+        HashingKeyedExamplesResultPageView,
+        HashingConclusionPageView,
+        HashingToolsPageView,
+    ],
+    HashingPageManager,
+    app_name,
+)

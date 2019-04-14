@@ -63,6 +63,6 @@
     </p>
 </div>
 
-<a class="btn btn-success" href="{% url 'hashing:keyed_examples_form' %}">Hash Something Else</a>
-<a class="btn btn-primary" href="{% url 'hashing:conclusion' %}">Next</a>
+{% include "includes/paginator.html" %}
+
 {% include "includes/footer.html" %}

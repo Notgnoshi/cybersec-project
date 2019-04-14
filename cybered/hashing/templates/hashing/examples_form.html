@@ -19,7 +19,9 @@
     <div class="form-group">
         {{ form.text }}
     </div>
-    <a class="btn btn-secondary" href="{% url 'hashing:motivation' %}">Prev</a>
-    <input class="btn btn-primary" type="submit" value="Hash" />
+    <input class="btn btn-success mb-3" type="submit" value="Hash" />
 </form>
+
+{% include "includes/paginator.html" %}
+
 {% include "includes/footer.html" %}

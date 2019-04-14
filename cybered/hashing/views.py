@@ -8,8 +8,23 @@ from .src.hash_functions import *
 
 from shared.src import cybered
 
-class HashingMixin(HashingModule, cybered.PageMixin):
-    pass
+
+class HashingMixin(HashingModule, cybered.PageMixin, cybered.PaginatedMixin):
+    """ Mixin for Hashing module pages that adds the cybered page mixin, and the cybered paginate
+    mixing. This step of the get_context_data chain will disable all buttons on the paginator
+    after the furthest one that the user has 'unlocked' to require they go through the module
+    in order """
+    def get_context_data(self, disabled_pages=[], **kwargs):
+        page_index = self.kwargs["page_index"]
+        page_count = self.kwargs["page_count"]
+
+        key = HashingModule.scope("progress")
+        if key not in self.request.session:
+            self.request.session[key] = page_index
+        self.request.session[key] = max(self.request.session[key], page_index)
+
+        disabled_pages = disabled_pages + list(range(self.request.session[key]+2, page_count))
+        return super().get_context_data(disabled_pages=disabled_pages, **kwargs)
 
 DIGEST_FUNCS = (
     (get_MD5_digest, "MD5"),
@@ -18,22 +33,22 @@ DIGEST_FUNCS = (
     (get_SHA3_digest, "SHA3"),
 )
 
+
 class HashingMainPageView(HashingMixin, TemplateView):
     """The main page for the hashing module."""
 
-    template_name = "hashing/begin.html"
+    pass
 
 
 class HashingMotivationPageView(HashingMixin, TemplateView):
     """The motivation page for the hashing module."""
 
-    template_name = "hashing/motivation.html"
+    pass
 
 
 class HashingExamplesPageView(HashingMixin, FormView):
     """Page listing several example hash functions."""
 
-    template_name = "hashing/examples_form.html"
     form_class = TextBoxForm
     success_url = ""
 
@@ -49,11 +64,18 @@ class HashingExamplesPageView(HashingMixin, FormView):
 
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        # Always lock the next page if there's no data in the session
+        if HashingModule.scope("example_hash_text") in self.request.session:
+            return super().get_context_data(**kwargs)
+
+        page_index = self.kwargs["page_index"]
+        context = super().get_context_data(disabled_pages=[page_index+1], **kwargs)
+        return context
+
 
 class HashingExamplesResultPageView(HashingMixin, TemplateView):
     """Display the results of the example hashes."""
-
-    template_name = "hashing/examples_results.html"
 
     def dispatch(self, request, *args, **kwargs):
         """Verify that there is input text to process before rendering the page.
@@ -99,7 +121,6 @@ class HashingExamplesResultPageView(HashingMixin, TemplateView):
 class HashingKeyedExamplesPageView(HashingMixin, FormView):
     """Page explaining keyed hash functions."""
 
-    template_name = "hashing/keyed_hashes_form.html"
     form_class = TextBoxWithPasswordForm
     success_url = ""
 
@@ -111,16 +132,26 @@ class HashingKeyedExamplesPageView(HashingMixin, FormView):
         """Add validated form data to the user session."""
         # Passing data between views is done with a session; which is
         # created implicitly for each separate connection (not sure when/if they time out)
-        self.request.session[HashingModule.scope("example_keyed_hash_text")] = form.cleaned_data["text"]
-        self.request.session[HashingModule.scope("example_keyed_hash_key")] = form.cleaned_data["secret_key"]
+        self.request.session[HashingModule.scope("example_keyed_hash_text")] = form.cleaned_data[
+            "text"
+        ]
+        self.request.session[HashingModule.scope("example_keyed_hash_key")] = form.cleaned_data[
+            "secret_key"
+        ]
 
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        # Always lock the next page if there's no data in the session
+        if HashingModule.scope("example_keyed_hash_key") in self.request.session:
+            return super().get_context_data(**kwargs)
+
+        page_index = self.kwargs["page_index"]
+        context = super().get_context_data(disabled_pages=[page_index+1], **kwargs)
+        return context
 
 class HashingKeyedExamplesResultPageView(HashingMixin, TemplateView):
     """Display the results of the keyed example hashes."""
-
-    template_name = "hashing/keyed_hashes_results.html"
 
     def dispatch(self, request, *args, **kwargs):
         """Verify that there is input text to process before rendering the page.
@@ -177,13 +208,12 @@ class HashingKeyedExamplesResultPageView(HashingMixin, TemplateView):
 class HashingConclusionPageView(HashingMixin, TemplateView):
     """The conclusion page for the hashing module."""
 
-    template_name = "hashing/conclusion.html"
+    pass
 
 
 class HashingToolsPageView(HashingMixin, FormView):
     """The Tools page for the hashing module."""
 
-    template_name = "hashing/tools.html"
     form_class = TextBoxWithOptionalPasswordForm
     success_url = ""
 
@@ -196,7 +226,9 @@ class HashingToolsPageView(HashingMixin, FormView):
         # Passing data between views is done with a session; which is
         # created implicitly for each separate connection (not sure when/if they time out)
         self.request.session[HashingModule.scope("tools_hash_text")] = form.cleaned_data["text"]
-        self.request.session[HashingModule.scope("tools_hash_key")] = form.cleaned_data["secret_key"]
+        self.request.session[HashingModule.scope("tools_hash_key")] = form.cleaned_data[
+            "secret_key"
+        ]
 
         return super().form_valid(form)
 

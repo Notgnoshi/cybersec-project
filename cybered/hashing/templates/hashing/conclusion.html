@@ -47,6 +47,7 @@
     to the CyberEd
     homepage with the button at the bottom of the page to pick a new topic!
 </p>
-<a href="{% url 'hashing:keyed_examples_results' %}" class="btn btn-secondary">Prev</a>
-<a href="{% url 'hashing:tools' %}" class="btn btn-primary">Next</a>
+
+{% include "includes/paginator.html" %}
+
 {% include "includes/footer.html" %}
