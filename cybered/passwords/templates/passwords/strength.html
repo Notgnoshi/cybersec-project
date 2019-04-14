@@ -1,6 +1,5 @@
 {% include "includes/head.html" %}
 <h2>Password Strength</h2>
 
-<a href="{% url 'passwords:cracking-tool' %}" class="btn btn-secondary">Prev</a>
-<a href="{% url 'passwords:strength-tool' %}" class="btn btn-primary">Next</a>
+{% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}

@@ -53,6 +53,5 @@
         happen to use the same password. Further, storing the salted hashes makes it impossible to simply
         transmit the hash of a password to another service used by the same user with the same password.</p>
 </div>
-<a href="{% url 'landingpage:index' %}" class="btn btn-secondary">Prev</a>
-<a href="{% url 'passwords:verification' %}" class="btn btn-primary">Next</a>
+{% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}

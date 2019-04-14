@@ -1,6 +1,5 @@
 {% include "includes/head.html" %}
 <h2>Password Verification</h2>
 
-<a href="{% url 'passwords:begin' %}" class="btn btn-secondary">Prev</a>
-<a href="{% url 'passwords:verification-tool' %}" class="btn btn-primary">Next</a>
+{% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
