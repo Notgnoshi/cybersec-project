@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # The site index, a landing page from which everything else is discoverable.
     "landingpage.apps.LandingpageConfig",
-    # Module about generating and using hashes
+    # Modules
     "hashing.apps.HashingConfig",
 ]
 
@@ -72,11 +72,12 @@ TEMPLATES = [
         "DIRS": [os.path.join(BASE_DIR, SHARED_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
+            "libraries": {"common_filters_tags": "shared.templatetags.common_extras"},
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.messages.context_processors.messages",
-            ]
+            ],
         },
     }
 ]

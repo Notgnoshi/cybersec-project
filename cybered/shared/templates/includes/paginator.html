@@ -1,0 +1,25 @@
+{% load common_filters_tags %}
+{% if paginator %}
+<nav aria-label="...">
+    <ul class="pagination">
+
+        {% with previous_index=paginator.page_index|add:"-1" %}
+        {% if paginator.allow_next_prev_buttons and paginator.page_index > 0 %}
+        {% include "includes/paginator/button.html" with page=paginator.page_list|list_index:previous_index is_active=0 text="Previous" %}
+        {% endif %}
+        {% endwith %}
+
+        {% if paginator.allow_num_buttons %}
+        {% for p in paginator.page_list %}
+        {% include "includes/paginator/button.html" with page=p is_active=forloop.counter|subtract:paginator.page_index text=forloop.counter %}
+        {% endfor %}
+        {% endif %}
+
+        {% with page_count=paginator.page_list|length next_index=paginator.page_index|add:"1" %}
+        {% if paginator.allow_next_prev_buttons and paginator.page_index < page_count|add:"-1" %}
+        {% include "includes/paginator/button.html" with page=paginator.page_list|list_index:next_index is_active=0 text="Next" %}
+        {% endif %}
+        {% endwith %}
+    </ul>
+</nav>
+{% endif %}

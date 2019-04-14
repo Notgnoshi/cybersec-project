@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+
 class PageMixin:
     """Mixin class that can be added to django template views
     that adds the module name to the view's context.
@@ -22,9 +23,9 @@ class PageMixin:
         as the module_name defined in the module's ModuleConfig, but it is very easy to
         do so by creating a type that inherits first from the ModuleConfig, then PageMixin, and finally
         a django template page type
-        """    
-        
-    def get_context_data(self, **kwargs):   
+        """
+
+    def get_context_data(self, **kwargs):
         """Add this module's name to the view's context."""
 
         context = super().get_context_data(**kwargs)

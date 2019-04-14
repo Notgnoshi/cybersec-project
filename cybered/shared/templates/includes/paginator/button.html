@@ -1,0 +1,7 @@
+{% if paginator.show_disabled_buttons or page.enabled %}
+<li class="page-item{% if is_active == 1 %} active{% endif %}{% if not page.enabled %} disabled{% endif %}">
+    <a class="page-link" {% if not page.enabled %} tabindex="-1" {% endif %}
+        href="{% url page.url %}">{{ text }}{% if is_active == 1 %} <span
+            class="sr-only">(current)</span>{% endif %}</a>
+</li>
+{% endif %}
