@@ -1,5 +1,55 @@
 {% include "includes/head.html" %}
 <h2>Password Verification</h2>
 
+<p>Login forms like the following are <em>everywhere</em> in the internet!</p>
+
+<div class="card w-50 mx-auto my-3 bg-light shadow-sm">
+    <h5 class="card-header">Login</h5>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.email.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.password.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.password }}
+                </div>
+            </div>
+            <input class="btn btn-success" type="submit" value="Login" />
+        </form>
+    </div>
+</div>
+
+<p>So how do they work? Try to login to Alice's super-official-and-totally-not-made-up account. We've gone ahead and
+    filled in her email for you.</p>
+
+{% if verification_password %}
+<h3>Identification</h3>
+<p>When you pressed the <button class="btn btn-sm btn-success">Login</button> button above, you claimed that you had the
+    <code>{{ verification_email }}</code> <strong>identity</strong>. In other words, you claimed you were the owner of
+    the <code>{{ verification_email }}</code> account.</p>
+
+<h3>Verification</h3>
+<p>However, you failed to correctly <strong>verify</strong> that you were Alice, because the password you entered did
+    not match the one we have on record. Try again, and this time use Alice's <em>real</em> password:
+    <code>IntoTheLookingGlass</code>.</p>
+{% endif %}
+
+{% if verification_password == "IntoTheLookingGlass" %}
+<p>Success! you verified that you were the owner of the <code>{{ verification_email }}</code> account by providing
+    information that (hopefully) only the owner of the account could know. Or, you know, in our case anyone.</p>
+
+<p>Now continue to the next page to learn <em>how</em> this verification is performed in a little more detail.</p>
+{% endif %}
+
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
