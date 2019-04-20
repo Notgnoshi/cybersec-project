@@ -5,14 +5,14 @@
 <div class="list-group">
     {% for module in modules %}
 
-    <div class="card my-1 bg-transparent">
+    <div class="card my-1 bg-transparent shadow-sm w-75 mx-auto">
         <div class="card-body">
             <h5 class="card-title">{{ module.name }}</h5>
             <p class="card-text">{{ module.description }}</p>
         </div>
-        <h5 class="card-footer">
+        <div class="card-footer">
             <a href="{{ module.link }}" class="btn btn-primary">Go to module</a>
-        </h5>
+        </div>
     </div>
     {% endfor %}
 </div>
