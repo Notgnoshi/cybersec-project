@@ -5,6 +5,11 @@ class SteganographyPageManager(cybered.PageManager):
     page_list = (
         ("begin", "begin", "steganography/begin.html"),
         ("image_metadata", "image-metadata", "steganography/image_metadata.html"),
+        (
+            "image_metadata_result",
+            "image-metadata-example-result",
+            "steganography/image_metadata_result.html",
+        ),
         ("image_deltas", "image-deltas", "steganography/image_deltas.html"),
         ("image_bitplanes", "image-bitplanes", "steganography/image_bitplanes.html"),
     )

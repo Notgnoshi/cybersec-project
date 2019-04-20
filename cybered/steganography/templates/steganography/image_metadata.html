@@ -1,5 +1,81 @@
+{% load static %}
+
 {% include "includes/head.html" %}
 
+<h3>Image Metadata</h3>
+
+<p>
+    One of the easiest methods of image steganography utilizes a piece of image data called the <b>image header</b>.
+    <b>Image headers</b>
+    are extra pieces of information placed at the beginning of image files that don't contain color information, but
+    other information about the file.
+    Most image headers indicate what type of image is in the file, and how big the image is, but depending on the image
+    format, other information can be stored there.
+</p>
+<p>
+    One of the most common image formats is the <b>JPEG standard</b>. JPEG images usually have the extension
+    <code>.jpg</code> or
+    <code>.jpeg</code>. According to some
+    versions of the JPEG standard, these files are allowed to include a 'user comment' block in the image header.
+</p>
+<p>
+    Information in a JPEG user comment has no effect on the rest of the image; this means that no matter what is there,
+    it's virtually impossible
+    to see it without using a text or binary tool to view the data of the image. In many cases, it would be difficult to
+    even detect that this data is present
+    without specifically looking for it! Take a look at this image; can you tell what the hidden message is? Can you
+    think of ways that you might detect this kind of steganography without
+    a tool?
+</p>
+
+<div class="text-center my-3">
+    <img src="{% static 'steganography/images/plane.jpg' %}" class="img-fluid img-thumbnail rounded">
+</div>
+
+<p>
+    The easiest way someone might detect data hidden in the message header would be to calculate approximately what how
+    much data
+    the JPEG image should contain; there are methods that can be used to figure out how much data a JPEG would require,
+    if you know the dimensions of
+    the image. If you determine
+    this value, and then see that the image you are looking at contains significantly more data, then you could guess
+    that there is hidden extra data!
+</p>
+<p>
+    Below, you can see some example JPEG images. Enter a message, and then select an image to hide the data in that
+    image.
+</p>
+
+<div class="container_fluid my-3">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form.secret_message.label_tag }}
+            {{ form.secret_message }}
+        </div>
+        <div class="text-center container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    {% static 'steganography/images/butterfly.jpg' as img %}
+                    <input type="image" src="{{ img }}" name="butterfly_image" class="img-fluid img-thumbnail"
+                        alt="Butterfly Image" />
+                </div>
+                <div class="col-12 col-md-4">
+                    {% static 'steganography/images/cat.jpg' as img %}
+                    <input type="image" src="{{ img }}" name="cat_image" class="img-fluid img-thumbnail"
+                        alt="Cat Image" />
+                </div>
+                <div class="col-12 col-md-4">
+                    {% static 'steganography/images/peppers.jpg' as img %}
+                    <input type="image" src="{{ img }}" name="peppers_image" class="img-fluid img-thumbnail"
+                        alt="Peppers Image" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 {% include "includes/paginator.html" %}
 

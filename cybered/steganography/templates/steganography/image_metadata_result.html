@@ -1,0 +1,68 @@
+{% load static %}
+{% include "includes/head.html" %}
+
+<h3>Image Metadata</h3>
+
+<p>
+    Below, we have the original image and then the version with your message in it; can you tell that the data is there?
+</p>
+
+<div class="text-center container-fluid my-3">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <img src="{% url 'steganography:exif_original_image' %}" class="card-img-top img-thumbnail rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Original Image: {{original_total_size}} bytes</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <img src="{% url 'steganography:exif_encoded_image' %}" class="card-img-top img-thumbnail rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Image With Hidden Message: {{encoded_total_size}} bytes</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    If we open the image with a tool that views it as raw data, we can see the difference between the two images. The
+    data in the original
+    image looks like this:
+</p>
+<div class="card my-3">
+    <div class="card-body">
+        <p class="card-text">
+            <samp>{{original_start_bytes}}</samp></p>
+    </div>
+</div>
+<p>
+    But the data in the image with the hidden message looks like this; you can see the hidden message:
+</p>
+<div class="card my-3">
+    <div class="card-body">
+        <p class="card-text">
+            <samp>{{encoded_start_bytes}}</samp></p>
+    </div>
+</div>
+<p>
+    As you can see, using metadata tags is a great way to hide data in plain sight, because it doesn't change the image,
+    but
+    if someone looks closely at the file with a tool, they can easily find the message. Can you think of ways you might
+    further hide the message?
+    One simple solution would be to use an encryption to make the data more secure; but that also requires that whoever
+    you send the message
+    to knows the secret key to decrypt the information.
+</p>
+<p>
+    In the next section, you're going to learn about a method called <b>image deltas</b>, where the image itself is the
+    secret key that you use
+    to decode the message.
+</p>
+
+{% include "includes/paginator.html" %}
+
+{% include "includes/footer.html" %}
