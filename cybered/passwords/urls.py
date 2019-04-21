@@ -8,7 +8,7 @@ urlpatterns = cybered.get_paginated_urls(
     (
         PasswordsBeginView,
         PasswordsVerificationView,
-        PasswordsVerificationToolView,
+        PasswordsVerificationDetailsView,
         PasswordsCrackingView,
         PasswordsCrackingToolView,
         PasswordsStrengthView,

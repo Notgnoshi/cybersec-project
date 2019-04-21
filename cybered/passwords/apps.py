@@ -22,7 +22,7 @@ class PasswordsPageManager(cybered.PageManager):
         # ('name', 'url', 'template')
         ("begin", PasswordsModule.module_start_link, "passwords/begin.html"),
         ("verification", "verification", "passwords/verification.html"),
-        ("verification-tool", "verification-tool", "passwords/verification-tool.html"),
+        ("verification-details", "verification-details", "passwords/verification-details.html"),
         ("cracking", "cracking", "passwords/cracking.html"),
         ("cracking-tool", "cracking-tool", "passwords/cracking-tool.html"),
         ("strength", "strength", "passwords/strength.html"),

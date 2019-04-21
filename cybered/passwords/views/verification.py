@@ -43,12 +43,12 @@ class PasswordsVerificationView(PasswordsMixin, FormView):
         return context
 
 
-class PasswordsVerificationToolView(PasswordsMixin, FormView):
+class PasswordsVerificationDetailsView(PasswordsMixin, FormView):
     form_class = TextBoxForm
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("verification-tool"))
+        return reverse(PasswordsModule.scope("verification-details"))
 
     def form_valid(self, form):
         return super().form_valid(form)
