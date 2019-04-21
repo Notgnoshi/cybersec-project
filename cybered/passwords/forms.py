@@ -18,8 +18,9 @@ class AliceLoginForm(forms.Form):
         ),
         label="Email",
         initial="alice@wonderland.gov",
-        disabled=True,
+        # disabled=True,
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"class": "form-control"}), label="Password"
+        widget=forms.PasswordInput(attrs={"class": "form-control", "autocomplete": "off"}),
+        label="Password",
     )

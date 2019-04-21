@@ -32,22 +32,45 @@
 <p>So how do they work? Try to login to Alice's super-official-and-totally-not-made-up account. We've gone ahead and
     filled in her email for you.</p>
 
-{% if verification_password %}
-<h3>Identification</h3>
-<p>When you pressed the <button class="btn btn-sm btn-success">Login</button> button above, you claimed that you had the
-    <code>{{ verification_email }}</code> <strong>identity</strong>. In other words, you claimed you were the owner of
-    the <code>{{ verification_email }}</code> account.</p>
+{% if verification_email %}
+<p>User <strong>authentication</strong> is a two step process. First, the user must <strong>identify</strong>
+    themselves. Second, the user must <strong>verify</strong> that they are, in fact, the user they claimed to be.</p>
 
-<h3>Verification</h3>
+<h3>Identification</h3>
+<p><strong>Identification</strong> is the first step in gaining authorization to use a service. There are several ways
+    of identifying a user. Some common methods of identification are listed below</p>
+
+<ul>
+    <li>A username</li>
+    <li>An email address</li>
+    <li>An account number</li>
+</ul>
+
+<p>In the example above, you attempted to <strong>identify</strong> yourself as the
+    <code>{{ verification_email }}</code> user.{% if verification_email != "alice@wonderland.gov" %} However, we asked
+    you to attempt logging in as the <code>alice@wonderland.gov</code> user. Please do so before continuing.{% endif %}</p>
+{% if verification_email == "alice@wonderland.gov" and verification_password != "IntoTheLookingGlass" %}
 <p>However, you failed to correctly <strong>verify</strong> that you were Alice, because the password you entered did
-    not match the one we have on record. Try again, and this time use Alice's <em>real</em> password:
-    <code>IntoTheLookingGlass</code>.</p>
+    not match the one we have on record. Try again, and this time use Alice's <em>actual</em> password:
+    <code>IntoTheLookingGlass</code></p>
+{% endif %}
 {% endif %}
 
-{% if verification_password == "IntoTheLookingGlass" %}
-<p>Success! you verified that you were the owner of the <code>{{ verification_email }}</code> account by providing
-    information that (hopefully) only the owner of the account could know. Or, you know, in our case anyone.</p>
+{% if verification_email == "alice@wonderland.gov" and verification_password == "IntoTheLookingGlass" %}
+<h3>Verification</h3>
+<p><strong>Verification</strong> is the second step in gaining authorization to use a service. There are many ways of
+    verifying someone's identity. A few different ways are listed below</p>
+<ul>
+    <li>By providing something secret that the user <em>knows</em> (like a password).</li>
+    <li>By providing something physical that the user <em>has</em> (like a hotel room key, or a credit card).</li>
+    <li>By providing something unique the user <em>is</em> (like a fingerprint, or an iris scan).</li>
+    <li>By providing something unique the user <em>does</em> (like voice recognition).</li>
+</ul>
 
+<p>In the example above, you <strong>verified</strong> that you were the owner of the
+    <code>{{ verification_email }}</code> account by providing information that matched what we had on record. That is,
+    you provided the secret <code>{{ verification_password }}</code> password associated with the
+    <code>{{ verification_email }}</code> account.</p>
 <p>Now continue to the next page to learn <em>how</em> this verification is performed in a little more detail.</p>
 {% endif %}
 
