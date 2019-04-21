@@ -1,4 +1,11 @@
 {% include "includes/head.html" %}
+<div class="alert alert-warning shadow-sm w-100 mx-auto" role="alert">
+    <h5>Note</h5>
+    <hr>
+    <p class="mb-0">The content in this module relies heavily on a good understanding of hashing. If you haven't gone
+        through our <a href="{% url 'hashing:begin' %}" class="alert-link">hashing</a> module, now would be a great
+        time.</p>
+</div>
 <h2>Introduction</h2>
 <p>When a user is attempting to access some service, for example a website, their computer, or a mobile
     application, they often must gain <b>authorization</b> before using that service. Authentication is
