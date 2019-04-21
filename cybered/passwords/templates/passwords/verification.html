@@ -32,7 +32,7 @@
 <p>So how do they work? Try to login to Alice's super-official-and-totally-not-made-up account. We've gone ahead and
     filled in her email for you.</p>
 
-{% if verification_email %}
+{% if input_email %}
 <p>User <strong>authentication</strong> is a two step process. First, the user must <strong>identify</strong>
     themselves. Second, the user must <strong>verify</strong> that they are, in fact, the user they claimed to be.</p>
 
@@ -47,16 +47,16 @@
 </ul>
 
 <p>In the example above, you attempted to <strong>identify</strong> yourself as the
-    <code>{{ verification_email }}</code> user.{% if verification_email != "alice@wonderland.gov" %} However, we asked
-    you to attempt logging in as the <code>alice@wonderland.gov</code> user. Please do so before continuing.{% endif %}</p>
-{% if verification_email == "alice@wonderland.gov" and verification_password != "IntoTheLookingGlass" %}
+    <code>{{ input_email }}</code> user.{% if input_email != actual_email %} However, we asked
+    you to attempt logging in as the <code>{{ actual_email }}</code> user. Please do so before continuing.{% endif %}</p>
+{% if input_email == actual_email and input_password != actual_password %}
 <p>However, you failed to correctly <strong>verify</strong> that you were Alice, because the password you entered did
     not match the one we have on record. Try again, and this time use Alice's <em>actual</em> password:
-    <code>IntoTheLookingGlass</code></p>
+    <code>{{ actual_password }}</code></p>
 {% endif %}
 {% endif %}
 
-{% if verification_email == "alice@wonderland.gov" and verification_password == "IntoTheLookingGlass" %}
+{% if input_email == actual_email and input_password == actual_password %}
 <h3>Verification</h3>
 <p><strong>Verification</strong> is the second step in gaining authorization to use a service. There are many ways of
     verifying someone's identity. A few different ways are listed below</p>
@@ -68,9 +68,9 @@
 </ul>
 
 <p>In the example above, you <strong>verified</strong> that you were the owner of the
-    <code>{{ verification_email }}</code> account by providing information that matched what we had on record. That is,
-    you provided the secret <code>{{ verification_password }}</code> password associated with the
-    <code>{{ verification_email }}</code> account.</p>
+    <code>{{ input_email }}</code> account by providing information that matched what we had on record. That is,
+    you provided the secret <code>{{ input_password }}</code> password associated with the
+    <code>{{ input_email }}</code> account.</p>
 <p>Now continue to the next page to learn <em>how</em> this verification is performed in a little more detail.</p>
 {% endif %}
 

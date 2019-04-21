@@ -6,6 +6,8 @@ from passwords.forms import TextBoxForm, AliceLoginForm
 
 from .mixin import PasswordsMixin
 
+ALICE_USERNAME = "alice@wonderland.gov"
+ALICE_PASSWORD = "IntoTheLookingGlass"
 
 class PasswordsVerificationView(PasswordsMixin, FormView):
     form_class = AliceLoginForm
@@ -26,7 +28,7 @@ class PasswordsVerificationView(PasswordsMixin, FormView):
     def get_context_data(self, **kwargs):
         # Only unlock the next page once they have entered the correct password.
         key = PasswordsModule.scope("verification_password")
-        if self.request.session.get(key, "") == "IntoTheLookingGlass":
+        if self.request.session.get(key, "") == ALICE_PASSWORD:
             context = super().get_context_data(**kwargs)
         else:
             page_index = self.kwargs["page_index"]
@@ -37,8 +39,10 @@ class PasswordsVerificationView(PasswordsMixin, FormView):
         key = PasswordsModule.scope("verification_email")
         verification_email = self.request.session.get(key, "")
 
-        context["verification_email"] = verification_email
-        context["verification_password"] = verification_password
+        context["actual_password"] = ALICE_PASSWORD
+        context["actual_username"] = ALICE_USERNAME
+        context["input_email"] = verification_email
+        context["input_password"] = verification_password
 
         return context
 
