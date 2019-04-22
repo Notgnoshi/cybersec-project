@@ -11,3 +11,8 @@ def list_index(l, i):
 @register.filter
 def subtract(a, b):
     return a - b
+
+
+@register.filter(name="zip")
+def zip_lists(a, b):
+    return zip(a, b)
