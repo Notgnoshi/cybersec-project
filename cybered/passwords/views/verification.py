@@ -1,13 +1,24 @@
+import hashlib
+
 from django.urls import reverse
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
-from passwords.forms import TextBoxForm, AliceLoginForm
+from passwords.forms import AliceLoginForm
 
 from .mixin import PasswordsMixin
 
 ALICE_USERNAME = "alice@wonderland.org"
 ALICE_PASSWORD = "IntoTheLookingGlass"
+ALICE_HASH = hashlib.md5(ALICE_PASSWORD.encode()).hexdigest()
+
+# Use alice's password for bill too, because I need an example of two users with the same password for the conversation on salting.
+PASSWORD_DB = {
+    "users": ["mad.hatter@wonderland.org", ALICE_USERNAME, "bill.the.lizard@wonderland.org"],
+    "hashes": [hashlib.md5("madhatter".encode()).hexdigest(), ALICE_HASH, ALICE_HASH],
+    "passwords": ["madhatter", ALICE_PASSWORD, ALICE_PASSWORD],
+}
+
 
 class PasswordsVerificationView(PasswordsMixin, FormView):
     form_class = AliceLoginForm
@@ -35,33 +46,63 @@ class PasswordsVerificationView(PasswordsMixin, FormView):
             context = super().get_context_data(disabled_pages=[page_index + 1], **kwargs)
 
         key = PasswordsModule.scope("verification_password")
-        verification_password = self.request.session.get(key, "")
+        input_password = self.request.session.get(key, "")
+        input_hash = hashlib.md5(input_password.encode()).hexdigest()
         key = PasswordsModule.scope("verification_email")
-        verification_email = self.request.session.get(key, "")
+        input_email = self.request.session.get(key, "")
 
         context["actual_password"] = ALICE_PASSWORD
-        context["actual_username"] = ALICE_USERNAME
-        context["input_email"] = verification_email
-        context["input_password"] = verification_password
+        context["actual_email"] = ALICE_USERNAME
+        context["input_email"] = input_email
+        context["input_password"] = input_password
+
+        context["password_db"] = PASSWORD_DB
+        logged_in = False
+        if input_email in PASSWORD_DB["users"]:
+            idx = PASSWORD_DB["users"].index(input_email)
+            logged_in = PASSWORD_DB["hashes"][idx] == input_hash
+        context["logged_in"] = logged_in
 
         return context
 
 
 class PasswordsVerificationDetailsView(PasswordsMixin, FormView):
-    form_class = TextBoxForm
+    form_class = AliceLoginForm
     success_url = ""
 
     def get_success_url(self):
         return reverse(PasswordsModule.scope("verification-details"))
 
     def form_valid(self, form):
+        self.request.session[PasswordsModule.scope("details_user")] = form.cleaned_data["email"]
+        self.request.session[PasswordsModule.scope("details_password")] = form.cleaned_data[
+            "password"
+        ]
         return super().form_valid(form)
 
-    # def get_context_data(self, **kwargs):
-    #     # Always lock the next page if there's no data in the session
-    #     if PasswordsModule.scope("example_hash_text") in self.request.session:
-    #         return super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    #     page_index = self.kwargs["page_index"]
-    #     context = super().get_context_data(disabled_pages=[page_index+1], **kwargs)
-    #     return context
+        key = PasswordsModule.scope("details_password")
+        input_password = self.request.session.get(key, "")
+        key = PasswordsModule.scope("details_user")
+        input_user = self.request.session.get(key, "")
+
+        input_hash = hashlib.md5(input_password.encode()).hexdigest()
+
+        context["actual_user"] = ALICE_USERNAME
+        context["actual_password"] = ALICE_PASSWORD
+        context["actual_hash"] = ALICE_HASH
+
+        context["input_user"] = input_user
+        context["input_password"] = input_password
+        context["input_hash"] = input_hash
+
+        context["password_db"] = PASSWORD_DB
+        logged_in = False
+        if input_user in PASSWORD_DB["users"]:
+            idx = PASSWORD_DB["users"].index(input_user)
+            logged_in = PASSWORD_DB["hashes"][idx] == input_hash
+        context["logged_in"] = logged_in
+
+        return context

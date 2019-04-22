@@ -24,7 +24,22 @@
                     {{ form.password }}
                 </div>
             </div>
-            <input class="btn btn-success" type="submit" value="Login" />
+            <div class="form-group row mb-0">
+                <div class="col-2 col-form-label">
+                <input class="btn btn-success" type="submit" value="Login" />
+                </div>
+                <div class="col">
+                    {% if logged_in %}
+                    <div class="alert alert-success my-0" role="alert">
+                        <p class="my-0">Logged in.</p>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger my-0" role="alert">
+                        <p class="my-0">Login failed.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </form>
     </div>
 </div>

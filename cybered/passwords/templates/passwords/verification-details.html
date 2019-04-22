@@ -1,10 +1,122 @@
+{% load common_filters_tags %}
 {% include "includes/head.html" %}
 <h2>Password Verification Details</h2>
-<div class=text-danger>
-    <p>Explain how passwords at transported to the remote server, then hashed, and then compared against the table of hashed passwords.</p>
-    <p>The reason to hash is not for transportation security &mdash; it's a security measure for <em>when</em> an attacker gains access to your passwords database.</p>
-    <p>This would work great with an image or images?</p>
-    <p>Choose a password, and then input a number of passwords, showing their hashes, and whether or not they match.</p>
+
+<p>On the last page we talked about how the <em>user</em> of a service performs password authentication. Now let's talk
+    a little bit about how the <em>service itself</em> performs the authentication. Try logging into the Alice user with
+    the password: <code>{{ actual_password }}</code></p>
+<div class="card w-50 mx-auto mb-3 bg-light shadow-sm">
+    <h5 class="card-header">Login</h5>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.email.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.password.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-2 col-form-label">
+                <input class="btn btn-success" type="submit" value="Login" />
+                </div>
+                <div class="col">
+                    {% if logged_in %}
+                    <div class="alert alert-success my-0" role="alert">
+                        <p class="my-0">Logged in.</p>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger my-0" role="alert">
+                        <p class="my-0">Login failed.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+
+{% if input_password %}
+<p>The service doesn't store the user's passwords. (Some do, but those services should be publicly shamed).
+    Instead, the service stores the password's <strong>hashes</strong>. We'll discuss why this is important
+    later.</p>
+
+<p>The user provides the service with a username and a password. Then the service performs the following steps</p>
+<ol>
+    <li>Attempt to find a user with the given username. If no such user exists, fail to authenticate the user.</li>
+    <li>Hash the goven password.</li>
+    <li>Attempt to match the hashed password with the recorded hash for the given username. If the hash matches, authenticate the user. Otherwise fail to authenticate the user.</li>
+</ol>
+<p>The table below shows a small portion of our super-secret password database. It stores each username and the hash of each user's password. Try logging into the other users!</p>
+<div class="row">
+    <div class="col-8">
+        <div class="table-responsive table-light shadow-sm mb-3 border rounded">
+            <table class="table table-hover table-bordered mb-0">
+            {% comment %} Lel, it's the whole database. {% endcomment %}
+                <caption class="p-2">A small fragment of the password database.</caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Password Hash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user, hash in password_db.users|zip:password_db.hashes %}
+                    <tr
+                        class="{% if hash == input_hash and user == input_user %}table-success{% elif user == input_user %}table-danger{% endif %}">
+                        <td>
+                            <pre class="mb-0">{{ user }}</pre>
+                        </td>
+                        <td>
+                            <pre class="mb-0">{{ hash }}</pre>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="table-responsive table-light shadow-sm mb-3 border rounded">
+            <table class="table table-bordered mb-0">
+                <caption class="p-2">The hash of the input password.</caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Input Hash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user, hash in password_db.users|zip:password_db.hashes %}
+                    <tr
+                        class="{% if hash == input_hash and user == input_user %}table-success{% elif user == input_user %}table-danger{% endif %}">
+                        <td>
+                            {% if user == input_user %}
+                            <pre class="mb-0">{{ input_hash }}</pre>
+                            {% else %}
+                            <pre class="mb-0">&nbsp;</pre>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<p>Now why do you think we store the password's hashes instead of the passwords themselves?</p>
+<p>The answer is simple. It's to minimize the amount of damage <strong>when</strong> an attacker gets a hold of a service's password database. Cyberattacks happen all the time, and even though there are ways to make attacks harder, there's no possible way to prevent them all.</p>
+<p>Storing the password hashes means that even if the attack gets access to the password database, they won't be able to (immediately) tell what the passwords are. This is a good thing because most people use the same passwords for multiple different services, so if an attacker learned your password, they would be able to use it anywhere you have an account!</p>
+{% endif %}
+
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
