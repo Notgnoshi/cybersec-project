@@ -6,7 +6,7 @@ from passwords.forms import TextBoxForm, AliceLoginForm
 
 from .mixin import PasswordsMixin
 
-ALICE_USERNAME = "alice@wonderland.gov"
+ALICE_USERNAME = "alice@wonderland.org"
 ALICE_PASSWORD = "IntoTheLookingGlass"
 
 class PasswordsVerificationView(PasswordsMixin, FormView):

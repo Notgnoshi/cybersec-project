@@ -14,10 +14,10 @@ class AliceLoginForm(forms.Form):
 
     email = forms.EmailField(
         widget=forms.EmailInput(
-            attrs={"class": "form-control", "placeholder": "alice@wonderland.gov"}
+            attrs={"class": "form-control", "placeholder": "alice@wonderland.org"}
         ),
         label="Email",
-        initial="alice@wonderland.gov",
+        initial="alice@wonderland.org",
         # disabled=True,
     )
     password = forms.CharField(
