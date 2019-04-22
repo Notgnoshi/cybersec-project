@@ -23,10 +23,10 @@ class PasswordsPageManager(cybered.PageManager):
         ("begin", PasswordsModule.module_start_link, "passwords/begin.html"),
         ("verification", "verification", "passwords/verification.html"),
         ("verification-details", "verification-details", "passwords/verification-details.html"),
+        ("salt", "salt", "passwords/salt.html"),
+        ("salt-tool", "salt-tool", "passwords/salt-tool.html"),
         ("cracking", "cracking", "passwords/cracking.html"),
         ("cracking-tool", "cracking-tool", "passwords/cracking-tool.html"),
         ("strength", "strength", "passwords/strength.html"),
         ("strength-tool", "strength-tool", "passwords/strength-tool.html"),
-        ("salt", "salt", "passwords/salt.html"),
-        ("salt-tool", "salt-tool", "passwords/salt-tool.html"),
     )
