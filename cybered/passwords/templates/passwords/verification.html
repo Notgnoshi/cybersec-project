@@ -33,7 +33,7 @@
                     <div class="alert alert-success my-0" role="alert">
                         <p class="my-0">Logged in.</p>
                     </div>
-                    {% else %}
+                    {% elif input_password and not logged_in %}
                     <div class="alert alert-danger my-0" role="alert">
                         <p class="my-0">Login failed.</p>
                     </div>
