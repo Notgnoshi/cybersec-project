@@ -55,25 +55,7 @@
             {{ form.secret_message.label_tag }}
             {{ form.secret_message }}
         </div>
-        <div class="text-center container-fluid">
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    {% static 'steganography/images/butterfly.jpg' as img %}
-                    <input type="image" src="{{ img }}" name="butterfly_image" class="img-fluid img-thumbnail"
-                        alt="Butterfly Image" />
-                </div>
-                <div class="col-12 col-md-4">
-                    {% static 'steganography/images/cat.jpg' as img %}
-                    <input type="image" src="{{ img }}" name="cat_image" class="img-fluid img-thumbnail"
-                        alt="Cat Image" />
-                </div>
-                <div class="col-12 col-md-4">
-                    {% static 'steganography/images/peppers.jpg' as img %}
-                    <input type="image" src="{{ img }}" name="peppers_image" class="img-fluid img-thumbnail"
-                        alt="Peppers Image" />
-                </div>
-            </div>
-        </div>
+        {% include 'steganography/include/image_choice_buttons.html' %}
     </form>
 </div>
 

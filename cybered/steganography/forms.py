@@ -2,18 +2,12 @@ from django import forms
 from django.contrib.staticfiles import finders
 
 
-class SecretMessageForm(forms.Form):
-    secret_message = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}), label="Secret Message"
-    )
-
-    __HARDCODED_IMAGES = (
-        ("butterfly_image", "steganography/images/butterfly.jpg"),
-        ("cat_image", "steganography/images/cat.jpg"),
-        ("peppers_image", "steganography/images/peppers.jpg"),
-    )
-
+class ImageChoicesMixin:
     __IMAGE_SEARCH_STRINGS = ("{}", "{}.x", "{}.y")
+
+    def __init__(self, *args, name_url_pairs=None, **kwargs):
+        self.__name_url_pairs = name_url_pairs or ()
+        super().__init__(*args, **kwargs)
 
     def clean(self):
         """Verifies that an image exists that can have data encoded in it, and
@@ -32,7 +26,7 @@ class SecretMessageForm(forms.Form):
         # to the POST data instead of just setting the image name
         chosen_image = ""
         chosen_static_url = ""
-        for img_name, img_path in self.__HARDCODED_IMAGES:
+        for img_name, img_path in self.__name_url_pairs:
             for search_str in self.__IMAGE_SEARCH_STRINGS:
                 if search_str.format(img_name) in self.data:
                     chosen_image = img_name
@@ -47,5 +41,16 @@ class SecretMessageForm(forms.Form):
             raise forms.ValidationError("No image found for static path", chosen_static_url)
 
         cleaned_data["image_static_url"] = chosen_static_url
+        cleaned_data["image_name"] = chosen_image
         self.cleaned_data = cleaned_data
         return self.cleaned_data
+
+
+class ImageForm(ImageChoicesMixin, forms.Form):
+    pass
+
+
+class SecretMessageImageForm(ImageChoicesMixin, forms.Form):
+    secret_message = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}), label="Secret Message"
+    )

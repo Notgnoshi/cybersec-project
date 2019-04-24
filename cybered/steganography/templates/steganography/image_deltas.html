@@ -1,4 +1,103 @@
+{% load static %}
 {% include "includes/head.html" %}
+
+<h3>Image Deltas</h3>
+<p><b>Image deltas</b> are another way of using steganography to encode data in an image. It is different from using
+    using image metadata in two important ways:
+    <ul>
+        <li>You cannot see the data by looking at the raw data of the image</li>
+        <li>Both the sender and receiver need to know the image before data can be sent</li>
+    </ul>
+</p>
+
+<h4>Bitmaps</h4>
+<p>
+    Let's take a moment to look at how image data is stored. For simplicity, we will talk about black and white,
+    or <b>grayscale</b> images. Images are made of <b>pixels</b>, which are just colored dots. An image file contains
+    a list of values that indicate what color each pixel should be, and your computer draws them all close to each other
+    and very small, and your eyes blend them together so that you see the picture as a whole, instead of as a bunch of
+    dots.
+</p>
+
+
+<div class="row justify-content-center py-3">
+    <div class="col-4">
+        <div class="card">
+            <img class="card-img-top" src="{% static 'steganography/images/zoom_in_pixels.bmp' %}"
+                alt="Magnification showing pixels">
+            <div class="card-body">
+                <p class="card-text">This example shows how you can zoom in on an image to see the individual pixels</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>The most common method of storing these pixel values is a <b>bitmap</b>; in fact, it's so common that there is a file
+    format
+    based on it. Bitmap files end with <code>.bmp</code>. Unlike JPEG files, Bitmaps can not contain user comments in
+    their header,
+    so encoding data in them has to be done by different means. In a <b>bitmap</b>, there are two numbers to indicate
+    how tall and wide
+    the image is, and then there is just a list of numbers, each one indicating a pixel color.</p>
+
+<h4>Encoding Pictures</h4>
+<p>
+    Now that you understand the basics of bitmaps, we can show how they are used to hide data. A <b>delta</b> between
+    two things
+    is the difference; so if we have two bitmaps, the delta between them would be calculated by finding the difference
+    between the values
+    of associated pixels.
+</p>
+
+<div class="row justify-content-center py-3">
+    <div class="col-8 ">
+        <div class="card">
+            <img class="card-img-top" src="{% static 'steganography/images/delta_image_example.bmp' %}"
+                alt="Example of finding a delta image">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    By doing math with the values of each pixel, we can find the delta image from
+                    two other images</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<p>To encode data, we find a way to modify some pixels to make a message. To get the message back, we find the delta
+    image between
+    the original image, and the one with the modifications. This is why the sender and receiver both need to know what
+    the original image is, before
+    they can send messages.
+</p>
+<p>Pick one of the images below, and we will show you one way that it can be used to encode data</p>
+
+
+<div class="container_fluid my-3">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="text-center container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    {% static 'steganography/images/boat_bw.bmp' as img %}
+                    <input type="image" src="{{ img }}" name="boat_image" class="img-fluid img-thumbnail"
+                        alt="Boats Image" />
+                </div>
+                <div class="col-12 col-md-4">
+                    {% static 'steganography/images/houses_bw.bmp' as img %}
+                    <input type="image" src="{{ img }}" name="houses_image" class="img-fluid img-thumbnail"
+                        alt="Houses Image" />
+                </div>
+                <div class="col-12 col-md-4">
+                    {% static 'steganography/images/mountain_bw.bmp' as img %}
+                    <input type="image" src="{{ img }}" name="mountain_image" class="img-fluid img-thumbnail"
+                        alt="Mountain Image" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 
 {% include "includes/paginator.html" %}
