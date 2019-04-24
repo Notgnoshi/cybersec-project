@@ -21,7 +21,7 @@
 
 
 <div class="row justify-content-center py-3">
-    <div class="col-4">
+    <div class="col-8 col-sm-6 col-md-4">
         <div class="card">
             <img class="card-img-top" src="{% static 'steganography/images/zoom_in_pixels.bmp' %}"
                 alt="Magnification showing pixels">
@@ -77,25 +77,7 @@
     <form method="post">
         {% csrf_token %}
 
-        <div class="text-center container-fluid">
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    {% static 'steganography/images/boat_bw.bmp' as img %}
-                    <input type="image" src="{{ img }}" name="boat_image" class="img-fluid img-thumbnail"
-                        alt="Boats Image" />
-                </div>
-                <div class="col-12 col-md-4">
-                    {% static 'steganography/images/houses_bw.bmp' as img %}
-                    <input type="image" src="{{ img }}" name="houses_image" class="img-fluid img-thumbnail"
-                        alt="Houses Image" />
-                </div>
-                <div class="col-12 col-md-4">
-                    {% static 'steganography/images/mountain_bw.bmp' as img %}
-                    <input type="image" src="{{ img }}" name="mountain_image" class="img-fluid img-thumbnail"
-                        alt="Mountain Image" />
-                </div>
-            </div>
-        </div>
+        {% include 'steganography/include/image_choice_buttons.html' %}
     </form>
 </div>
 

@@ -91,3 +91,64 @@ def set_exif(input_fp, output_fp, exif_bytes=b""):
             img_obj.save(output_fp, format=__JPG_FORMAT_STR)
     except IOError as err:
         raise ImageToolError("Unable to read/write", str(input_fp), "->", str(output_fp)) from err
+
+
+def encode_bw_delta_in_greyscale_bmp(input_fp, output_fp, hidden_fp):
+    """ Hides a black and white image in a greyscale image by
+        modifying all pixels by +1 or -1 if they correspond to
+        a black pixel in the input black and white image """
+
+    # PIL appears to break if given a Path object for some of these operations?
+    input_fp = str(input_fp) if isinstance(input_fp, Path) else input_fp
+    output_fp = str(output_fp) if isinstance(output_fp, Path) else output_fp
+    hidden_fp = str(hidden_fp) if isinstance(hidden_fp, Path) else hidden_fp
+
+    try:
+        img_obj = Image.open(input_fp).convert("L")
+        overlay_obj = Image.open(hidden_fp).convert("L")
+
+        w, h = img_obj.size
+        overlay_obj = overlay_obj.resize((w, h), Image.NEAREST)
+
+        img_data = img_obj.getdata()
+        overlay_data = overlay_obj.getdata()
+        result_data = [
+            orig if over > 0 else (orig + 1 if orig < 255 else orig - 1)
+            for orig, over in zip(img_data, overlay_data)
+        ]
+
+        img_obj.putdata(result_data)
+        img_obj.save(output_fp, "BMP")
+    except IOError as err:
+        raise ImageToolError(
+            "Unable to read/write", str(input_fp), ",", str(overlay_obj), "->", str(output_fp)
+        ) from err
+
+
+def decode_bw_delta_from_greyscale_bmp(input_fp1, input_fp2, delta_fp, white_value=255):
+    """ Diffs two images and returns a black and white delta image
+    where every pixel that differed in the input images is black """
+
+    # PIL appears to break if given a Path object for some of these operations?
+    input_fp1 = str(input_fp1) if isinstance(input_fp1, Path) else input_fp1
+    input_fp2 = str(input_fp2) if isinstance(input_fp2, Path) else input_fp2
+    delta_fp = str(delta_fp) if isinstance(delta_fp, Path) else delta_fp
+
+    try:
+        img1_obj = Image.open(input_fp1).convert("L")
+        img2_obj = Image.open(input_fp2).convert("L")
+
+        if img1_obj.width != img2_obj.width or img1_obj.height != img2_obj.height:
+            raise ImageToolError("Cannot find delta for differently sized images")
+
+        data1 = img1_obj.getdata()
+        data2 = img2_obj.getdata()
+
+        result_data = [0 if a != b else white_value for a, b in zip(data1, data2)]
+
+        img1_obj.putdata(result_data)
+        img1_obj.save(delta_fp, "BMP")
+    except IOError as err:
+        raise ImageToolError(
+            "Unable to read/write", str(input_fp1), ",", str(input_fp2), "->", str(delta_fp)
+        ) from err

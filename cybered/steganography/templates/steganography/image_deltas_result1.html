@@ -1,3 +1,4 @@
+{% load static %}
 {% include "includes/head.html" %}
 
 <h3>Image Deltas</h3>
@@ -6,7 +7,28 @@
     encoded data? Can you tell what the encoded data is?
 </p>
 
-<!--Result pictures-->
+
+<div class="text-center container-fluid my-3">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <img src="{% url 'steganography:bmp_original_image1' %}" class="card-img-top img-thumbnail rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Original Image</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <img src="{% url 'steganography:bmp_encoded_image1' %}" class="card-img-top img-thumbnail rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Image With Hidden Message</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <p>It's very difficult to tell the difference. The message that was encoded is a picture where every pixel is either
     black or white. If the pixel is supposed to be black, then the delta for that pixel is 1 or -1. So some of the
@@ -14,33 +36,76 @@
     encoded picture are different from the original, but they are only 1 more or 1 less.
 </p>
 
-<div class="card">
-    <!--Picture with 2 different colors-->
-    <div class="card-body">
-        <p>This picture has two different colors in it, they have a difference in their values of 1; it's pretty hard to
-            tell the difference!</p>
+<div class="row justify-content-center py-3">
+    <div class="col-6">
+        <div class="card">
+            <img class="card-img-top" src="{% static 'steganography/images/delta_1_example.bmp' %}"
+                alt="Example of pixels with delta 1">
+            <div class="card-body">
+                <p>This picture has two different colors in it, but they only have a difference in their values of 1;
+                    it's
+                    pretty hard to
+                    tell the difference!</p>
+            </div>
+        </div>
     </div>
 </div>
-
 <p>
-    Lets decode the image. First, we take the original image, and subtract the modified image - This gives us the delta
+    Lets decode the image. First, we take the original image, and subtract the modified image - This gives us the
+    delta
     image, where every pixel
-    value is either 1 or 0. If we leave it like this, it's very hard to see the hidden message. So the next step is to
+    value is either 1 or 0. If we leave it like this, it's very hard to see the hidden message. So the next step is
+    to
     <b>normalize</b> the data. This means
-    that we adjust it to take the biggest possible range of values. So we have values in the range [0, 1], and we expand
+    that we adjust it to take the biggest possible range of values. So we have values in the range [0, 1], and we
+    expand
     them to the range [0, 255]. This makes it
     obvious what the hidden picture is.
 </p>
 
+<div class="card px-3">
+    <div class="text-center row justify-content-center py-3">
+        <div class="col-6">
+            <div class="card">
+                <img class="card-img-top" src="{% url 'steganography:bmp_decoded_image1' %}"
+                    alt="Example of pixels with delta 1">
+                <div class="card-body">
+                    <h5 class="card-title">Unnormalized Delta Image</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <img class="card-img-top" src="{% url 'steganography:bmp_decoded_normalized_image1' %}"
+                    alt="Example of pixels with delta 1">
+                <div class="card-body">
+                    <h5 class="card-title">Normalized Delta Image</h5>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="card-body">Look carefully; can you see the image? In this example, the pixels have been
+            lightened extra so
+            that you can see the difference; but if it were completely unnormalized, you wouldn't be able to see
+            anything at all.
+        </p>
+    </div>
+</div>
+
 <h4>Encoding Text</h4>
 <p>
-    A lot of hidden messages are not pictures, they are text; how might you adjust the image to hide text in it instead?
+    A lot of hidden messages are not pictures, they are text; how might you adjust the image to hide text in it
+    instead?
     We will start by
-    assigning a number to every letter of the alphabet, from 1-26. Then we take our message, and we assign each letter
+    assigning a number to every letter of the alphabet, from 1-26. Then we take our message, and we assign each
+    letter
     to a pixel in the picture, in order.
     We will adjust that pixel by adding the value for the letter to that pixel. This means that every pixel in the
     adjusted image might be different by
-    up to 26 values. Take a look at the example here; can you tell the difference between two colors that differ by 26.
+    up to 26 values. Take a look at the example here; can you tell the difference between two colors that differ by
+    26.
 </p>
 
 {% include "includes/paginator.html" %}

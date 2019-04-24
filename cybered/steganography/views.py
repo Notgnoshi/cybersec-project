@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.templatetags.static import static
 
 from io import BytesIO
+import random
 import os
 
 from .apps import SteganographyModule
@@ -50,7 +51,7 @@ class SteganographyMainPageView(SteganographyMixin, TemplateView):
     pass
 
 
-class SteganographyImageMetadataPageView(SteganographyMixin,ImageChoicesMixin, FormView):
+class SteganographyImageMetadataPageView(SteganographyMixin, ImageChoicesMixin, FormView):
     form_class = SecretMessageImageForm
     success_url = ""
 
@@ -162,6 +163,21 @@ class SteganographyImageDeltasPageView(SteganographyMixin, ImageChoicesMixin, Fo
         ("mountain_image", "steganography/images/mountain_bw.bmp"),
     )
 
+    bw_images = (
+        "steganography/images/face_overlay.bmp",
+        "steganography/images/qmark_overlay.bmp",
+        "steganography/images/rad_overlay.bmp",
+    )
+
+    def form_valid(self, form):
+        """Add validated form data to the user session."""
+
+        self.request.session[SteganographyModule.scope("bmp_encode1_overlay_url")] = random.choice(
+            self.bw_images
+        )
+
+        return super().form_valid(form)
+
     def get_success_url(self):
         """Load url conf files so that reverse() can be called."""
         return reverse(SteganographyModule.scope("image_deltas_result1"))
@@ -170,7 +186,7 @@ class SteganographyImageDeltasPageView(SteganographyMixin, ImageChoicesMixin, Fo
         context = None
 
         # Always lock the next page if there's no data in the session
-        if (SteganographyModule.scope(self.image_choice_session_key) in self.request.session):
+        if SteganographyModule.scope(self.image_choice_session_key) in self.request.session:
             context = super().get_context_data(**kwargs)
         else:
             page_index = self.kwargs["page_index"]
@@ -195,26 +211,47 @@ class SteganographyImageDeltasExampleResult1PageView(SteganographyMixin, Templat
             else redirect(reverse(SteganographyModule.scope("image_deltas")))
         )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        file_url = self.request.session[SteganographyModule.scope("bmp_encode1_image_url")]
-
-        # Add the EXIF tag and pull out the beginning bytes of the file
-        file_path = finders.find(file_url)
-        buffer = BytesIO()
-        #image_tools.set_user_comment_exif(file_path, buffer, secret_message)
-
-        return context
-
 
 def bmp_encoded_image1(request):
     file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
+    overlay_url = request.session[SteganographyModule.scope("bmp_encode1_overlay_url")]
 
     response = HttpResponse(content_type="image/bmp")
 
     file_path = finders.find(file_url)
-    #image_tools.set_user_comment_exif(file_path, response, secret_message)
+    overlay_path = finders.find(overlay_url)
+    image_tools.encode_bw_delta_in_greyscale_bmp(file_path, response, overlay_path)
+
+    return response
+
+def bmp_decoded_image1(request):
+    file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
+    overlay_url = request.session[SteganographyModule.scope("bmp_encode1_overlay_url")]
+
+    response = HttpResponse(content_type="image/bmp")
+
+    file_path = finders.find(file_url)
+    overlay_path = finders.find(overlay_url)
+
+    buffer = BytesIO()
+    image_tools.encode_bw_delta_in_greyscale_bmp(file_path, buffer, overlay_path)
+    image_tools.decode_bw_delta_from_greyscale_bmp(file_path, buffer, response, 15)
+    
+    return response
+
+
+def bmp_decoded_normalized_image1(request):
+    file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
+    overlay_url = request.session[SteganographyModule.scope("bmp_encode1_overlay_url")]
+
+    response = HttpResponse(content_type="image/bmp")
+
+    file_path = finders.find(file_url)
+    overlay_path = finders.find(overlay_url)
+
+    buffer = BytesIO()
+    image_tools.encode_bw_delta_in_greyscale_bmp(file_path, buffer, overlay_path)
+    image_tools.decode_bw_delta_from_greyscale_bmp(file_path, buffer, response, 255)
 
     return response
 

@@ -21,4 +21,10 @@ urlpatterns = cybered.get_paginated_urls(
     path("exif-original-image", exif_original_image, name="exif_original_image"),
     path("bmp-encoded-image1", bmp_encoded_image1, name="bmp_encoded_image1"),
     path("bmp-original-image1", bmp_original_image1, name="bmp_original_image1"),
+    path("bmp-decoded-image1", bmp_decoded_image1, name="bmp_decoded_image1"),
+    path(
+        "bmp-decoded-normalized-image1",
+        bmp_decoded_normalized_image1,
+        name="bmp_decoded_normalized_image1",
+    ),
 ]
