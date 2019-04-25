@@ -63,8 +63,8 @@
     obvious what the hidden picture is.
 </p>
 
-<div class="card px-3">
-    <div class="text-center row justify-content-center py-3">
+<div class="card px-3 my-3">
+    <div class="text-center row justify-content-center mt-3">
         <div class="col-6">
             <div class="card">
                 <img class="card-img-top" src="{% url 'steganography:bmp_decoded_image1' %}"
@@ -86,26 +86,21 @@
         </div>
     </div>
     <div class="card-body">
-        <p class="card-body">Look carefully; can you see the image? In this example, the pixels have been
-            lightened extra so
-            that you can see the difference; but if it were completely unnormalized, you wouldn't be able to see
-            anything at all.
+        <p class="card-body">Look carefully; can you see the hidden image on the left in the unnormalized delta image?
+            In this example, the pixels have been lightened extra so
+            that you might be able to see the difference; but if it were completely unnormalized, you probably
+            wouldn't be able to see anything at all.
         </p>
     </div>
 </div>
 
-<h4>Encoding Text</h4>
+
 <p>
-    A lot of hidden messages are not pictures, they are text; how might you adjust the image to hide text in it
-    instead?
-    We will start by
-    assigning a number to every letter of the alphabet, from 1-26. Then we take our message, and we assign each
-    letter
-    to a pixel in the picture, in order.
-    We will adjust that pixel by adding the value for the letter to that pixel. This means that every pixel in the
-    adjusted image might be different by
-    up to 26 values. Take a look at the example here; can you tell the difference between two colors that differ by
-    26.
+    This is useful if you want to hide a black and white image; and it can work for color images too; we'll talk about
+    that
+    a bit later. But what if you want to hide a secret message instead of a picture? Next we're going to see how it's
+    possible
+    to use this technique to hide letters instead of just a picture.
 </p>
 
 {% include "includes/paginator.html" %}
