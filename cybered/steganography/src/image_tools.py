@@ -4,6 +4,7 @@ from PIL.TiffImagePlugin import ImageFileDirectory_v2
 
 from pathlib import Path
 from io import BytesIO
+import random
 
 __JPG_FORMAT_STR = "JPEG"
 
@@ -124,7 +125,6 @@ def encode_bw_delta_in_greyscale_bmp(input_fp, output_fp, hidden_fp):
             "Unable to read/write", str(input_fp), ",", str(overlay_obj), "->", str(output_fp)
         ) from err
 
-
 def decode_bw_delta_from_greyscale_bmp(input_fp1, input_fp2, delta_fp, white_value=255):
     """ Diffs two images and returns a black and white delta image
     where every pixel that differed in the input images is black """
@@ -151,4 +151,75 @@ def decode_bw_delta_from_greyscale_bmp(input_fp1, input_fp2, delta_fp, white_val
     except IOError as err:
         raise ImageToolError(
             "Unable to read/write", str(input_fp1), ",", str(input_fp2), "->", str(delta_fp)
+        ) from err
+
+def encode_text_delta_in_greyscale_bmp(input_fp, output_fp, hidden_message):
+    """ Hides a black and white image in a greyscale image by
+        modifying all pixels by a value in [-13, 13] corresponding to the 26 letters
+        of the alphabet. Non-alphabetic characters are ignored. If the message
+        is too long to encode in the image, it will be truncated """
+
+    # PIL appears to break if given a Path object for some of these operations?
+    input_fp = str(input_fp) if isinstance(input_fp, Path) else input_fp
+    output_fp = str(output_fp) if isinstance(output_fp, Path) else output_fp
+
+    try:
+        img_obj = Image.open(input_fp).convert("L")
+        img_data = list(img_obj.getdata())
+
+        # Get a list of the pixels that are at least 13 values away from 0, 255
+        # so we know we can use them to encode
+        modify_pixel_options = list(
+            map(lambda pair: pair[0],
+            filter(
+                lambda pair: pair[1] >= 13 or pair[1] <= 242, zip(range(len(img_data)), img_data)
+            )
+            )
+        )
+
+        # Filter message to letters only, then truncate the message to make sure we have enough pixels for it
+        hidden_message = "".join(filter(lambda c: c.isalpha(), hidden_message))[:len(modify_pixel_options)].lower()
+        modify_pixels = sorted(random.sample(modify_pixel_options, len(hidden_message)))
+
+        for pixel, char in zip(modify_pixels, hidden_message):
+            diff = ord(char) - ord('a') - 13
+            if diff >= 0: diff = diff+1
+            img_data[pixel] = img_data[pixel] + diff
+
+        img_obj.putdata(img_data)
+        img_obj.save(output_fp, "BMP")
+
+    except IOError as err:
+        raise ImageToolError(
+            "Unable to read/write", str(input_fp), "->", str(output_fp)
+        ) from err
+
+def decode_text_delta_from_greyscale_bmp(input_fp1, input_fp2):
+    """ Decodes text hidden in a greyscale image. The image delta is found,
+    and each pixel that differs is converted to a letter of the alphabet """
+
+    # PIL appears to break if given a Path object for some of these operations?
+    input_fp1 = str(input_fp1) if isinstance(input_fp1, Path) else input_fp1
+    input_fp2 = str(input_fp2) if isinstance(input_fp2, Path) else input_fp2
+
+    try:
+        img_obj1 = Image.open(input_fp1).convert("L")
+        img_obj2 = Image.open(input_fp2).convert("L")
+        
+        if img_obj1.width != img_obj2.width or img_obj1.height != img_obj2.height:
+            raise ImageToolError("Cannot find delta for differently sized images")
+
+        img_data1 = img_obj1.getdata()
+        img_data2 = img_obj2.getdata()
+
+        result = "".join(
+            map(lambda x: chr((x-1 if x>0 else x) + 13 + ord('a')), 
+                filter(lambda x: x != 0, [b-a for a, b in zip(img_data1, img_data2)])
+            )
+        )
+        
+        return result
+    except IOError as err:
+        raise ImageToolError(
+            "Unable to read/write", str(input_fp1), ",", str(input_fp2)
         ) from err

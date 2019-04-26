@@ -15,7 +15,7 @@ from ..src import image_tools
 
 from .shared import *
 
-class SteganographyImageDeltasPageView(SteganographyMixin, ImageChoicesMixin, FormView):
+class SteganographyImageDeltas1PageView(SteganographyMixin, ImageChoicesMixin, FormView):
     form_class = ImageForm
     success_url = ""
 
@@ -71,7 +71,7 @@ class SteganographyImageDeltasExampleResult1PageView(SteganographyMixin, Templat
         return (
             super().dispatch(request, *args, **kwargs)
             if file_path
-            else redirect(reverse(SteganographyModule.scope("image_deltas")))
+            else redirect(reverse(SteganographyModule.scope("image_deltas1")))
         )
 
 

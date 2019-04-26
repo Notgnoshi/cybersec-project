@@ -1,0 +1,66 @@
+{% load static %}
+{% include "includes/head.html" %}
+
+<h4>Encoding Text</h4>
+
+<p>Below, you can see the original image, and the modified image with your message hidden in it. Once again,
+    it's pretty difficult to see the difference between them.
+</p>
+
+<div class="text-center container-fluid my-3">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <img src="{% url 'steganography:bmp_original_image2' %}" class="card-img-top img-thumbnail rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Original Image</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <img src="{% url 'steganography:bmp_encoded_image2' %}" class="card-img-top img-thumbnail rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Image With Hidden Message</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    If we decode the image, we get your message back:
+</p>
+<div class="card my-3">
+    <div class="card-body">
+        <samp>{{decoded_message}}</samp>
+    </div>
+</div>
+<p>
+    Notice, the message has been changed a little. The way that we encoded it, there was no way to represent spaces or
+    capital letters, spaces were removed, and all capital letters were made lower-case. If we wanted to be able to
+    encode more characters, we
+    could
+    increase the range of values used to encode the message, but then the pixel differences would be more noticable.
+</p>
+
+<div class="text-center row justify-content-center my-3">
+    <div class="col-6">
+        <div class="card">
+            <img class="card-img-top" src="{% url 'steganography:bmp_decoded_image2' %}"
+                alt="Example of pixels with delta 1">
+            <div class="card-body">
+                <h5 class="card-title">Modified Pixels</h5>
+                <p class="card-body">In this picture, you can see all of the pictures that were used to encode your
+                    message.
+                    If you go look at the original picture and the encoded picture, can you tell these pixels are
+                    different?
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/paginator.html" %}
+
+{% include "includes/footer.html" %}

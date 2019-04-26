@@ -1,0 +1,73 @@
+{% load static %}
+{% include "includes/head.html" %}
+
+<h4>Encoding Text</h4>
+<p>
+    A lot of hidden messages are not pictures, they are text; how might you adjust the image to hide text in it
+    instead?
+    We will start by
+    assigning a number to every letter of the alphabet, from 1-26. Then we take our message, and we assign each
+    letter
+    to a pixel in the picture, in order.
+    We will adjust that pixel by adding the value for the letter to that pixel. This means that every pixel in the
+    adjusted image might be different by
+    up to 26 values. Unfortunately, it's pretty easy to see the difference between two pixels that are this different.
+</p>
+
+<div class="row justify-content-center py-3">
+    <div class="col-6">
+        <div class="card">
+            <img class="card-img-top" src="{% static 'steganography/images/delta_26_example.bmp' %}"
+                alt="Example of pixels with delta 1">
+            <div class="card-body">
+                <p>This picture has two different colors that differ by 26; the max difference you would get from a
+                    letter 'z'</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>Since there's a lot of pixels in an image, it
+    would still be difficult
+    to notice the changed ones, but it would be more likely to be discovered. For example, if there is a large white
+    spot
+    in the image, and one of the pixels
+    in the middle is not white, it would be easy to pick it out. Instead of assigning values to the letters from 0-26,
+    we can assign them
+    from -13-+13, and that will make it so the modified pixels are overall closer to the originals.
+</p>
+
+<div class="row justify-content-center py-3">
+    <div class="col-6">
+        <div class="card">
+            <img class="card-img-top" src="{% static 'steganography/images/delta_13_example.bmp' %}"
+                alt="Example of pixels with delta 1">
+            <div class="card-body">
+                <p>This picture has two different colors that differ by 13; this makes it a bit harder to see the
+                    difference</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    Enter a secret message below and pick and image, and we'll show you what it looks like if we encode the message
+    in that image using this technique.
+</p>
+
+<div class="container_fluid my-3">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form.secret_message.label_tag }}
+            {{ form.secret_message }}
+        </div>
+        {% include 'steganography/include/image_choice_buttons.html' %}
+    </form>
+</div>
+
+{% include "includes/paginator.html" %}
+
+{% include "includes/footer.html" %}

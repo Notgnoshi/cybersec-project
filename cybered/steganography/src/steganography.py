@@ -10,8 +10,10 @@ class SteganographyPageManager(cybered.PageManager):
             "image-metadata-example-result",
             "steganography/image_metadata_result.html",
         ),
-        ("image_deltas", "image-deltas", "steganography/image_deltas1.html"),
+        ("image_deltas1", "image-deltas1", "steganography/image_deltas1.html"),
         ("image_deltas_result1", "image-deltas-result1", "steganography/image_deltas_result1.html"),
+        ("image_deltas2", "image-deltas2", "steganography/image_deltas2.html"),
+        ("image_deltas_result2", "image-deltas-result2", "steganography/image_deltas_result2.html"),
         ("image_bitplanes", "image-bitplanes", "steganography/image_bitplanes.html"),
     )
 
