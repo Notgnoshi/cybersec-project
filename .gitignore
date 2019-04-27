@@ -1,5 +1,8 @@
 .vscode/
 
+# The collected static files from each application
+staticroot/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
