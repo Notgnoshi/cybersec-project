@@ -2,6 +2,7 @@ from ..apps import SteganographyModule
 
 from shared.src import cybered
 
+from django.views.generic import TemplateView
 
 class SteganographyMixin(SteganographyModule, cybered.PaginatedMixin, cybered.PageMixin):
     pass
@@ -31,3 +32,41 @@ class ImageChoicesMixin:
         context["image_list"] = self.image_choices
         return context
 
+
+# See https://stackoverflow.com/questions/1395807/proper-way-to-handle-multiple-forms-on-one-page-in-django
+class MultiFormView(TemplateView):
+
+    forms = ()
+    """ Forms should be a list of 3-tuples, containing 'form name', 'form prefix', and 'form class' """
+
+    def __get_form(self, request, formcls, prefix, name):
+        for k in request.POST.keys():
+            if k.startswith(prefix):
+                return formcls(request.POST, prefix=prefix, **self.get_form_kwargs(name))
+        return formcls(None, prefix=prefix, **self.get_form_kwargs(name))
+
+    def __rerender(self):
+        return self.render_to_response(self.get_context_data())
+
+    def get(self, request, *args, **kwargs):
+        return self.__rerender()
+
+    def post(self, request, *args, **kwargs):
+        for n, p, f in self.forms:
+            f_filled = self.__get_form(request, f, p, n)
+            if f_filled.is_bound and f_filled.is_valid():
+                return self.form_valid(f_filled, n)
+
+        return self.__rerender()
+
+    def get_context_data(self, **kwargs):
+        """ Override to add context for template """
+        return dict([(n, f(prefix=p, **self.get_form_kwargs(n))) for n, p, f in self.forms])
+
+    def get_form_kwargs(self, form_name):
+        """ Override to add kwargs used to init one of the forms """
+        return {}
+
+    def form_valid(self, form, form_name):
+        """ Override to handle a valid form and respond with a location to render """
+        return self.__rerender()
