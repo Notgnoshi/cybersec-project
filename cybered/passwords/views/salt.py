@@ -25,17 +25,17 @@ class PasswordsSaltMotivation1View(PasswordsMixin, FormView):
 
     def get_context_data(self, **kwargs):
         # Only unlock the next page once they have entered the correct password.
-        key = PasswordsModule.scope("salt_password")
+        key = PasswordsModule.scope("salt1_password")
         if self.request.session.get(key, "") == MADHATTER_PASSWORD:
             context = super().get_context_data(**kwargs)
         else:
             page_index = self.kwargs["page_index"]
             context = super().get_context_data(disabled_pages=[page_index + 1], **kwargs)
 
-        key = PasswordsModule.scope("salt_password")
+        key = PasswordsModule.scope("salt1_password")
         input_password = self.request.session.get(key, "")
         input_hash = hashlib.md5(input_password.encode()).hexdigest()
-        key = PasswordsModule.scope("salt_email")
+        key = PasswordsModule.scope("salt1_email")
         input_email = self.request.session.get(key, "")
 
         context["actual_password"] = MADHATTER_PASSWORD
