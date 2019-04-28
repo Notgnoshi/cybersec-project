@@ -1,0 +1,69 @@
+{% load static %}
+{% include "includes/head.html" %}
+
+<h4>Conclusion</h4>
+
+<p>You've completed the CyberEd module on Steganography! Let's review what we covered</p>
+<ul>
+    <li><b>Steganography</b> is the act of hiding something inside something else</li>
+    <li>Often, steganography is used to hide a message in a public statement or image</li>
+    <li><b>JPEG</b> images (among others) allow for extra information in the file which doesn't affect the picture. This
+        is a good place to hide a message</li>
+    <li>Images are made of <b>pixels</b>, which are represented by numbers</li>
+    <li>We can encode data in images by modifying pixels, and decode the message by finding the difference from the
+        original</li>
+    <li>When hiding a message by modifying pixels, you have to make sure you don't modify them too much, or someone
+        might notice</li>
+</ul>
+
+<p>
+    We started by showing a simple example of how you could hide a message inside a paragraph of text, but it was
+    pretty easy to find messages hidden that way, so we looked at hiding messages in pictures.
+</p>
+<p>
+    When pictures allow adding arbitrary extra information, you can hide whatever message you want, and as you saw,
+    it doesn't affect the picture at all. The only way to find the hidden message is to look at the raw data from
+    the picture, or use a tool to find it for you.
+</p>
+<p>
+    However, some formats don't allow comments, so we showed how you can modify the picture itself to hide the data.
+    This has the advantage of not requiring a special image format, but the disadvantage of needing to have the original
+    image before you can decode the message. In addition, you saw how changing the value of a pixel can make it
+    noticably
+    different, which is something to remember when hiding a message this way.
+</p>
+<p>
+    There are two big topics that we mentioned but did not discuss in this module, and those are <b>color channels</b>
+    and <b>bit planes</b>. When pictures are in color, they actually contain 3x as much information, and when that's the
+    case
+    it's much easier to hide data in the picture, because you have to make bigger changes to the picture before it's
+    noticable.
+    If you have further interest in image steganography, we encourage you to go find more information about it online.
+</p>
+<p>
+    If you want another chance to encode more text or images, continue to the next page!
+</p>
+
+<div class="row text-center my-3 justify-content-center">
+    <div class="card col-8 col-md-6 pt-3">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <img src="{% static 'steganography/images/trees_rgb.png' %}" class="card-img-top img-thumbnail rounded">
+            </div>
+            <div class="col-12 col-md-6">
+                <img src="{% static 'steganography/images/cat_rgb.png' %}" class="card-img-top img-thumbnail rounded">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">One Final Example</h5>
+                <p>Using both <b>color channels</b> and <b>bit planes</b>, it is possible to encode this picture of a
+                    cat
+                    in this picture of trees. Decoding it requires a technique we touched on earlier -
+                    <b>normalization</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/paginator.html" %}
+
+{% include "includes/footer.html" %}

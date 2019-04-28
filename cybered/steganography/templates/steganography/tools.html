@@ -1,0 +1,153 @@
+{% include "includes/head.html" %}
+
+<h3>Image Steganography Tools</h3>
+<p>
+    On this page, you can play with the tools you encountered during the module. Choose an image below to
+    encode another image inside it, or enter some text and choose an image to encode that text in.
+</p>
+
+{% if show_text_in_metadata_results %}
+<div class="row text-center">
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img src="{% url 'steganography:original_image' key_prefix='tools' %}"
+                class="card-img-top img-thumbnail rounded">
+            <div class="card-body">
+                <h5 class="card-title">Original Image: {{original_total_size}} bytes</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img src="{% url 'steganography:encoded_image' key_prefix='tools' operation=0 %}"
+                class="card-img-top img-thumbnail rounded">
+            <div class="card-body">
+                <h5 class="card-title">Image With Hidden Message: {{encoded_total_size}} bytes</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card my-2">
+    <div class="card-body">
+        <h5 class="card-title">Original Image Data</h5>
+        <p class="card-text">
+            <samp>{{original_start_bytes}}</samp></p>
+    </div>
+</div>
+<div class="card my-3">
+    <div class="card-body">
+        <h5 class="card-title">Encoded Image Data</h5>
+        <p class="card-text">
+            <samp>{{encoded_start_bytes}}</samp></p>
+    </div>
+</div>
+{% elif show_image_in_image_results %}
+<div class="row text-center">
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img src="{% url 'steganography:original_image' key_prefix='tools' %}"
+                class="card-img-top img-thumbnail rounded">
+            <div class="card-body">
+                <h5 class="card-title">Original Image</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img src="{% url 'steganography:encoded_image' key_prefix='tools' operation=1 %}"
+                class="card-img-top img-thumbnail rounded">
+            <div class="card-body">
+                <h5 class="card-title">Image With Hidden Message</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img class="card-img-top" src="{% url 'steganography:intermediate_image' key_prefix='tools' operation=1 %}">
+            <div class="card-body">
+                <h5 class="card-title">Unnormalized Delta Image</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img class="card-img-top" src="{% url 'steganography:decoded_image' key_prefix='tools' operation=1 %}">
+            <div class="card-body">
+                <h5 class="card-title">Normalized Delta Image</h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% elif show_text_in_image_results %}
+
+<div class="row">
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img src="{% url 'steganography:original_image'  key_prefix='tools' %}"
+                class="card-img-top img-thumbnail rounded">
+            <div class="card-body">
+                <h5 class="card-title">Original Image</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 my-2">
+        <div class="card">
+            <img src="{% url 'steganography:encoded_image' key_prefix='tools' operation=2  %}"
+                class="card-img-top img-thumbnail rounded">
+            <div class="card-body">
+                <h5 class="card-title">Image With Hidden Message</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card my-2">
+    <div class="card-body">
+        <h5 class="card-title">Decoded Message</h5>
+        <samp>{{decoded_message}}</samp>
+    </div>
+</div>
+<div class="text-center row justify-content-center my-3">
+    <div class="col-6">
+        <div class="card">
+            <img class="card-img-top" src="{% url 'steganography:intermediate_image' key_prefix='tools' operation=2 %}">
+            <div class="card-body">
+                <h5 class="card-title">Modified Pixels</h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container_fluid my-3">
+    <form method="post">
+        {% csrf_token %}
+
+        <h4>Encode an Image in an Image</h4>
+        {% include 'steganography/include/image_choice_buttons.html' with image_list=image_in_image_choices only %}
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <h4>Encode Text in an Image</h4>
+        <div class="form-group">
+            {{ msg_img_form.secret_message.label_tag }}
+            {{ msg_img_form.secret_message }}
+        </div>
+        {% include 'steganography/include/image_choice_buttons.html' with image_list=text_in_image_choices only %}
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        <h4>Hide Text in Image Header</h4>
+        <div class="form-group">
+            {{ msg_hdr_form.secret_message.label_tag }}
+            {{ msg_hdr_form.secret_message }}
+        </div>
+        {% include 'steganography/include/image_choice_buttons.html' with image_list=text_in_comment_choices only %}
+    </form>
+</div>
+
+{% include "includes/paginator.html" %}
+
+{% include "includes/footer.html" %}

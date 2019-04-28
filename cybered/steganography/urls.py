@@ -14,6 +14,8 @@ urlpatterns = cybered.get_paginated_urls(
         SteganographyImageDeltasExampleResult1PageView,
         SteganographyImageDeltas2PageView,
         SteganographyImageDeltasExampleResult2PageView,
+        SteganographyConclusionPageView,
+        SteganographyToolsPageView,
     ],
     SteganographyPageManager,
     app_name,
