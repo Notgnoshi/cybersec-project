@@ -5,19 +5,9 @@ from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
 from passwords.forms import AliceLoginForm
+from passwords.src.password_db import ALICE_HASH, ALICE_PASSWORD, ALICE_USERNAME, PASSWORD_DB
 
 from .mixin import PasswordsMixin
-
-ALICE_USERNAME = "alice@wonderland.org"
-ALICE_PASSWORD = "IntoTheLookingGlass"
-ALICE_HASH = hashlib.md5(ALICE_PASSWORD.encode()).hexdigest()
-
-# Use alice's password for bill too, because I need an example of two users with the same password for the conversation on salting.
-PASSWORD_DB = {
-    "users": ["mad.hatter@wonderland.org", ALICE_USERNAME, "bill.the.lizard@wonderland.org"],
-    "hashes": [hashlib.md5("madhatter".encode()).hexdigest(), ALICE_HASH, ALICE_HASH],
-    "passwords": ["madhatter", ALICE_PASSWORD, ALICE_PASSWORD],
-}
 
 
 class PasswordsVerificationView(PasswordsMixin, FormView):
