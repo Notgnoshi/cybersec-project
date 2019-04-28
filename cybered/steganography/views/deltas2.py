@@ -9,12 +9,6 @@ from io import BytesIO
 import random
 import os
 import time
-import threading
-
-# Lock to prevent nondeterministic response orders to the functions
-# that use randomization
-random_module_lock = threading.Lock()
-
 
 from ..apps import SteganographyModule
 from ..forms import *
@@ -27,7 +21,7 @@ class SteganographyImageDeltas2PageView(SteganographyMixin, ImageChoicesMixin, F
     form_class = SecretMessageImageForm
     success_url = ""
 
-    image_choice_session_key = "bmp_encode2_image_url"
+    image_choice_session_key = "bmp2_image_url"
     image_choices = (
         ("boat_image", "steganography/images/boat_bw.bmp"),
         ("houses_image", "steganography/images/houses_bw.bmp"),
@@ -37,13 +31,13 @@ class SteganographyImageDeltas2PageView(SteganographyMixin, ImageChoicesMixin, F
     def form_valid(self, form):
         """Add validated form data to the user session."""
 
-        self.request.session[SteganographyModule.scope("bmp_secret_message")] = form.cleaned_data[
+        self.request.session[SteganographyModule.scope("bmp2_secret_message")] = form.cleaned_data[
             "secret_message"
         ]
 
         # Save a seed value to make sure the 'random' pixels chosen when generating the images
         # are the same until the user picks a new image
-        self.request.session[SteganographyModule.scope("bmp_random_seed")] = int(time.time())
+        self.request.session[SteganographyModule.scope("bmp2_random_seed")] = int(time.time())
 
         return super().form_valid(form)
 
@@ -57,7 +51,7 @@ class SteganographyImageDeltas2PageView(SteganographyMixin, ImageChoicesMixin, F
         # Always lock the next page if there's no data in the session
         if (
             SteganographyModule.scope(self.image_choice_session_key) in self.request.session
-            and SteganographyModule.scope("bmp_secret_message") in self.request.session
+            and SteganographyModule.scope("bmp2_secret_message") in self.request.session
         ):
             context = super().get_context_data(**kwargs)
         else:
@@ -75,9 +69,9 @@ class SteganographyImageDeltasExampleResult2PageView(SteganographyMixin, Templat
         if a user enters the url for this page directly without a preexisting session.
         """
 
-        file_path = self.request.session.get(SteganographyModule.scope("bmp_encode2_image_url"), "")
+        file_path = self.request.session.get(SteganographyModule.scope("bmp2_image_url"), "")
         secret_message = self.request.session.get(
-            SteganographyModule.scope("bmp_secret_message"), ""
+            SteganographyModule.scope("bmp2_secret_message"), ""
         )
 
         return (
@@ -89,58 +83,19 @@ class SteganographyImageDeltasExampleResult2PageView(SteganographyMixin, Templat
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        file_url = self.request.session[SteganographyModule.scope("bmp_encode2_image_url")]
-        secret_message = self.request.session[SteganographyModule.scope("bmp_secret_message")]
-        random_seed = self.request.session[SteganographyModule.scope("bmp_random_seed")]
+        file_url = self.request.session[SteganographyModule.scope("bmp2_image_url")]
+        secret_message = self.request.session[SteganographyModule.scope("bmp2_secret_message")]
+        random_seed = self.request.session[SteganographyModule.scope("bmp2_random_seed")]
 
         buffer = BytesIO()
         file_path = finders.find(file_url)
 
-        with random_module_lock:
-            random.seed(random_seed)
-            image_tools.encode_text_delta_in_greyscale_bmp(file_path, buffer, secret_message)
+        reng = random.Random()
+        reng.seed(random_seed)
+        image_tools.encode_text_delta_in_greyscale_bmp(file_path, buffer, secret_message, reng)
 
         context["decoded_message"] = image_tools.decode_text_delta_from_greyscale_bmp(
             file_path, buffer
         )
 
         return context
-
-
-def bmp_encoded_image2(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode2_image_url")]
-    secret_message = request.session[SteganographyModule.scope("bmp_secret_message")]
-    random_seed = request.session[SteganographyModule.scope("bmp_random_seed")]
-
-    response = HttpResponse(content_type="image/bmp")
-    file_path = finders.find(file_url)
-
-    with random_module_lock:
-        random.seed(random_seed)
-        image_tools.encode_text_delta_in_greyscale_bmp(file_path, response, secret_message)
-
-    return response
-
-
-def bmp_decoded_image2(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode2_image_url")]
-    secret_message = request.session[SteganographyModule.scope("bmp_secret_message")]
-    random_seed = request.session[SteganographyModule.scope("bmp_random_seed")]
-
-    response = HttpResponse(content_type="image/bmp")
-    file_path = finders.find(file_url)
-
-    buffer = BytesIO()
-    with random_module_lock:
-        random.seed(random_seed)
-        image_tools.encode_text_delta_in_greyscale_bmp(file_path, buffer, secret_message)
-
-    image_tools.decode_bw_delta_from_greyscale_bmp(file_path, buffer, response, 255)
-
-    return response
-
-
-def bmp_original_image2(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode2_image_url")]
-    return redirect(static(file_url))
-

@@ -15,11 +15,12 @@ from ..src import image_tools
 
 from .shared import *
 
+
 class SteganographyImageDeltas1PageView(SteganographyMixin, ImageChoicesMixin, FormView):
     form_class = ImageForm
     success_url = ""
 
-    image_choice_session_key = "bmp_encode1_image_url"
+    image_choice_session_key = "bmp1_image_url"
     image_choices = (
         ("boat_image", "steganography/images/boat_bw.bmp"),
         ("houses_image", "steganography/images/houses_bw.bmp"),
@@ -35,7 +36,7 @@ class SteganographyImageDeltas1PageView(SteganographyMixin, ImageChoicesMixin, F
     def form_valid(self, form):
         """Add validated form data to the user session."""
 
-        self.request.session[SteganographyModule.scope("bmp_encode1_overlay_url")] = random.choice(
+        self.request.session[SteganographyModule.scope("bmp1_overlay_url")] = random.choice(
             self.bw_images
         )
 
@@ -66,60 +67,11 @@ class SteganographyImageDeltasExampleResult1PageView(SteganographyMixin, Templat
         if a user enters the url for this page directly without a preexisting session.
         """
 
-        file_path = self.request.session.get(SteganographyModule.scope("bmp_encode1_image_url"), "")
+        file_path = self.request.session.get(SteganographyModule.scope("bmp1_image_url"), "")
 
         return (
             super().dispatch(request, *args, **kwargs)
             if file_path
             else redirect(reverse(SteganographyModule.scope("image_deltas1")))
         )
-
-
-def bmp_encoded_image1(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
-    overlay_url = request.session[SteganographyModule.scope("bmp_encode1_overlay_url")]
-
-    response = HttpResponse(content_type="image/bmp")
-
-    file_path = finders.find(file_url)
-    overlay_path = finders.find(overlay_url)
-    image_tools.encode_bw_delta_in_greyscale_bmp(file_path, response, overlay_path)
-
-    return response
-
-def bmp_decoded_image1(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
-    overlay_url = request.session[SteganographyModule.scope("bmp_encode1_overlay_url")]
-
-    response = HttpResponse(content_type="image/bmp")
-
-    file_path = finders.find(file_url)
-    overlay_path = finders.find(overlay_url)
-
-    buffer = BytesIO()
-    image_tools.encode_bw_delta_in_greyscale_bmp(file_path, buffer, overlay_path)
-    image_tools.decode_bw_delta_from_greyscale_bmp(file_path, buffer, response, 15)
-    
-    return response
-
-
-def bmp_decoded_normalized_image1(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
-    overlay_url = request.session[SteganographyModule.scope("bmp_encode1_overlay_url")]
-
-    response = HttpResponse(content_type="image/bmp")
-
-    file_path = finders.find(file_url)
-    overlay_path = finders.find(overlay_url)
-
-    buffer = BytesIO()
-    image_tools.encode_bw_delta_in_greyscale_bmp(file_path, buffer, overlay_path)
-    image_tools.decode_bw_delta_from_greyscale_bmp(file_path, buffer, response, 255)
-
-    return response
-
-
-def bmp_original_image1(request):
-    file_url = request.session[SteganographyModule.scope("bmp_encode1_image_url")]
-    return redirect(static(file_url))
 

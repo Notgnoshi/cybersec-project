@@ -15,11 +15,12 @@ from ..src import image_tools
 
 from .shared import *
 
+
 class SteganographyImageMetadataPageView(SteganographyMixin, ImageChoicesMixin, FormView):
     form_class = SecretMessageImageForm
     success_url = ""
 
-    image_choice_session_key = "exif_encode_image_url"
+    image_choice_session_key = "exif_image_url"
     image_choices = (
         ("butterfly_image", "steganography/images/butterfly.jpg"),
         ("cat_image", "steganography/images/cat.jpg"),
@@ -33,9 +34,10 @@ class SteganographyImageMetadataPageView(SteganographyMixin, ImageChoicesMixin, 
     def form_valid(self, form):
         """Add validated form data to the user session."""
 
+        # Hard limit of 10000 characters here
         self.request.session[SteganographyModule.scope("exif_secret_message")] = form.cleaned_data[
             "secret_message"
-        ]
+        ][0:10000]
 
         return super().form_valid(form)
 
@@ -77,7 +79,7 @@ class SteganographyImageMetadataExampleResultPageView(SteganographyMixin, Templa
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        file_url = self.request.session[SteganographyModule.scope("exif_encode_image_url")]
+        file_url = self.request.session[SteganographyModule.scope("exif_image_url")]
         secret_message = self.request.session[SteganographyModule.scope("exif_secret_message")]
 
         # Add the EXIF tag and pull out the beginning bytes of the file
@@ -97,20 +99,3 @@ class SteganographyImageMetadataExampleResultPageView(SteganographyMixin, Templa
         )[2:-1]
 
         return context
-
-
-def exif_encoded_image(request):
-    file_url = request.session[SteganographyModule.scope("exif_encode_image_url")]
-    secret_message = request.session[SteganographyModule.scope("exif_secret_message")]
-
-    response = HttpResponse(content_type="image/jpeg")
-
-    file_path = finders.find(file_url)
-    image_tools.set_user_comment_exif(file_path, response, secret_message)
-
-    return response
-
-
-def exif_original_image(request):
-    file_url = request.session[SteganographyModule.scope("exif_encode_image_url")]
-    return redirect(static(file_url))

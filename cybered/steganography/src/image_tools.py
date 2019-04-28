@@ -7,6 +7,7 @@ from io import BytesIO
 import random
 
 __JPG_FORMAT_STR = "JPEG"
+__BMP_FORMAT_STR = "BMP"
 
 # See https://hhsprings.bitbucket.io/docs/programming/examples/python/PIL/ExifTags.html
 # as source for how we're handling EXIF tags here
@@ -25,15 +26,29 @@ def to_path(path_or_str):
 
 
 def get_starting_n_bytes(fp, count):
-    # Try to open file pointer to fp, if that fails, assume
-    # it's already a readable object
-    try:
-        fp = open(to_path(fp), "rb")
-    except Exception:
-        pass
+    # After input is resolved, call this to actually
+    # read the data
+    def get_bytes(fp, count):
+        curr_loc = fp.tell()
 
-    fp.seek(0, 0)
-    return fp.read(count)
+        fp.seek(0, 2)
+        max_size = fp.tell()
+
+        fp.seek(0)
+        result = fp.read(min(count, max_size))
+
+        fp.seek(curr_loc)
+        return result
+
+    # Resolve input to a file pointer
+    # Try to open file pointer to fp, if that fails with a type error,
+    # assume it's already a readable object
+    try:
+        with open(to_path(fp), "rb") as fp:
+            return get_bytes(fp, count)
+    except TypeError:
+        return get_bytes(fp, count)
+
 
 
 def get_user_comment_exif_bytes(user_comment=""):
@@ -119,11 +134,12 @@ def encode_bw_delta_in_greyscale_bmp(input_fp, output_fp, hidden_fp):
         ]
 
         img_obj.putdata(result_data)
-        img_obj.save(output_fp, "BMP")
+        img_obj.save(output_fp, __BMP_FORMAT_STR)
     except IOError as err:
         raise ImageToolError(
             "Unable to read/write", str(input_fp), ",", str(overlay_obj), "->", str(output_fp)
         ) from err
+
 
 def decode_bw_delta_from_greyscale_bmp(input_fp1, input_fp2, delta_fp, white_value=255):
     """ Diffs two images and returns a black and white delta image
@@ -147,13 +163,14 @@ def decode_bw_delta_from_greyscale_bmp(input_fp1, input_fp2, delta_fp, white_val
         result_data = [0 if a != b else white_value for a, b in zip(data1, data2)]
 
         img1_obj.putdata(result_data)
-        img1_obj.save(delta_fp, "BMP")
+        img1_obj.save(delta_fp, __BMP_FORMAT_STR)
     except IOError as err:
         raise ImageToolError(
             "Unable to read/write", str(input_fp1), ",", str(input_fp2), "->", str(delta_fp)
         ) from err
 
-def encode_text_delta_in_greyscale_bmp(input_fp, output_fp, hidden_message):
+
+def encode_text_delta_in_greyscale_bmp(input_fp, output_fp, hidden_message, reng=random):
     """ Hides a black and white image in a greyscale image by
         modifying all pixels by a value in [-13, 13] corresponding to the 26 letters
         of the alphabet. Non-alphabetic characters are ignored. If the message
@@ -170,29 +187,33 @@ def encode_text_delta_in_greyscale_bmp(input_fp, output_fp, hidden_message):
         # Get a list of the pixels that are at least 13 values away from 0, 255
         # so we know we can use them to encode
         modify_pixel_options = list(
-            map(lambda pair: pair[0],
-            filter(
-                lambda pair: pair[1] >= 13 or pair[1] <= 242, zip(range(len(img_data)), img_data)
-            )
+            map(
+                lambda pair: pair[0],
+                filter(
+                    lambda pair: pair[1] >= 13 or pair[1] <= 242,
+                    zip(range(len(img_data)), img_data),
+                ),
             )
         )
 
         # Filter message to letters only, then truncate the message to make sure we have enough pixels for it
-        hidden_message = "".join(filter(lambda c: c.isalpha(), hidden_message))[:len(modify_pixel_options)].lower()
-        modify_pixels = sorted(random.sample(modify_pixel_options, len(hidden_message)))
+        hidden_message = "".join(filter(lambda c: c.isalpha(), hidden_message))[
+            : len(modify_pixel_options)
+        ].lower()
+        modify_pixels = sorted(reng.sample(modify_pixel_options, len(hidden_message)))
 
         for pixel, char in zip(modify_pixels, hidden_message):
-            diff = ord(char) - ord('a') - 13
-            if diff >= 0: diff = diff+1
+            diff = ord(char) - ord("a") - 13
+            if diff >= 0:
+                diff = diff + 1
             img_data[pixel] = img_data[pixel] + diff
 
         img_obj.putdata(img_data)
-        img_obj.save(output_fp, "BMP")
+        img_obj.save(output_fp, __BMP_FORMAT_STR)
 
     except IOError as err:
-        raise ImageToolError(
-            "Unable to read/write", str(input_fp), "->", str(output_fp)
-        ) from err
+        raise ImageToolError("Unable to read/write", str(input_fp), "->", str(output_fp)) from err
+
 
 def decode_text_delta_from_greyscale_bmp(input_fp1, input_fp2):
     """ Decodes text hidden in a greyscale image. The image delta is found,
@@ -205,7 +226,7 @@ def decode_text_delta_from_greyscale_bmp(input_fp1, input_fp2):
     try:
         img_obj1 = Image.open(input_fp1).convert("L")
         img_obj2 = Image.open(input_fp2).convert("L")
-        
+
         if img_obj1.width != img_obj2.width or img_obj1.height != img_obj2.height:
             raise ImageToolError("Cannot find delta for differently sized images")
 
@@ -213,11 +234,12 @@ def decode_text_delta_from_greyscale_bmp(input_fp1, input_fp2):
         img_data2 = img_obj2.getdata()
 
         result = "".join(
-            map(lambda x: chr((x-1 if x>0 else x) + 13 + ord('a')), 
-                filter(lambda x: x != 0, [b-a for a, b in zip(img_data1, img_data2)])
+            map(
+                lambda x: chr((x - 1 if x > 0 else x) + 13 + ord("a")),
+                filter(lambda x: x != 0, [b - a for a, b in zip(img_data1, img_data2)]),
             )
         )
-        
+
         return result
     except IOError as err:
         raise ImageToolError(
