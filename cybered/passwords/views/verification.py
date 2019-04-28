@@ -5,7 +5,8 @@ from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
 from passwords.forms import AliceLoginForm
-from passwords.src.password_db import ALICE_HASH, ALICE_PASSWORD, ALICE_USERNAME, PASSWORD_DB
+from passwords.src.password_db import ALICE_HASH, ALICE_PASSWORD, ALICE_USERNAME
+from passwords.src.password_db import PASSWORD_DB, PASSWORD_DB_USERS
 
 from .mixin import PasswordsMixin
 
@@ -48,9 +49,9 @@ class PasswordsVerificationView(PasswordsMixin, FormView):
 
         context["password_db"] = PASSWORD_DB
         logged_in = False
-        if input_email in PASSWORD_DB["users"]:
-            idx = PASSWORD_DB["users"].index(input_email)
-            logged_in = PASSWORD_DB["hashes"][idx] == input_hash
+        if input_email in PASSWORD_DB_USERS:
+            idx = PASSWORD_DB_USERS.index(input_email)
+            logged_in = PASSWORD_DB[idx][2] == input_hash
         context["logged_in"] = logged_in
 
         return context
@@ -90,9 +91,9 @@ class PasswordsVerificationDetailsView(PasswordsMixin, FormView):
 
         context["password_db"] = PASSWORD_DB
         logged_in = False
-        if input_user in PASSWORD_DB["users"]:
-            idx = PASSWORD_DB["users"].index(input_user)
-            logged_in = PASSWORD_DB["hashes"][idx] == input_hash
+        if input_user in PASSWORD_DB_USERS:
+            idx = PASSWORD_DB_USERS.index(input_user)
+            logged_in = PASSWORD_DB[idx][2] == input_hash
         context["logged_in"] = logged_in
 
         return context

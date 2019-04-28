@@ -8,14 +8,15 @@ MADHATTER_USERNAME = "mad.hatter@wonderland.org"
 MADHATTER_PASSWORD = "madhatter"
 MADHATTER_HASH = hashlib.md5(MADHATTER_PASSWORD.encode()).hexdigest()
 
-# Use a dict of lists to make the page templates slightly easier.
-PASSWORD_DB = {
-    "users": [MADHATTER_USERNAME, ALICE_USERNAME, "bill.the.lizard@wonderland.org"],
-    "passwords": [MADHATTER_PASSWORD, ALICE_PASSWORD, ALICE_PASSWORD],
+PASSWORD_DB = [
+    (MADHATTER_USERNAME, MADHATTER_PASSWORD, MADHATTER_HASH),
+    (ALICE_USERNAME, ALICE_PASSWORD, ALICE_HASH),
     # Use alice's password for bill too, because I need an example of two users
     # with the same password for the conversation on salting.
-    "hashes": [MADHATTER_HASH, ALICE_HASH, ALICE_HASH],
-}
+    ("bill.the.lizard@wonderland.org", ALICE_PASSWORD, ALICE_HASH),
+]
+
+PASSWORD_DB_USERS = [row[0] for row in PASSWORD_DB]
 
 HASH_LIST = [
     ("544842c3b9a0d0c1562f555bc12444cd", "pentiumm"),
