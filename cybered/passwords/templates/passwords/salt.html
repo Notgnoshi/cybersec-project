@@ -1,57 +1,5 @@
 {% include "includes/head.html" %}
-<h2>Password Salt Motivation</h2>
-
-<p>Recall that hash functions are <strong>one-way</strong> functions. This means that it's impossible to figure out the original text from the hash. Well, almost impossible.</p>
-
-<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
-    <table class="table table-hover table-bordered mb-0">
-    {% comment %} Lel, it's the whole database. {% endcomment %}
-        <caption class="p-2">A small fragment of the Wonderland password database.</caption>
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">User</th>
-                <th scope="col">Password Hash</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user, _, hash in password_db %}
-            <tr
-                class="{% if hash == input_hash and user == input_user %}table-success{% elif user == input_user %}table-danger{% endif %}">
-                <td>
-                    <pre class="mb-0">{{ user }}</pre>
-                </td>
-                <td>
-                    <pre class="mb-0">{{ hash }}</pre>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<p>Try Googling some of the hashes in the table. You might be surprised at what you find. One of the <a href="http://www.ece.ubc.ca/~hyoung/passwords.txt" target="_blank">results</a> is actually a gigantic list of passwords and their hashes! A (very) small portion of the list is reproduced below.</p>
-
-<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
-    <table class="table table-hover table-bordered mb-0">
-    <caption class="p-2">A small fragment of <a href="http://www.ece.ubc.ca/~hyoung/passwords.txt" target="_blank">www.ece.ubc.ca/~hyoung/passwords.txt</a></caption>
-    <thead class="thead-light">
-        <tr>
-            <th scope="col">Hash</th>
-            <th scope="col">Password</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for hash, password in hash_list %}
-        <tr class="">
-            <td><pre class="mb-0">{{ hash }}</pre></td>
-            <td><pre class="mb-0">{{ password }}</pre></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-</div>
-
-<p>We call lists of hashes like these <a href="https://en.wikipedia.org/wiki/Rainbow_table" target="_blank"><strong>Rainbow Tables</strong></a>. Use the above rainbow table to login to the <code>{{ actual_email }}</code> user in the login form below.</p>
+<h2>Password Salt Tool</h2>
 
 <div class="card w-50 mx-auto mb-3 bg-light shadow-sm">
     <h5 class="card-header">Login</h5>
@@ -94,13 +42,5 @@
     </div>
 </div>
 
-{% if logged_in %}
-<div class="alert alert-info shadow-sm">
-    <h5>Lesson Recap</h5>
-    <hr>
-    <p class="mb-0">Once an attacker gets access to a service's password database, one attack method they might use to figure out the user's passwords is to use a <em>rainbow table</em>. The rainbow table we <a>linked</a> is actually a pretty small one &mdash; it only contains 184,389 hashes!</p>
-</div>
-<p>Before we move on to finding a crafty little way to make rainbow tables <em>much</em> harder to use, there's one more thing we should look at. Notice anything weird about the password hashes for Alice and Bill The Lizard?</p>
-{% endif %}
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}

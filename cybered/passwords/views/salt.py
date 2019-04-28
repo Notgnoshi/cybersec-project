@@ -4,23 +4,23 @@ from django.urls import reverse
 from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
-from passwords.forms import MadhatterLoginForm
+from passwords.forms import AliceLoginForm, MadhatterLoginForm
 from passwords.src.password_db import MADHATTER_PASSWORD, MADHATTER_USERNAME
 from passwords.src.password_db import HASH_LIST, PASSWORD_DB, PASSWORD_DB_USERS
 
 from .mixin import PasswordsMixin
 
 
-class PasswordsSaltView(PasswordsMixin, FormView):
+class PasswordsSaltMotivation1View(PasswordsMixin, FormView):
     form_class = MadhatterLoginForm
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("salt"))
+        return reverse(PasswordsModule.scope("salt-motivation-1"))
 
     def form_valid(self, form):
-        self.request.session[PasswordsModule.scope("salt_email")] = form.cleaned_data["email"]
-        self.request.session[PasswordsModule.scope("salt_password")] = form.cleaned_data["password"]
+        self.request.session[PasswordsModule.scope("salt1_email")] = form.cleaned_data["email"]
+        self.request.session[PasswordsModule.scope("salt1_password")] = form.cleaned_data["password"]
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -54,13 +54,27 @@ class PasswordsSaltView(PasswordsMixin, FormView):
 
         return context
 
-
-class PasswordsSaltToolView(PasswordsMixin, FormView):
-    form_class = MadhatterLoginForm
+class PasswordsSaltMotivation2View(PasswordsMixin, FormView):
+    form_class = AliceLoginForm
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("salt-tool"))
+        return reverse(PasswordsModule.scope("salt-motivation-2"))
+
+    def form_valid(self, form):
+        self.request.session[PasswordsModule.scope("salt2_email")] = form.cleaned_data["email"]
+        self.request.session[PasswordsModule.scope("salt2_password")] = form.cleaned_data["password"]
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
+
+class PasswordsSaltView(PasswordsMixin, FormView):
+    form_class = AliceLoginForm
+    success_url = ""
+
+    def get_success_url(self):
+        return reverse(PasswordsModule.scope("salt"))
 
     def form_valid(self, form):
         return super().form_valid(form)
