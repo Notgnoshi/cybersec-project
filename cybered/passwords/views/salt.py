@@ -67,7 +67,11 @@ class PasswordsSaltMotivation2View(PasswordsMixin, FormView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+
+        context["password_db"] = PASSWORD_DB
+
+        return context
 
 class PasswordsSaltView(PasswordsMixin, FormView):
     form_class = AliceLoginForm

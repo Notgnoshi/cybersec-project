@@ -1,5 +1,44 @@
 {% include "includes/head.html" %}
-<h2>Password Salt Motivation Continued</h2>
+<h2>Hiding Repeated Password Use</h2>
+
+<p>In the last lesson, we asked you to look at the password hashes for Alice and Bill The Lizard. What we hoped you noticed was that the hashes were <em>exactly the same</em>. This means that Alice and Bill The Lizard used exactly the same password!</p>
+
+<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
+    <table class="table table-hover table-bordered mb-0">
+    {% comment %} Lel, it's the whole database. {% endcomment %}
+        <caption class="p-2">A small fragment of the Wonderland password database.</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Password Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user, _, hash in password_db %}
+            <tr>
+                <td>
+                    <pre class="mb-0">{{ user }}</pre>
+                </td>
+                <td class="{% if user == 'alice@wonderland.org' or user == 'bill.the.lizard@wonderland.org' %}table-warning{% endif %}">
+                    <pre class="mb-0">{{ hash }}</pre>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p>This is a problem if an attacker gets access to the password database, because if they can crack Alice's password, they don't even need to <em>try</em> cracking Bill's. This might not seem like a problem at first, but what if we told you that Wonderland was an organization with <em>millions</em> or even <em>billions</em> of users? Then it's very likely at least several users will use the same password.</p>
+
+<p>We want to do as much as possible to make sure attackers struggle <em>as much as possible</em> to crack user's passwords. Can you think of any way to make the password hashes different even if Alice and Bill The Lizard use the same passwords?</p>
+
+<div class="alert alert-info shadow-sm">
+    <h5>Lesson Recap</h5>
+    <hr>
+    <p class="mb-0">A service should always assume that an attacker <strong>will</strong> get access to its password database. We need to store the <strong>hashes</strong> instead of the passwords to make sure the attackers can't use the database after they get access to it. But we need to find a way to make duplicate passwords appear unique.</p>
+</div>
+
+<p>The next lesson will explain how to use <strong>salt</strong> to make every hash different, even when the passwords are the same.</p>
 
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
