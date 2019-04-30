@@ -1,10 +1,11 @@
 import hashlib
+import operator
 
 from django.urls import reverse
 from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
-from passwords.forms import AliceLoginForm, MadhatterLoginForm
+from passwords.forms import AliceLoginForm, MadhatterLoginForm, SaltedHashForm
 from passwords.src.password_db import MADHATTER_PASSWORD, MADHATTER_USERNAME
 from passwords.src.password_db import HASH_LIST, PASSWORD_DB, PASSWORD_DB_USERS
 
@@ -20,7 +21,9 @@ class PasswordsSaltMotivation1View(PasswordsMixin, FormView):
 
     def form_valid(self, form):
         self.request.session[PasswordsModule.scope("salt1_email")] = form.cleaned_data["email"]
-        self.request.session[PasswordsModule.scope("salt1_password")] = form.cleaned_data["password"]
+        self.request.session[PasswordsModule.scope("salt1_password")] = form.cleaned_data[
+            "password"
+        ]
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -54,6 +57,7 @@ class PasswordsSaltMotivation1View(PasswordsMixin, FormView):
 
         return context
 
+
 class PasswordsSaltMotivation2View(PasswordsMixin, FormView):
     form_class = AliceLoginForm
     success_url = ""
@@ -63,7 +67,9 @@ class PasswordsSaltMotivation2View(PasswordsMixin, FormView):
 
     def form_valid(self, form):
         self.request.session[PasswordsModule.scope("salt2_email")] = form.cleaned_data["email"]
-        self.request.session[PasswordsModule.scope("salt2_password")] = form.cleaned_data["password"]
+        self.request.session[PasswordsModule.scope("salt2_password")] = form.cleaned_data[
+            "password"
+        ]
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -73,21 +79,50 @@ class PasswordsSaltMotivation2View(PasswordsMixin, FormView):
 
         return context
 
+
 class PasswordsSaltView(PasswordsMixin, FormView):
-    form_class = AliceLoginForm
+    form_class = SaltedHashForm
     success_url = ""
 
     def get_success_url(self):
         return reverse(PasswordsModule.scope("salt"))
 
     def form_valid(self, form):
+        salt_rows_key = PasswordsModule.scope("salted_rows")
+        password = form.cleaned_data.get("password", "")
+        salt = form.cleaned_data.get("salt", "")
+
+        row = (
+            salt,
+            password,
+            hashlib.md5((salt + password).encode()).hexdigest(),
+            hashlib.md5(password.encode()).hexdigest(),
+        )
+
+        if salt_rows_key not in self.request.session:
+            self.request.session[salt_rows_key] = [row]
+        else:
+            # Avoid adding duplicate rows to the session. This can happen when a user types in a
+            # bunch of duplicates, *and* when the page is refreshed due to form resubmission.
+            unique_rows = {tuple(r) for r in self.request.session.get(salt_rows_key, [])}
+            unique_rows.add(row)
+            unique_rows = list(unique_rows)
+            unique_rows.sort(key=operator.itemgetter(1))
+            # TODO: Figure out if the same password is entered multiple times to highlight it in the table?
+            self.request.session[salt_rows_key] = unique_rows
+
         return super().form_valid(form)
 
-    # def get_context_data(self, **kwargs):
-    #     # Always lock the next page if there's no data in the session
-    #     if PasswordsModule.scope("example_hash_text") in self.request.session:
-    #         return super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        salt_rows_key = PasswordsModule.scope("salted_rows")
 
-    #     page_index = self.kwargs["page_index"]
-    #     context = super().get_context_data(disabled_pages=[page_index+1], **kwargs)
-    #     return context
+        if len(self.request.session.get(salt_rows_key, [])) < 3:
+            page_index = self.kwargs["page_index"]
+            context = super().get_context_data(disabled_pages=[page_index+1], **kwargs)
+        else:
+            context = super().get_context_data(**kwargs)
+
+        context["num_hashed"] = len(self.request.session.get(salt_rows_key, []))
+        context["salt_rows"] = self.request.session.get(salt_rows_key, [])
+
+        return context

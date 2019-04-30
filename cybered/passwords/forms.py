@@ -1,11 +1,26 @@
+import random
+import string
+
 from django import forms
 
 
-class TextBoxForm(forms.Form):
-    """A simple textarea-only form."""
+def _gen_random_salt():
+    SIZE = 12
+    return "".join(random.choice(string.ascii_letters + string.digits) for _ in range(SIZE))
 
-    text = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 3}), label=""
+
+class SaltedHashForm(forms.Form):
+    """A simple form to compute the hash of a salted value."""
+
+    salt = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        label="Salt",
+        initial=_gen_random_salt,
+    )
+
+    password = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control", "autocomplete": "off"}),
+        label="Password",
     )
 
 
@@ -24,6 +39,7 @@ class AliceLoginForm(forms.Form):
         widget=forms.PasswordInput(attrs={"class": "form-control", "autocomplete": "off"}),
         label="Password",
     )
+
 
 class MadhatterLoginForm(forms.Form):
     """A sample login form with email and password."""

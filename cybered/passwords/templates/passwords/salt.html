@@ -1,21 +1,47 @@
 {% include "includes/head.html" %}
-<h2>Password Salt Tool</h2>
+<h2>Salting Passwords</h2>
 
-<div class="card w-50 mx-auto mb-3 bg-light shadow-sm">
-    <h5 class="card-header">Login</h5>
+<div class="alert alert-info">
+    <h5>Reminder</h5>
+    <hr>
+    <p>In the previous lessons we've learned a few important things that we should review before we move on.</p>
+    <ul class="mb-0">
+        <li>Always assume an attacker <strong>will</strong> get access to the password database.</li>
+        <li>In order to hide the actual passwords from the attackers, only the password <strong>hashes</strong> are stored.</li>
+    </ul>
+</div>
+
+<p>We decided that storing the <strong>hashes</strong> of the passwords was the right idea, but we found two problems with that plan.</p>
+
+<ol>
+    <li>You can find <strong>rainbow tables</strong> for <em>commonly used</em> passwords.</li>
+    <li>Storing the hashes doesn't hide any duplicate passwords used by multiple users.</li>
+</ol>
+
+<p>There's a single technique called <strong>salting</strong> the passwords that will solve <em>both</em> of these problems. It's a simple technique &mdash; just add random stuff (<strong>salt</strong>) to the password before hashing it. Doing this will solve both problems!</p>
+
+<ol>
+    <li>It makes rainbow tables hard to use, because they only contain <em>commonly used</em> passwords.</li>
+    <li>It makes duplicated passwords look unique, because the salt is random, and created every time a user sets their password!</li>
+</ol>
+
+<p>Try using the following form to salt and hash at least <strong>three</strong> passwords. We'll generate the salt for you each time, but you can use your own salt if you want. Make sure to try the same password a few different times with different salts.</p>
+
+<div class="card w-50 mx-auto my-3 bg-light shadow-sm">
+    <h5 class="card-header">Salting a Password</h5>
     <div class="card-body">
         <form method="post">
             {% csrf_token %}
             <div class="form-group row">
-                <div class="col-2 col-form-label">
-                    {{ form.email.label_tag }}
+                <div class="col-3 col-form-label">
+                    {{ form.salt.label_tag }}
                 </div>
                 <div class="col">
-                    {{ form.email }}
+                    {{ form.salt }}
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-2 col-form-label">
+                <div class="col-3 col-form-label">
                     {{ form.password.label_tag }}
                 </div>
                 <div class="col">
@@ -23,24 +49,67 @@
                 </div>
             </div>
             <div class="form-group row mb-0">
-                <div class="col-2 col-form-label">
-                <input class="btn btn-success" type="submit" value="Login" />
+                <div class="col-3 col-form-label">
+                {% comment %} TODO: 'hash (n/3)' as the button value? {% endcomment %}
+                    <input class="btn btn-success" type="submit" value="Hash {{ num_hashed }}/3" />
                 </div>
                 <div class="col">
-                    {% if logged_in %}
-                    <div class="alert alert-success my-0" role="alert">
-                        <p class="my-0">Logged in.</p>
+                    <div class="alert alert-warning my-0">
+                        <p class="my-0">We <strong>will</strong> display the passwords you enter, so don't enter any you wish to remain secret!</p>
                     </div>
-                    {% elif input_password and not logged_in %}
-                    <div class="alert alert-danger my-0" role="alert">
-                        <p class="my-0">Login failed.</p>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+{% if num_hashed > 0 %}
+<p>Your salt, password, unsalted hash, and salted hash for each of your attempts are shown in the table below.</p>
+<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
+    <table class="table table-hover table-bordered mb-0">
+        <caption class="p-2">Your salted and unsalted password hashes.</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Salt</th>
+                <th scope="col">Password</th>
+                <th scope="col">Unsalted Hash</th>
+                <th scope="col">Salted Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for salt, pass, salted, nosalted in salt_rows %}
+            <tr>
+                <td>
+                    <pre class="mb-0">{{ salt }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ pass }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ nosalted }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ salted }}</pre>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p>If you tried the same password several times, compare its unsalted hashes with the salted ones.</p>
+{% endif %}
+
+{% if num_hashed >= 3 %}
+<div class="alert alert-info">
+    <h5>Lesson Recap</h5>
+    <hr>
+    <p>Salting passwords solves <strong>two</strong> problems at the same time.</p>
+    <ol class="mb-0">
+        <li>It makes using <strong>rainbow tables</strong> almost impossible, since they only contain <em>commonly used</em> passwords.</li>
+        <li>It makes it impossible for an attacker to know if two users are using the same password.</li>
+    </ol>
+</div>
+{% endif %}
 
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
