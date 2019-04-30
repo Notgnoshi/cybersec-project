@@ -3,6 +3,8 @@ import string
 
 from django import forms
 
+from passwords.src.password_db import DEE_USERNAME, DUM_USERNAME
+
 
 def _gen_random_salt():
     SIZE = 12
@@ -55,4 +57,12 @@ class MadhatterLoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control", "autocomplete": "off"}),
         label="Password",
+    )
+
+
+class CrackPasswordsForm(forms.Form):
+    choices = forms.ChoiceField(
+        widget=forms.RadioSelect(attrs={"class": "form-check-input"}),
+        choices=((DEE_USERNAME, DEE_USERNAME), (DUM_USERNAME, DUM_USERNAME)),
+        label="User",
     )
