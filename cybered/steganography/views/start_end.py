@@ -105,10 +105,6 @@ class SteganographyToolsPageView(SteganographyMixin, MultiFormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        file_url = self.request.session[SteganographyModule.scope("tools_image_url")]
-        secret_message = self.request.session[SteganographyModule.scope("tools_secret_message")]
-        random_seed = self.request.session[SteganographyModule.scope("tools_random_seed")]
-
         context["image_in_image_choices"] = self.image_in_image_choices
         context["text_in_image_choices"] = self.text_in_image_choices
         context["text_in_comment_choices"] = self.text_in_comment_images
@@ -116,6 +112,11 @@ class SteganographyToolsPageView(SteganographyMixin, MultiFormView):
         # Previously submitted, fill out the results info
         image_name = self.request.session.get(SteganographyModule.scope("tools_image_name"), None)
         if image_name:
+            file_url = self.request.session[SteganographyModule.scope("tools_image_url")]
+            secret_message = self.request.session[SteganographyModule.scope("tools_secret_message")]
+            random_seed = self.request.session[SteganographyModule.scope("tools_random_seed")]
+
+
             if image_name.startswith("img_img"):
                 context["show_image_in_image_results"] = True
 
