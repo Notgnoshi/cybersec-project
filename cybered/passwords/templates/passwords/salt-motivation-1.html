@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for user, _, hash in password_db %}
+            {% for user, _, hash, _, _ in password_db %}
             <tr
                 class="{% if hash == input_hash and user == input_user %}table-success{% elif user == input_user %}table-danger{% endif %}">
                 <td>

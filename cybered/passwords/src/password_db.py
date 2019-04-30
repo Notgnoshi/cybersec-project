@@ -9,11 +9,29 @@ MADHATTER_PASSWORD = "madhatter"
 MADHATTER_HASH = hashlib.md5(MADHATTER_PASSWORD.encode()).hexdigest()
 
 PASSWORD_DB = [
-    (MADHATTER_USERNAME, MADHATTER_PASSWORD, MADHATTER_HASH),
-    (ALICE_USERNAME, ALICE_PASSWORD, ALICE_HASH),
+    (
+        MADHATTER_USERNAME,
+        MADHATTER_PASSWORD,
+        MADHATTER_HASH,
+        "jG9hfJ8S7k9S",
+        hashlib.md5(("jG9hfJ8S7k9S" + MADHATTER_PASSWORD).encode()).hexdigest(),
+    ),
+    (
+        ALICE_USERNAME,
+        ALICE_PASSWORD,
+        ALICE_HASH,
+        "v1INbrGAPhj3",
+        hashlib.md5(("v1INbrGAPhj3" + ALICE_PASSWORD).encode()).hexdigest(),
+    ),
     # Use alice's password for bill too, because I need an example of two users
     # with the same password for the conversation on salting.
-    ("bill.the.lizard@wonderland.org", ALICE_PASSWORD, ALICE_HASH),
+    (
+        "bill.the.lizard@wonderland.org",
+        ALICE_PASSWORD,
+        ALICE_HASH,
+        "iy80PTV1cwUH",
+        hashlib.md5(("iy80PTV1cwUH" + ALICE_PASSWORD).encode()).hexdigest(),
+    ),
 ]
 
 PASSWORD_DB_USERS = [row[0] for row in PASSWORD_DB]

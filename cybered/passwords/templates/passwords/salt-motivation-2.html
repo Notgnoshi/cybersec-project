@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for user, _, hash in password_db %}
+            {% for user, _, hash, _, _ in password_db %}
             <tr>
                 <td>
                     <pre class="mb-0">{{ user }}</pre>
