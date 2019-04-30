@@ -1,4 +1,5 @@
 import hashlib
+import pathlib
 
 ALICE_USERNAME = "alice@wonderland.org"
 ALICE_PASSWORD = "IntoTheLookingGlass"
@@ -7,6 +8,11 @@ ALICE_HASH = hashlib.md5(ALICE_PASSWORD.encode()).hexdigest()
 MADHATTER_USERNAME = "mad.hatter@wonderland.org"
 MADHATTER_PASSWORD = "madhatter"
 MADHATTER_HASH = hashlib.md5(MADHATTER_PASSWORD.encode()).hexdigest()
+
+DEE_USERNAME = "tweedle.dee@wonderland.org"
+DEE_PASSWORD = "letmein"
+DUM_USERNAME = "tweedle.dum@wonderland.org"
+DUM_PASSWORD = "opensesame"
 
 PASSWORD_DB = [
     (
@@ -49,4 +55,25 @@ HASH_LIST = [
     ("544b3befd3b2964fa66cea518c5b3bd7", "g00fy"),
     ("544babc97987d460e6b696a95bf8f7b5", "phpbbmystix"),
     ("544c358ceaf975db88198563ffe2510f", "xp0dxrh"),
+]
+
+_STATIC_DIR = pathlib.Path(__file__).parent.parent.joinpath("static").resolve()
+COMMON_PASSWORDS = [line.strip() for line in _STATIC_DIR.joinpath("top-1000-passwords.txt").open()]
+DICT_WORDS = [line.strip() for line in _STATIC_DIR.joinpath("words.txt").open()]
+
+INSECURE_DB = [
+    (
+        DEE_USERNAME,
+        DEE_PASSWORD,
+        hashlib.md5(DEE_PASSWORD.encode()).hexdigest(),
+        "X5nmzb2jLgby",
+        hashlib.md5(("X5nmzb2jLgby" + DEE_PASSWORD).encode()).hexdigest(),
+    ),
+    (
+        DUM_USERNAME,
+        DUM_PASSWORD,
+        hashlib.md5(DUM_PASSWORD.encode()).hexdigest(),
+        "hz7ghPB5DQhx",
+        hashlib.md5(("hz7ghPB5DQhx" + DUM_PASSWORD).encode()).hexdigest(),
+    ),
 ]
