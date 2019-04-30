@@ -11,8 +11,9 @@ class HashingModule(cybered.ModuleMixin):
     module_base_link = "hashing/"
     module_start_link = "begin"
 
-    # TODO: Come up with a better description than this.
-    module_description = "This is a long description of the hashing module."
+    module_description = (
+        "An introduction to message digests and their uses in message authentication and integrity"
+    )
 
 
 class HashingPageManager(cybered.PageManager):
