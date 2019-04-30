@@ -136,8 +136,8 @@ class PasswordsSaltDetailsView(PasswordsMixin, FormView):
         return reverse(PasswordsModule.scope("salt-details"))
 
     def form_valid(self, form):
-        self.request.session[PasswordsModule.scope("details_user")] = form.cleaned_data["email"]
-        self.request.session[PasswordsModule.scope("details_password")] = form.cleaned_data[
+        self.request.session[PasswordsModule.scope("salt_details_user")] = form.cleaned_data["email"]
+        self.request.session[PasswordsModule.scope("salt_details_password")] = form.cleaned_data[
             "password"
         ]
         return super().form_valid(form)
@@ -145,9 +145,9 @@ class PasswordsSaltDetailsView(PasswordsMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        key = PasswordsModule.scope("details_password")
+        key = PasswordsModule.scope("salt_details_password")
         input_password = self.request.session.get(key, "")
-        key = PasswordsModule.scope("details_user")
+        key = PasswordsModule.scope("salt_details_user")
         input_user = self.request.session.get(key, "")
 
         input_hash = ""
