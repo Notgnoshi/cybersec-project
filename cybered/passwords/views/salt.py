@@ -118,11 +118,52 @@ class PasswordsSaltView(PasswordsMixin, FormView):
 
         if len(self.request.session.get(salt_rows_key, [])) < 3:
             page_index = self.kwargs["page_index"]
-            context = super().get_context_data(disabled_pages=[page_index+1], **kwargs)
+            context = super().get_context_data(disabled_pages=[page_index + 1], **kwargs)
         else:
             context = super().get_context_data(**kwargs)
 
         context["num_hashed"] = len(self.request.session.get(salt_rows_key, []))
         context["salt_rows"] = self.request.session.get(salt_rows_key, [])
+
+        return context
+
+
+class PasswordsSaltDetailsView(PasswordsMixin, FormView):
+    form_class = AliceLoginForm
+    success_url = ""
+
+    def get_success_url(self):
+        return reverse(PasswordsModule.scope("salt-details"))
+
+    def form_valid(self, form):
+        self.request.session[PasswordsModule.scope("details_user")] = form.cleaned_data["email"]
+        self.request.session[PasswordsModule.scope("details_password")] = form.cleaned_data[
+            "password"
+        ]
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        key = PasswordsModule.scope("details_password")
+        input_password = self.request.session.get(key, "")
+        key = PasswordsModule.scope("details_user")
+        input_user = self.request.session.get(key, "")
+
+        input_hash = ""
+        logged_in = False
+        if input_user in PASSWORD_DB_USERS:
+            idx = PASSWORD_DB_USERS.index(input_user)
+            salt = PASSWORD_DB[idx][3]
+            input_hash = hashlib.md5((salt + input_password).encode()).hexdigest()
+            logged_in = PASSWORD_DB[idx][4] == input_hash
+
+        context["input_user"] = input_user
+        context["input_password"] = input_password
+        context["input_hash"] = input_hash
+
+        context["password_db"] = PASSWORD_DB
+        context["password_db_users"] = PASSWORD_DB_USERS
+        context["logged_in"] = logged_in
 
         return context

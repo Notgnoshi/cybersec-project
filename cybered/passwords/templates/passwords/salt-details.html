@@ -1,0 +1,156 @@
+{% include "includes/head.html" %}
+<h2>Verification Details with Salted Passwords</h2>
+
+<p>As a reminder, a partial list of Wonderland users and their corresponding passwords is given below.</p>
+<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
+    <table class="table table-hover table-bordered mb-0">
+        <caption class="p-2">Some of the Wonderland users and their passwords.</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user, pass, _, _, _ in password_db %}
+            <tr>
+                <td>
+                    <pre class="mb-0">{{ user }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ pass }}</pre>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p>Use one of the above passwords to login to any of the Wonderland users.</p>
+<div class="card w-50 mx-auto mb-3 bg-light shadow-sm">
+    <h5 class="card-header">Login</h5>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.email.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.password.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-2 col-form-label">
+                <input class="btn btn-success" type="submit" value="Login" />
+                </div>
+                <div class="col">
+                    {% if logged_in %}
+                    <div class="alert alert-success my-0" role="alert">
+                        <p class="my-0">Logged in.</p>
+                    </div>
+                    {% elif input_password and not logged_in %}
+                    <div class="alert alert-danger my-0" role="alert">
+                        <p class="my-0">Login failed.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if input_password %}
+<p>A fragment of the <em>actual</em> Wonderland password database is shown below. Notice that the password hash for Alice and Bill The Lizard are different even though they used the same password!</p>
+<p>When you tried to login to the <code>{{ input_user }}</code> account,
+{% if input_user in password_db_users %}
+    {% for user, _, _, salt, _ in password_db %}
+        {% if user == input_user %}
+            we added the salt <code>{{ salt }}</code> to the password <em>before</em> hashing the password you entered.
+            {% if logged_in %}
+                The salted hashes matched, so you were logged in!
+            {% else %}
+                But the salted hashes didn't match, so you weren't logged in!
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    we didn't even look at the password hash because the user <code>{{ input_user }}</code> isn't in the Wonderland database. Try again, but this time with a user in the database!
+{% endif %}</p>
+<div class="row">
+    <div class="col-8">
+        <div class="table-responsive table-light shadow-sm mb-3 border rounded">
+            <table class="table table-hover table-bordered mb-0">
+            {% comment %} Lel, it's the whole database. {% endcomment %}
+                <caption class="p-2">A small fragment of the Wonderland password database.</caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Salt</th>
+                        <th scope="col">Salted Password Hash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user, _, _, salt, hash in password_db %}
+                    <tr
+                        class="{% if logged_in and user == input_user %}table-success{% elif user == input_user %}table-danger{% endif %}">
+                        <td>
+                            <pre class="mb-0">{{ user }}</pre>
+                        </td>
+                        <td>
+                            <pre class="mb-0">{{ salt }}</pre>
+                        </td>
+                        <td>
+                            <pre class="mb-0">{{ hash }}</pre>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="table-responsive table-light shadow-sm mb-3 border rounded">
+            <table class="table table-bordered mb-0">
+                <caption class="p-2">The <em>salted</em> hash of the input password.</caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Input Hash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user, _, _, salt, hash in password_db %}
+                    <tr
+                        class="{% if logged_in and user == input_user %}table-success{% elif user == input_user %}table-danger{% endif %}">
+                        <td>
+                            {% if user == input_user %}
+                            <pre class="mb-0">{{ input_hash }}</pre>
+                            {% else %}
+                            <pre class="mb-0">&nbsp;</pre>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<p>What happens if you try to login to Alice's account with the Mad Hatter's password? Does the input hash match either Alice <em>or</em> the Mad Hatter's salted hash? Why?</p>
+
+<div class="alert alert-info shadow-sm">
+    <h5>Lesson Recap</h5>
+    <hr>
+    <p class="mb-0">Only the username, salt, and hash of the salted password are stored in the password database. It's not that much more work for the service to salt the passwords before comparing them to the database, and there's <strong>no</strong> change in how the <em>user</em> logs in!</p>
+</div>
+{% endif %}
+
+{% include "includes/paginator.html" %}
+{% include "includes/footer.html" %}
