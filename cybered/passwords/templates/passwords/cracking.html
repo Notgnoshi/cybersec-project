@@ -1,5 +1,131 @@
 {% include "includes/head.html" %}
 <h2>Password Cracking</h2>
 
+<div class="alert alert-info">
+    <h5>Reminder</h5>
+    <hr>
+    <p>Let's review what we know about how passwords are stored.</p>
+    <ul class="mb-0">
+        <li>Services should assume attackers <strong>will</strong> get access to their password database eventually.</li>
+        <li>Services do <strong>not</strong> store the passwords.</li>
+        <li>Services <strong>salt</strong> the passwords before hashing them, and store the salt and the hashes in the database. This solved a few problems:</li>
+        <ul>
+            <li>It makes using <strong>rainbow tables</strong> almost impossible.</li>
+            <li>It makes an attacker unaware that two users might have used the same password.</li>
+        </ul>
+    </ul>
+</div>
+
+<p>So if an attacker can't use a rainbow table, what <em>can</em> they use? Well &mdash; they guess.</p>
+
+<p>We held back a few of Wonderland's users in the password database fragments we showed you earlier. Meet the Tweedle brothers &mdash; their usernames, salts, and salted hashes are shown in the table below.</p>
+
+<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
+    <table class="table table-hover table-bordered mb-0">
+        <caption class="p-2">The salts and hashes for the Tweedle brothers.</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Salt</th>
+                <th scope="col">Salted Password Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user, _, _, salt, hash in password_db %}
+            <tr class="{% if user == cracking_user and cracked %}table-success{% endif %}">
+                <td>
+                    <pre class="mb-0">{{ user }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ salt }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ hash }}</pre>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p>So pick a brother and let's start guessing...</p>
+
+<div class="card w-50 mx-auto mb-3 bg-light shadow-sm" id="guess-password">
+    <h5 class="card-header">Guess Password</h5>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-2 col-form-label">
+                    {{ form.choices.label_tag }}
+                </div>
+                <div class="col">
+                    {{ form.choices }}
+                </div>
+            </div>
+            <div class="form-group row mb-0">
+                <div class="col-form-label col-2">
+                    <input class="btn {% if cracking_attempts > 0 %}btn-outline-success{% else %}btn-success{% endif %}" type="submit" name="crack_guess_alpha" value="Guess" />
+                </div>
+                {% if cracking_attempts > 0 %}
+                <div class="col-form-label col-3">
+                    <input class="btn btn-success" type="submit" name="crack_guess_common" value="Guess Better" />
+                </div>
+                {% endif %}
+                <div class="col">
+                    {% if cracked %}
+                    <div class="alert alert-success my-0" role="alert">
+                        <p class="my-0">Guessing succeeded!</p>
+                    </div>
+                    {% elif not cracked and cracking_attempts > 0 %}
+                    <div class="alert alert-danger my-0" role="alert">
+                        <p class="my-0">Guessing failed.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if cracking_attempts > 0 %}
+    {% if cracking_method == "crack_guess_alpha" %}
+        <p>Woah, woah, woah. You can do better than starting at the beginning of the English dictionary. We don't have all day, after all.</p>
+        <p>Try making better guesses &mdash; say, for example, the most commonly used passwords.</p>
+    {% else %}
+        <p>That's more like it. We were able to find <code>{{ cracking_user }}</code>'s password almost immediately once we started guessing commonly used passwords.</p>
+    {% endif %}
+<div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
+    <table class="table table-hover table-bordered mb-0">
+        <caption class="p-2">Some of the attempted passwords.</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Password</th>
+                <th scope="col">Salted Password Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for word, hash in attempted_words %}
+            <tr class="{% if cracked and hash == actual_hash %}table-success{% endif %}">
+                <td>
+                    <pre class="mb-0">{{ word }}</pre>
+                </td>
+                <td>
+                    <pre class="mb-0">{{ hash }}</pre>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p>Now of course, we didn't try that many passwords, but there are public <a href="https://github.com/danielmiessler/SecLists/tree/master/Passwords">lists</a> of <em>millions</em> of common passwords. So how can the Tweedle brothers pick better passwords?</p>
+
+<div class="alert alert-info">
+    <h5>Lesson Recap</h5>
+    <hr>
+    <p class="mb-0">If an attacker has access to the password database, all they need to do is try the most commonly used passwords. It's not quite as easy as using a rainbow table, but it's the best we can do without forcing our users to pick better passwords.</p>
+</div>
+{% endif %}
+
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
