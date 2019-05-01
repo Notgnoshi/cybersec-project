@@ -26,7 +26,7 @@
             </div>
             <div class="form-group row mb-0">
                 <div class="col-2 col-form-label">
-                <input class="btn btn-success" type="submit" value="Login" />
+                    <input class="btn btn-success" type="submit" value="Login" />
                 </div>
                 <div class="col">
                     {% if logged_in %}
@@ -63,7 +63,8 @@
 
 <p>In the example above, you attempted to <strong>identify</strong> yourself as the
     <code>{{ input_email }}</code> user.{% if input_email != actual_email %} However, we asked
-    you to attempt logging in as the <code>{{ actual_email }}</code> user. Please do so before continuing.{% endif %}</p>
+    you to attempt logging in as the <code>{{ actual_email }}</code> user. Please do so before continuing.{% endif %}
+</p>
 {% if input_email == actual_email and input_password != actual_password %}
 <p>However, you failed to correctly <strong>verify</strong> that you were Alice, because the password you entered did
     not match the one we have on record. Try again, and this time use Alice's <em>actual</em> password:

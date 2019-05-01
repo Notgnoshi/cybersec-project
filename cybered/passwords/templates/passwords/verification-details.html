@@ -27,7 +27,7 @@
             </div>
             <div class="form-group row mb-0">
                 <div class="col-2 col-form-label">
-                <input class="btn btn-success" type="submit" value="Login" />
+                    <input class="btn btn-success" type="submit" value="Login" />
                 </div>
                 <div class="col">
                     {% if logged_in %}
@@ -54,14 +54,16 @@
 <ol>
     <li>Attempt to find a user with the given username. If no such user exists, fail to authenticate the user.</li>
     <li>Hash the given password.</li>
-    <li>Attempt to match the hashed password with the recorded hash for the given username. If the hash matches, authenticate the user. Otherwise fail to authenticate the user.</li>
+    <li>Attempt to match the hashed password with the recorded hash for the given username. If the hash matches,
+        authenticate the user. Otherwise fail to authenticate the user.</li>
 </ol>
-<p>The table below shows a small portion of our super-secret password database. It stores each username and the hash of each user's password. Try logging into the other users!</p>
+<p>The table below shows a small portion of our super-secret password database. It stores each username and the hash of
+    each user's password. Try logging into the other users!</p>
 <div class="row">
     <div class="col-8">
         <div class="table-responsive table-light shadow-sm mb-3 border rounded">
             <table class="table table-hover table-bordered mb-0">
-            {% comment %} Lel, it's the whole database. {% endcomment %}
+                {% comment %} Lel, it's the whole database. {% endcomment %}
                 <caption class="p-2">A small fragment of the Wonderland password database.</caption>
                 <thead class="thead-light">
                     <tr>
@@ -113,13 +115,20 @@
     </div>
 </div>
 <p>Now why do you think we store the password's hashes instead of the passwords themselves?</p>
-<p>The answer is simple. It's to minimize the amount of damage <strong>when</strong> an attacker gets a hold of a service's password database. Cyberattacks happen all the time, and even though there are ways to make attacks harder, there's no possible way to prevent them all.</p>
-<p>Storing the password hashes means that even if the attack gets access to the password database, they won't be able to tell what the passwords are &mdash; because hashes are <strong>one-way</strong> functions! This is a good thing because most people use the same passwords for multiple different services, so if an attacker learned your password, they would be able to use it anywhere you have an account!</p>
+<p>The answer is simple. It's to minimize the amount of damage <strong>when</strong> an attacker gets a hold of a
+    service's password database. Cyberattacks happen all the time, and even though there are ways to make attacks
+    harder, there's no possible way to prevent them all.</p>
+<p>Storing the password hashes means that even if the attack gets access to the password database, they won't be able to
+    tell what the passwords are &mdash; because hashes are <strong>one-way</strong> functions! This is a good thing
+    because most people use the same passwords for multiple different services, so if an attacker learned your password,
+    they would be able to use it anywhere you have an account!</p>
 
 <div class="alert alert-info shadow-sm">
     <h5>Lesson Recap</h5>
     <hr>
-    <p class="mb-0">Services absolutely should <em>not</em> store user passwords. Instead they store the password hashes &mdash; which minimizes the amount of damage <em>when</em> an attacker gets access to the service's password database.</p>
+    <p class="mb-0">Services absolutely should <em>not</em> store user passwords. Instead they store the password hashes
+        &mdash; which minimizes the amount of damage <em>when</em> an attacker gets access to the service's password
+        database.</p>
 </div>
 {% endif %}
 

@@ -49,7 +49,7 @@
             </div>
             <div class="form-group row mb-0">
                 <div class="col-2 col-form-label">
-                <input class="btn btn-success" type="submit" value="Login" />
+                    <input class="btn btn-success" type="submit" value="Login" />
                 </div>
                 <div class="col">
                     {% if logged_in %}
@@ -68,27 +68,29 @@
 </div>
 
 {% if input_password %}
-<p>A fragment of the <em>actual</em> Wonderland password database is shown below. Notice that the password hash for Alice and Bill The Lizard are different even though they used the same password!</p>
+<p>A fragment of the <em>actual</em> Wonderland password database is shown below. Notice that the password hash for
+    Alice and Bill The Lizard are different even though they used the same password!</p>
 <p>When you tried to login to the <code>{{ input_user }}</code> account,
-{% if input_user in password_db_users %}
+    {% if input_user in password_db_users %}
     {% for user, _, _, salt, _ in password_db %}
-        {% if user == input_user %}
-            we added the salt <code>{{ salt }}</code> to the password <em>before</em> hashing the password you entered.
-            {% if logged_in %}
-                The salted hashes matched, so you were logged in!
-            {% else %}
-                But the salted hashes didn't match, so you weren't logged in!
-            {% endif %}
-        {% endif %}
+    {% if user == input_user %}
+    we added the salt <code>{{ salt }}</code> to the password <em>before</em> hashing the password you entered.
+    {% if logged_in %}
+    The salted hashes matched, so you were logged in!
+    {% else %}
+    But the salted hashes didn't match, so you weren't logged in!
+    {% endif %}
+    {% endif %}
     {% endfor %}
-{% else %}
-    we didn't even look at the password hash because the user <code>{{ input_user }}</code> isn't in the Wonderland database. Try again, but this time with a user in the database!
-{% endif %}</p>
+    {% else %}
+    we didn't even look at the password hash because the user <code>{{ input_user }}</code> isn't in the Wonderland
+    database. Try again, but this time with a user in the database!
+    {% endif %}</p>
 <div class="row">
     <div class="col-8">
         <div class="table-responsive table-light shadow-sm mb-3 border rounded">
             <table class="table table-hover table-bordered mb-0">
-            {% comment %} Lel, it's the whole database. {% endcomment %}
+                {% comment %} Lel, it's the whole database. {% endcomment %}
                 <caption class="p-2">A small fragment of the Wonderland password database.</caption>
                 <thead class="thead-light">
                     <tr>
@@ -143,12 +145,15 @@
         </div>
     </div>
 </div>
-<p>What happens if you try to login to Alice's account with the Mad Hatter's password? Does the input hash match either Alice <em>or</em> the Mad Hatter's salted hash? Why?</p>
+<p>What happens if you try to login to Alice's account with the Mad Hatter's password? Does the input hash match either
+    Alice <em>or</em> the Mad Hatter's salted hash? Why?</p>
 
 <div class="alert alert-info shadow-sm">
     <h5>Lesson Recap</h5>
     <hr>
-    <p class="mb-0">Only the username, salt, and hash of the salted password are stored in the password database. It's not that much more work for the service to salt the passwords before comparing them to the database, and there's <strong>no</strong> change in how the <em>user</em> logs in!</p>
+    <p class="mb-0">Only the username, salt, and hash of the salted password are stored in the password database. It's
+        not that much more work for the service to salt the passwords before comparing them to the database, and there's
+        <strong>no</strong> change in how the <em>user</em> logs in!</p>
 </div>
 {% endif %}
 

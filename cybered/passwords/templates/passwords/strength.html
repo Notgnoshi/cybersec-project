@@ -2,20 +2,29 @@
 {% include "includes/head.html" %}
 <h2>Password Strength</h2>
 
-<p>What makes a password strong? Well, if there is any justice in the world, strong passwords are passwords that take a very long time to crack. In more technical language, we measure the strength of a password using a number called <a href="https://en.wikipedia.org/wiki/Password_strength#Random_passwords">bits of entropy</a></p>
+<p>What makes a password strong? Well, if there is any justice in the world, strong passwords are passwords that take a
+    very long time to crack. In more technical language, we measure the strength of a password using a number called <a
+        href="https://en.wikipedia.org/wiki/Password_strength#Random_passwords">bits of entropy</a></p>
 
-<p>If a password has 42 bits of entropy, it is equivalent to a random string of 42 bits (ones and zeros). In other words, the odds of correctly guessing a password with 42 bits of entropy are the same as correctly guessing 42 coin tosses in a row.</p>
+<p>If a password has 42 bits of entropy, it is equivalent to a random string of 42 bits (ones and zeros). In other
+    words, the odds of correctly guessing a password with 42 bits of entropy are the same as correctly guessing 42 coin
+    tosses in a row.</p>
 
-<p>Correctly calculating the amount of entropy in a password is actually pretty hard. But the exact details don't really matter &mdash; only that the entropy increases the longer and more complicated a password gets. Everything you need to know about password strength can be summarized with the following <a href="https://xkcd.com/" target="_blank">XKCD</a> comic.</p>
+<p>Correctly calculating the amount of entropy in a password is actually pretty hard. But the exact details don't really
+    matter &mdash; only that the entropy increases the longer and more complicated a password gets. Everything you need
+    to know about password strength can be summarized with the following <a href="https://xkcd.com/"
+        target="_blank">XKCD</a> comic.</p>
 
 <div class="w-75 mx-auto">
     <figure class="figure">
-        <a href="https://xkcd.com/936/" target="_blank"><img src="https://imgs.xkcd.com/comics/password_strength.png" alt="a funny comic about password strength" class="figure-img img-fluid rounded"></a>
+        <a href="https://xkcd.com/936/" target="_blank"><img src="https://imgs.xkcd.com/comics/password_strength.png"
+                alt="a funny comic about password strength" class="figure-img img-fluid rounded"></a>
         <figcaption class="figure-caption">Consider this funny comic about password strength.</figcaption>
     </figure>
 </div>
 <p>The moral of the story is, <strong>make your passwords long</strong>!</p>
-<p>Try testing the amount of entropy in a few different passwords with the calculator below. Be sure to try some short passwords as well as some long ones.</p>
+<p>Try testing the amount of entropy in a few different passwords with the calculator below. Be sure to try some short
+    passwords as well as some long ones.</p>
 
 <div class="card w-50 mx-auto mb-3 bg-light shadow-sm" id="entropy-calculator">
     <h5 class="card-header">Password Entropy Calculator</h5>
@@ -36,7 +45,8 @@
                 </div>
                 <div class="col">
                     {% if password %}
-                    <div class="alert {% if entropy >= 80 %}alert-success{% elif entropy >= 70 %}alert-info{% elif entropy >= 60 %}alert-warning{% else %}alert-danger{% endif %}">
+                    <div
+                        class="alert {% if entropy >= 80 %}alert-success{% elif entropy >= 70 %}alert-info{% elif entropy >= 60 %}alert-warning{% else %}alert-danger{% endif %}">
                         <var>Entropy = {{ entropy }}</var>
                     </div>
                     {% endif %}

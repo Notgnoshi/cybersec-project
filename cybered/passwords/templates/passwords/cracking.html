@@ -6,9 +6,11 @@
     <hr>
     <p>Let's review what we know about how passwords are stored.</p>
     <ul class="mb-0">
-        <li>Services should assume attackers <strong>will</strong> get access to their password database eventually.</li>
+        <li>Services should assume attackers <strong>will</strong> get access to their password database eventually.
+        </li>
         <li>Services do <strong>not</strong> store the passwords.</li>
-        <li>Services <strong>salt</strong> the passwords before hashing them, and store the salt and the hashes in the database. This solved a few problems:</li>
+        <li>Services <strong>salt</strong> the passwords before hashing them, and store the salt and the hashes in the
+            database. This solved a few problems:</li>
         <ul>
             <li>It makes using <strong>rainbow tables</strong> almost impossible.</li>
             <li>It makes an attacker unaware that two users might have used the same password.</li>
@@ -18,7 +20,8 @@
 
 <p>So if an attacker can't use a rainbow table, what <em>can</em> they use? Well &mdash; they guess.</p>
 
-<p>We held back a few of Wonderland's users in the password database fragments we showed you earlier. Meet the Tweedle brothers &mdash; their usernames, salts, and salted hashes are shown in the table below.</p>
+<p>We held back a few of Wonderland's users in the password database fragments we showed you earlier. Meet the Tweedle
+    brothers &mdash; their usernames, salts, and salted hashes are shown in the table below.</p>
 
 <div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
     <table class="table table-hover table-bordered mb-0">
@@ -65,7 +68,8 @@
             </div>
             <div class="form-group row mb-0">
                 <div class="col-form-label col-2">
-                    <input class="btn {% if cracking_attempts > 0 %}btn-outline-success{% else %}btn-success{% endif %}" type="submit" name="crack_guess_alpha" value="Guess" />
+                    <input class="btn {% if cracking_attempts > 0 %}btn-outline-success{% else %}btn-success{% endif %}"
+                        type="submit" name="crack_guess_alpha" value="Guess" />
                 </div>
                 {% if cracking_attempts > 0 %}
                 <div class="col-form-label col-3">
@@ -89,12 +93,14 @@
 </div>
 
 {% if cracking_attempts > 0 %}
-    {% if cracking_method == "crack_guess_alpha" %}
-        <p>Woah, woah, woah. You can do better than starting at the beginning of the English dictionary. We don't have all day, after all.</p>
-        <p>Try making better guesses &mdash; say, for example, the most commonly used passwords.</p>
-    {% else %}
-        <p>That's more like it. We were able to find <code>{{ cracking_user }}</code>'s password almost immediately once we started guessing commonly used passwords.</p>
-    {% endif %}
+{% if cracking_method == "crack_guess_alpha" %}
+<p>Woah, woah, woah. You can do better than starting at the beginning of the English dictionary. We don't have all day,
+    after all.</p>
+<p>Try making better guesses &mdash; say, for example, the most commonly used passwords.</p>
+{% else %}
+<p>That's more like it. We were able to find <code>{{ cracking_user }}</code>'s password almost immediately once we
+    started guessing commonly used passwords.</p>
+{% endif %}
 <div class="table-responsive table-light shadow-sm mb-3 border rounded w-75 mx-auto">
     <table class="table table-hover table-bordered mb-0">
         <caption class="p-2">Some of the attempted passwords.</caption>
@@ -118,14 +124,20 @@
         </tbody>
     </table>
 </div>
-<p>Now, we're not quite telling the whole truth here &mdash; cracking passwords is <em>a lot</em> more complicated than trying just the most common passwords. It's a good start, but it would <em>never</em> work on some user's passwords, and we're not going to throw up our hands and give up when we find a password we can't crack, are we?</p>
+<p>Now, we're not quite telling the whole truth here &mdash; cracking passwords is <em>a lot</em> more complicated than
+    trying just the most common passwords. It's a good start, but it would <em>never</em> work on some user's passwords,
+    and we're not going to throw up our hands and give up when we find a password we can't crack, are we?</p>
 <p>Can you think of a way to crack passwords that aren't in the common passwords list?</p>
 <div class="alert alert-info">
     <h5>Lesson Recap</h5>
     <hr>
-    <p class="mb-0">If an attacker has access to the password database, all they need to do is try the most commonly used passwords. It's not quite as easy as using a rainbow table, but it's the best we can do without forcing our users to pick better passwords.</p>
+    <p class="mb-0">If an attacker has access to the password database, all they need to do is try the most commonly
+        used passwords. It's not quite as easy as using a rainbow table, but it's the best we can do without forcing our
+        users to pick better passwords.</p>
 </div>
-<p>Now of course, we didn't try that many passwords, but there are public <a href="https://github.com/danielmiessler/SecLists/tree/master/Passwords">lists</a> of <em>millions</em> of common passwords. So how can the Tweedle brothers pick better passwords?</p>
+<p>Now of course, we didn't try that many passwords, but there are public <a
+        href="https://github.com/danielmiessler/SecLists/tree/master/Passwords">lists</a> of <em>millions</em> of common
+    passwords. So how can the Tweedle brothers pick better passwords?</p>
 {% endif %}
 
 {% include "includes/paginator.html" %}

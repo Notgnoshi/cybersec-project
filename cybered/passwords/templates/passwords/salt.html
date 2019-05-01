@@ -7,25 +7,32 @@
     <p>In the previous lessons we've learned a few important things that we should review before we move on.</p>
     <ul class="mb-0">
         <li>Always assume an attacker <strong>will</strong> get access to the password database.</li>
-        <li>In order to hide the actual passwords from the attackers, only the password <strong>hashes</strong> are stored.</li>
+        <li>In order to hide the actual passwords from the attackers, only the password <strong>hashes</strong> are
+            stored.</li>
     </ul>
 </div>
 
-<p>We decided that storing the <strong>hashes</strong> of the passwords was the right idea, but we found two problems with that plan.</p>
+<p>We decided that storing the <strong>hashes</strong> of the passwords was the right idea, but we found two problems
+    with that plan.</p>
 
 <ol>
     <li>You can find <strong>rainbow tables</strong> for <em>commonly used</em> passwords.</li>
     <li>Storing the hashes doesn't hide any duplicate passwords used by multiple users.</li>
 </ol>
 
-<p>There's a single technique called <strong>salting</strong> the passwords that will solve <em>both</em> of these problems. It's a simple technique &mdash; just add random stuff (<strong>salt</strong>) to the password before hashing it. Doing this will solve both problems!</p>
+<p>There's a single technique called <strong>salting</strong> the passwords that will solve <em>both</em> of these
+    problems. It's a simple technique &mdash; just add random stuff (<strong>salt</strong>) to the password before
+    hashing it. Doing this will solve both problems!</p>
 
 <ol>
     <li>It makes rainbow tables hard to use, because they only contain <em>commonly used</em> passwords.</li>
-    <li>It makes duplicated passwords look unique, because the salt is random, and created every time a user sets their password!</li>
+    <li>It makes duplicated passwords look unique, because the salt is random, and created every time a user sets their
+        password!</li>
 </ol>
 
-<p>Try using the following form to salt and hash at least <strong>three</strong> passwords. We'll generate the salt for you each time, but you can use your own salt if you want. Make sure to try the same password a few different times with different salts.</p>
+<p>Try using the following form to salt and hash at least <strong>three</strong> passwords. We'll generate the salt for
+    you each time, but you can use your own salt if you want. Make sure to try the same password a few different times
+    with different salts.</p>
 
 <div class="card w-50 mx-auto my-3 bg-light shadow-sm">
     <h5 class="card-header">Salting a Password</h5>
@@ -50,12 +57,12 @@
             </div>
             <div class="form-group row mb-0">
                 <div class="col-3 col-form-label">
-                {% comment %} TODO: 'hash (n/3)' as the button value? {% endcomment %}
                     <input class="btn btn-success" type="submit" value="Hash {{ num_hashed }}/3" />
                 </div>
                 <div class="col">
                     <div class="alert alert-warning my-0">
-                        <p class="my-0">We <strong>will</strong> display the passwords you enter, so don't enter any you wish to remain secret!</p>
+                        <p class="my-0">We <strong>will</strong> display the passwords you enter, so don't enter any you
+                            wish to remain secret!</p>
                     </div>
                 </div>
             </div>
@@ -105,7 +112,8 @@
     <hr>
     <p>Salting passwords solves <strong>two</strong> problems at the same time.</p>
     <ol class="mb-0">
-        <li>It makes using <strong>rainbow tables</strong> almost impossible, since they only contain <em>commonly used</em> passwords.</li>
+        <li>It makes using <strong>rainbow tables</strong> almost impossible, since they only contain <em>commonly
+                used</em> passwords.</li>
         <li>It makes it impossible for an attacker to know if two users are using the same password.</li>
     </ol>
 </div>
