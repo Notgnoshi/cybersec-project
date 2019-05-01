@@ -66,3 +66,10 @@ class CrackPasswordsForm(forms.Form):
         choices=((DEE_USERNAME, DEE_USERNAME), (DUM_USERNAME, DUM_USERNAME)),
         label="User",
     )
+
+
+class PasswordEntropyForm(forms.Form):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "autocomplete": "off"}),
+        label="Password",
+    )
