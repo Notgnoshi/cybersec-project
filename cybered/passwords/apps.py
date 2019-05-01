@@ -29,4 +29,5 @@ class PasswordsPageManager(cybered.PageManager):
         ("salt-details", "salt-details", "passwords/salt-details.html"),
         ("cracking", "cracking", "passwords/cracking.html"),
         ("strength", "strength", "passwords/strength.html"),
+        ("conclusion", "conclusion", "passwords/conclusion.html"),
     )

@@ -5,3 +5,7 @@ from .mixin import PasswordsMixin
 
 class PasswordsBeginView(PasswordsMixin, TemplateView):
     pass
+
+
+class PasswordsConclusionView(PasswordsMixin, TemplateView):
+    pass
