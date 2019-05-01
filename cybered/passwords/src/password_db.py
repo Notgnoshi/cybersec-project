@@ -57,7 +57,7 @@ HASH_LIST = [
     ("544c358ceaf975db88198563ffe2510f", "xp0dxrh"),
 ]
 
-_STATIC_DIR = pathlib.Path(__file__).parent.parent.joinpath("static").resolve()
+_STATIC_DIR = pathlib.Path(__file__).parent.parent.joinpath("static/passwords").resolve()
 COMMON_PASSWORDS = [line.strip() for line in _STATIC_DIR.joinpath("top-1000-passwords.txt").open()]
 DICT_WORDS = [line.strip() for line in _STATIC_DIR.joinpath("words.txt").open()]
 
