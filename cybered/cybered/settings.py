@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import pathlib
+from .src.release_settings import get_allowed_hosts
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,27 +21,6 @@ SHARED_DIR = "shared"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "5h^tgrioq&37a#hvh_s4_j7bnx-@ses463sn@kj%c_mn7z$41r"
-
-# When not in debug mode, attempt to get the secret key
-# from file
-RELEASE_KEY_FILE = "/etc/django/secret.txt"
-ALLOWED_HOSTS = []
-
-if not DEBUG:
-    from .src.release_settings import *
-
-    ALLOWED_HOSTS = get_allowed_hosts()
-
-    try:
-        SECRET_KEY = read_key_file(RELEASE_KEY_FILE)
-    except OSError as e:
-        print("WARNING: Unable to open key file - ", e)
 
 # Application definition
 
@@ -121,3 +101,26 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, SHARED_DIR, "static")]
 STATIC_ROOT = str(pathlib.Path("../staticroot/").resolve())
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = "5h^tgrioq&37a#hvh_s4_j7bnx-@ses463sn@kj%c_mn7z$41r"
+
+ALLOWED_HOSTS = get_allowed_hosts()
+
+if not DEBUG:
+    # Import everything, including any constants to overwrite.
+    from .src.release_settings import *
+
+    # When not in debug mode, attempt to get the secret key
+    # from file
+    RELEASE_KEY_FILE = "/etc/django/secret.txt"
+
+    ALLOWED_HOSTS = get_allowed_hosts()
+
+    try:
+        SECRET_KEY = read_key_file(RELEASE_KEY_FILE)
+    except OSError as e:
+        print("WARNING: Unable to open key file - ", e)
