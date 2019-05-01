@@ -1,7 +1,7 @@
 import hashlib
 
 from django.urls import reverse
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
 from passwords.forms import CrackPasswordsForm
@@ -82,7 +82,3 @@ class PasswordsCrackingView(PasswordsMixin, FormView):
         context["cracked"] = cracked
 
         return context
-
-
-class PasswordsCrackingToolView(PasswordsMixin, TemplateView):
-    pass

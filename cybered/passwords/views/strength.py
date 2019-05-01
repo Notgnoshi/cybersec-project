@@ -8,7 +8,3 @@ from .mixin import PasswordsMixin
 
 class PasswordsStrengthView(PasswordsMixin, TemplateView):
     pass
-
-
-class PasswordsStrengthToolView(PasswordsMixin, TemplateView):
-    pass
