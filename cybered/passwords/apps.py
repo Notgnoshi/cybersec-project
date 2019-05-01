@@ -3,7 +3,7 @@ from django.apps import AppConfig
 from shared.src import cybered
 
 
-class PasswordsModule(cybered.ModuleMixin):
+class PasswordsModule(cybered.LessonModule):
     """The cybered module configuration for the passwords module."""
 
     name = "passwords"

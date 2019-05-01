@@ -2,6 +2,7 @@ from django.views import generic
 from django.apps import apps
 from shared.src import cybered
 
+
 class LandingpageView(generic.TemplateView):
     """The landing page view.
 
@@ -25,7 +26,7 @@ class LandingpageView(generic.TemplateView):
 
         modules = []
         for app_config in apps.get_app_configs():
-            if isinstance(app_config, cybered.ModuleMixin):
+            if isinstance(app_config, cybered.LessonModule):
                 module = {}
 
                 # TODO: Prevent collisions in module_base_link

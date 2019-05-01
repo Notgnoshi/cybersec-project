@@ -19,7 +19,7 @@ class SteganographyPageManager(cybered.PageManager):
     )
 
 
-class SteganographyModule(cybered.ModuleMixin):
+class SteganographyModule(cybered.LessonModule):
     """The cybered module configuration for the steganography module."""
 
     # The name of this app.
@@ -29,4 +29,3 @@ class SteganographyModule(cybered.ModuleMixin):
     module_base_link = "steganography/"
     module_start_link = "begin"
     module_description = "An introduction to basic steganographic techniques"
-

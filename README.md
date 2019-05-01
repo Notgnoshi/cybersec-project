@@ -16,7 +16,7 @@ cd example
 rm tests.py admin.py models.py
 ```
 
-Then edit the `apps.py` file to edit the module config class to inherit from the `cybered.ModuleMixin`.
+Then edit the `apps.py` file to edit the module config class to inherit from the `cybered.LessonModule`.
 E.g., edit
 
 ```python
@@ -31,7 +31,7 @@ to look like this
 ```python
 from shared.src import cybered
 
-class ExampleConfig(cybered.ModuleMixin, CyberEdAppConfig):
+class ExampleConfig(cybered.LessonModule, CyberEdAppConfig):
     name = 'example'
     module_name = 'An Example Application'
     module_base_link = 'example/'
@@ -44,7 +44,7 @@ or alternatively
 ```python
 from shared.src import cybered
 
-class ExampleModule(cybered.ModuleMixin):
+class ExampleModule(cybered.LessonModule):
     name = 'example'
     module_name = 'An Example Application'
     module_base_link = 'example/'
@@ -154,7 +154,7 @@ You may want to modify the header or footer for some reason; it is not recommend
 
 {% include "includes/footer.html" %}
 ```
-   
+
 
 ---
 

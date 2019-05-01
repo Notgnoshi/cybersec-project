@@ -20,7 +20,7 @@ from shared.src import cybered
 urlpatterns = [path("", include("landingpage.urls"), name="landingpage")]
 
 for app_config in apps.get_app_configs():
-    if isinstance(app_config, cybered.ModuleMixin):
+    if isinstance(app_config, cybered.LessonModule):
         urlpatterns.append(
             path(
                 app_config.module_base_link,

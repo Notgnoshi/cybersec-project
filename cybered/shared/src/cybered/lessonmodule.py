@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
-class ModuleMixin(metaclass=ABCMeta):
+
+class LessonModule(metaclass=ABCMeta):
     """An educational module for the CyberEd website.
 
     An educational module is a linear sequence of pages. A page might contain instructional
@@ -8,13 +9,13 @@ class ModuleMixin(metaclass=ABCMeta):
     recommended that each module implement at least one standalone interactive tool that a student
     can repeatedly (ab)use without preventing them from moving on with the instructional content.
 
-    The information in this ModuleMixin is used to automatically discover new modules and add them
+    The information in this LessonModule is used to automatically discover new modules and add them
     to the landing page. Each derived application must define a module name, base link, start link,
     and description. Dervied classes will likely want to inherit from django.apps.AppConfig so that they
     can be a full-fledged django app.
 
     Module Mixins also contain a scope() function which can be use along with the django app_name
-    variable and the ModuleMixin.name property to reverse project urls.
+    variable and the LessonModule.name property to reverse project urls.
 
     See the modules included in this project for examples of how to use app_name, ModuleMix, AppConfig
     and the django reverse() function together.
@@ -31,7 +32,7 @@ class ModuleMixin(metaclass=ABCMeta):
 
         A 'name' property is also required by django AppConfig objects; including it here makes
         it easy for new module developers to create a django app that is also a cybered module
-        by inheriting from the ModuleMixing before the django AppConfig type
+        by inheriting from the LessonModule before the django AppConfig type
         """
 
     @property

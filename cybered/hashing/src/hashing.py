@@ -1,7 +1,7 @@
 from shared.src import cybered
 
 
-class HashingModule(cybered.ModuleMixin):
+class HashingModule(cybered.LessonModule):
     """The cybered module configuration for the hashing module."""
 
     # The name of this app.
