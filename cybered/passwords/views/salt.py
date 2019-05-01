@@ -6,7 +6,7 @@ from django.views.generic import FormView
 
 from passwords.apps import PasswordsModule
 from passwords.forms import AliceLoginForm, MadhatterLoginForm, SaltedHashForm
-from passwords.src.password_db import MADHATTER_PASSWORD, MADHATTER_USERNAME
+from passwords.src.password_db import MADHATTER_PASSWORD, MADHATTER_USERNAME, MADHATTER_HASH
 from passwords.src.password_db import HASH_LIST, PASSWORD_DB, PASSWORD_DB_USERS
 
 from .mixin import PasswordsMixin
@@ -17,7 +17,7 @@ class PasswordsSaltMotivation1View(PasswordsMixin, FormView):
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("salt-motivation-1"))
+        return reverse(PasswordsModule.scope("salt-motivation-1")) + "#rainbow-table"
 
     def form_valid(self, form):
         self.request.session[PasswordsModule.scope("salt1_email")] = form.cleaned_data["email"]
@@ -42,8 +42,9 @@ class PasswordsSaltMotivation1View(PasswordsMixin, FormView):
         input_email = self.request.session.get(key, "")
 
         context["actual_password"] = MADHATTER_PASSWORD
-        context["actual_email"] = MADHATTER_USERNAME
-        context["input_email"] = input_email
+        context["actual_user"] = MADHATTER_USERNAME
+        context["actual_hash"] = MADHATTER_HASH
+        context["input_user"] = input_email
         context["input_password"] = input_password
 
         context["hash_list"] = HASH_LIST
@@ -85,7 +86,7 @@ class PasswordsSaltView(PasswordsMixin, FormView):
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("salt"))
+        return reverse(PasswordsModule.scope("salt")) + "#hash-generator"
 
     def form_valid(self, form):
         salt_rows_key = PasswordsModule.scope("salted_rows")

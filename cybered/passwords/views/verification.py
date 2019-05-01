@@ -16,7 +16,7 @@ class PasswordsVerificationView(PasswordsMixin, FormView):
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("verification"))
+        return reverse(PasswordsModule.scope("verification")) + "#login"
 
     def form_valid(self, form):
         self.request.session[PasswordsModule.scope("verification_email")] = form.cleaned_data[
@@ -62,7 +62,7 @@ class PasswordsVerificationDetailsView(PasswordsMixin, FormView):
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("verification-details"))
+        return reverse(PasswordsModule.scope("verification-details")) + "#login"
 
     def form_valid(self, form):
         self.request.session[PasswordsModule.scope("details_user")] = form.cleaned_data["email"]

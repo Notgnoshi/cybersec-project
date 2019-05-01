@@ -21,8 +21,8 @@
 </ol>
 
 <p>There's a single technique called <strong>salting</strong> the passwords that will solve <em>both</em> of these
-    problems. It's a simple technique &mdash; just add random stuff (<strong>salt</strong>) to the password before
-    hashing it. Doing this will solve both problems!</p>
+    problems. It's a simple technique &mdash; just add random <strong>salt</strong> to the password before
+    hashing it. Then we will save both the salt <em>and</em> the hash after salting the password. Doing this will solve both problems!</p>
 
 <ol>
     <li>It makes rainbow tables hard to use, because they only contain <em>commonly used</em> passwords.</li>
@@ -34,7 +34,7 @@
     you each time, but you can use your own salt if you want. Make sure to try the same password a few different times
     with different salts.</p>
 
-<div class="card w-50 mx-auto my-3 bg-light shadow-sm">
+<div class="card w-50 mx-auto my-3 bg-light shadow-sm" id="hash-generator">
     <h5 class="card-header">Salting a Password</h5>
     <div class="card-body">
         <form method="post">

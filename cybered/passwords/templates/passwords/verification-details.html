@@ -2,9 +2,8 @@
 <h2>Password Verification Details</h2>
 
 <p>On the last page we talked about how the <em>user</em> of a service performs password authentication. Now let's talk
-    a little bit about how the <em>service itself</em> performs the authentication. Try logging into the Alice user with
-    the password: <code>{{ actual_password }}</code></p>
-<div class="card w-50 mx-auto mb-3 bg-light shadow-sm">
+    a little bit about how the <em>service itself</em> performs the authentication. Try logging into the Alice user again.</p>
+<div class="card w-50 mx-auto mb-3 bg-light shadow-sm" id="login">
     <h5 class="card-header">Login</h5>
     <div class="card-body">
         <form method="post">
@@ -44,6 +43,10 @@
         </form>
     </div>
 </div>
+
+{% if input_password and not logged_in %}
+<p>Remember, her password was: <code>{{ actual_password }}</code></p>
+{% endif %}
 
 {% if input_password %}
 <p>The service doesn't store the user's passwords. (Some do, but those services should be publicly shamed).

@@ -69,11 +69,11 @@
             <div class="form-group row mb-0">
                 <div class="col-form-label col-2">
                     <input class="btn {% if cracking_attempts > 0 %}btn-outline-success{% else %}btn-success{% endif %}"
-                        type="submit" name="crack_guess_alpha" value="Guess" />
+                        type="submit" name="crack_guess_alpha" value="Try it!" />
                 </div>
                 {% if cracking_attempts > 0 %}
                 <div class="col-form-label col-3">
-                    <input class="btn btn-success" type="submit" name="crack_guess_common" value="Guess Better" />
+                    <input class="btn btn-success" type="submit" name="crack_guess_common" value="Try it better!" />
                 </div>
                 {% endif %}
                 <div class="col">
