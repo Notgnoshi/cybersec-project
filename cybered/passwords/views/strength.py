@@ -14,7 +14,7 @@ class PasswordsStrengthView(PasswordsMixin, FormView):
     success_url = ""
 
     def get_success_url(self):
-        return reverse(PasswordsModule.scope("strength"))
+        return reverse(PasswordsModule.scope("strength")) + "#entropy-calculator"
 
     def form_valid(self, form):
         self.request.session["strength_password"] = form.cleaned_data["password"]
@@ -24,6 +24,6 @@ class PasswordsStrengthView(PasswordsMixin, FormView):
         context = super().get_context_data(**kwargs)
 
         context["password"] = self.request.session.get("strength_password", "")
-        context["entropy"] = PasswordStats(context["password"]).entropy_bits
+        context["entropy"] = PasswordStats(context["password"]).entropy_bits if context["password"] else 0
 
         return context
