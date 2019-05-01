@@ -21,13 +21,13 @@ class PasswordsPageManager(cybered.PageManager):
     page_list = (
         # ('name', 'url', 'template')
         ("begin", PasswordsModule.module_start_link, "passwords/begin.html"),
-        ("verification", "verification", "passwords/verification.html"),
-        ("verification-details", "verification-details", "passwords/verification-details.html"),
-        ("salt-motivation-1", "salt-motivation-1", "passwords/salt-motivation-1.html"),
-        ("salt-motivation-2", "salt-motivation-2", "passwords/salt-motivation-2.html"),
-        ("salt", "salt", "passwords/salt.html"),
-        ("salt-details", "salt-details", "passwords/salt-details.html"),
-        ("cracking", "cracking", "passwords/cracking.html"),
-        ("strength", "strength", "passwords/strength.html"),
-        ("conclusion", "conclusion", "passwords/conclusion.html"),
+        ("verification", "verification/", "passwords/verification.html"),
+        ("verification-details", "verification-details/", "passwords/verification-details.html"),
+        ("salt-motivation-1", "salt-motivation-1/", "passwords/salt-motivation-1.html"),
+        ("salt-motivation-2", "salt-motivation-2/", "passwords/salt-motivation-2.html"),
+        ("salt", "salt/", "passwords/salt.html"),
+        ("salt-details", "salt-details/", "passwords/salt-details.html"),
+        ("cracking", "cracking/", "passwords/cracking.html"),
+        ("strength", "strength/", "passwords/strength.html"),
+        ("conclusion", "conclusion/", "passwords/conclusion.html"),
     )
