@@ -44,7 +44,7 @@ def get_starting_n_bytes(fp, count):
     # Try to open file pointer to fp, if that fails with a type error,
     # assume it's already a readable object
     try:
-        with open(to_path(fp), "rb") as fp:
+        with to_path(fp).open(mode="rb") as fp:
             return get_bytes(fp, count)
     except TypeError:
         return get_bytes(fp, count)
