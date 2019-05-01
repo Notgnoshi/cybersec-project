@@ -1,18 +1,44 @@
 {% include "includes/head.html" %}
 <h1>Conclusion</h1>
 
-<p>We've covered <em>a lot</em> of different ideas, so let's go over the highlights.</p>
+<p>We've covered <em>a lot</em> of different ideas related to passwords and password security, so let's go over the
+    highlights.</p>
 
 <h2>Identification and Verification</h2>
+<p>There are two steps for <strong>authenticating</strong> a user to use a service.</p>
+<ol>
+    <li>The user claims to have an <strong>identity</strong> on the service.</li>
+    <li>The user <strong>verifies</strong> that they are, in fact, the owner of their claimed identity.</li>
+</ol>
 
 <h2>How are Passwords Stored?</h2>
-
+<p>We should always assume that attackers <strong>will</strong> eventually gain access to a service's password database.
+    In order to limit any potential damage, services do <strong>not</strong> store the passwords. Instead, they store
+    the <strong>hashes</strong> of the passwords.</p>
 <h4>Why Store Hashes?</h4>
+<p>Services store the password hashes because hash functions are <strong>one-way</strong> functions. This means that
+    it's (almost) impossible to figure out the password from the hash.</p>
+
 <h4>Why Salt the Passwords?</h4>
+<p>Except that it <em>is</em> possible to find <em>some</em> passwords from their hashes using <strong>rainbow
+        tables</strong>. So we add random stuff to each password <em>before</em> we salt them &mdash; that way they
+    definitely will <em>not</em> be in <em>any</em> list of common passwords!</p>
 
 <h2>How to Crack Passwords</h2>
+<p>There are many approaches to cracking passwords if you have the password database &mdash; which contains the
+    username, salt, and salted hash &mdash; but we only showed you two ways.</p>
+<ol>
+    <li>Start at the beginning of a dictionary and start guessing words.</li>
+    <li>Use a big list of commonly used passwords.</li>
+</ol>
+
+<p>The second approach works the best for most passwords because people aren't very creative when they pick their
+    passwords, and computers are really good at checking the password hashes <em>thousands</em> of times per second.</p>
 
 <h2>What Makes Passwords Strong?</h2>
+<p><strong>Strong</strong> passwords are passwords that take a long time to crack. We used an <a
+        href="https://www.xkcd.com/936/" target="_blank">XKCD</a> comic to explain that the best way to make passwords
+    strong is to make them <strong>long</strong>.</p>
 
 {% include "includes/paginator.html" %}
 {% include "includes/footer.html" %}
