@@ -45,7 +45,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
 # Make the session cookie last at most three days
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 3
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
